@@ -229,6 +229,8 @@ public class Main extends JFrame {
 							((AudioEditor) pane)._miniPlayback.stopPlayer();
 						} else if (pane instanceof VideoEditor) {
 							((VideoEditor) pane).stopAllPlayers();
+						} else if (pane instanceof Filters) {
+							((Filters) pane).stopAllPlayers();
 						}
 						_tabbedPane.remove(pane);
 					}
