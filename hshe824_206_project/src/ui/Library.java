@@ -181,6 +181,8 @@ public class Library extends JPanel {
 		final JButton editAudio = new JButton("Edit Audio");
 		final JButton editVideo = new JButton("Add Video Text");
 		final JButton filters = new JButton("Add Video Filters");
+		final JButton btnBounce = new JButton("Bounce!");
+
 
 		download.setVerticalTextPosition(SwingConstants.BOTTOM);
 		download.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -567,7 +569,7 @@ public class Library extends JPanel {
 		editAudio.addActionListener(new editAudioListener());
 		editVideo.setVerticalTextPosition(SwingConstants.BOTTOM);
 		editVideo.setHorizontalTextPosition(SwingConstants.CENTER);
-		editVideo.setIcon(createImageIcon("video.png"));
+		editVideo.setIcon(createImageIcon("text.png"));
 		// EDIT VIDEO BUTTON
 		editVideo.setEnabled(false);
 		editVideo.setFont(titleFont);
@@ -585,8 +587,15 @@ public class Library extends JPanel {
 		importButton.setFont(titleFont);
 		buttonPanel.add(importButton,
 				"cell 0 1,alignx center,height 50,aligny center,grow");
+		importButton.addActionListener(new importListener());
+		Main.editVideo.addActionListener(new editVideoListener());
 		
-		JButton btnBounce = new JButton("Bounce!");
+		//BOUNCE BUTTON
+		btnBounce.setFont(titleFont);
+		btnBounce.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnBounce.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnBounce.setIcon(createImageIcon("bounce.png"));
+		buttonPanel.add(btnBounce, "cell 2 0 1 2,grow");
 		btnBounce.addActionListener(new ActionListener() {
 			
 			@Override
@@ -603,11 +612,13 @@ public class Library extends JPanel {
 			}
 		});
 		
-		buttonPanel.add(btnBounce, "cell 2 0 1 2");
-		importButton.addActionListener(new importListener());
-		Main.editVideo.addActionListener(new editVideoListener());
+		
 
 		// FILTERS BUTTON
+		filters.setFont(titleFont);
+		filters.setVerticalTextPosition(SwingConstants.BOTTOM);
+		filters.setHorizontalTextPosition(SwingConstants.CENTER);
+		filters.setIcon(createImageIcon("filters.png"));
 
 		class editFilterListener implements ActionListener {
 			@Override

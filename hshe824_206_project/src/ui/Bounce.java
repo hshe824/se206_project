@@ -23,9 +23,6 @@ public class Bounce extends JPanel {
 
 		setLayout(new MigLayout("", "[grow]", "[grow 90][grow 10]"));
 
-		// AnimationViewer animationViewer = new AnimationViewer();
-		// add(animationViewer, "cell 0 0,growx 90,growy");
-
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED,
 				null, null, null, null), "Bounce controls",
