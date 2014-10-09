@@ -26,6 +26,14 @@ import processes.DurationFinder;
 import processes.VideoTask;
 import bounce.AnimationViewer;
 
+/**
+ * This pane contains an animation viewer that can be used to 
+ * view gifs generated from an input video. They can be made to bounce
+ * off the walls and change state.
+ * 
+ * @author Harry She
+ *
+ */
 public class Bounce extends JPanel {
 
 	private static Bounce theInstance = null;

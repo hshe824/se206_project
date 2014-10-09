@@ -15,6 +15,10 @@ import javax.swing.JButton;
  * A custom JButton that paints the icon only. Requires three types of icon,
  * normal, rollover and pressed. Edited version of the code found on
  * http://terai.xrea.jp/Swing/RoundImageButton.html
+ * 
+ * Taken from assignment 3.
+ * 
+ * @author Greggory Tan 
  */
 public class RoundButton extends JButton {
 	protected Shape shape, base;

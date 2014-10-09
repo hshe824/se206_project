@@ -41,7 +41,11 @@ import uk.co.caprica.vlcj.player.embedded.x.XFullScreenStrategy;
 /**
  * This class creates the layout of the playback panel
  * and the listeners for the components
- * @author Greggory
+ * 
+ * NB: Taken from assignment 3.
+ * 
+ * 
+ * @author Greggory and Harry
  *
  */
 @SuppressWarnings("serial")

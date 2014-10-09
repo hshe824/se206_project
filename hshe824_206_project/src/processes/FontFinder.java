@@ -14,6 +14,8 @@ import javax.swing.JOptionPane;
  * This class provides all the fonts in the font package file.
  * {@link #setUp()} method needs to be called before use.
  * 
+ * NB: taken from assignment 3
+ * 
  * @author Harry & Greggory
  *
  */

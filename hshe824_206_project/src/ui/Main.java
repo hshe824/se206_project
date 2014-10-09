@@ -38,9 +38,10 @@ import org.apache.commons.io.FileUtils;
  * @author Harry She
  * 
  */
-// BoilerPlate code of JFileChooser, ProcessBuilder, JColorChooser from Java API
-// and example
-// tutorial code
+/* BoilerPlate code of JFileChooser, ProcessBuilder, JColorChooser from Java API
+* and example
+* tutorial code
+*/ 
 @SuppressWarnings("serial")
 public class Main extends JFrame {
 

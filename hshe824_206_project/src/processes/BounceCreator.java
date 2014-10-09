@@ -8,6 +8,13 @@ import javax.swing.SwingWorker;
 
 import bounce.AnimationViewer;
 
+/**
+ * Class responsible for generating GIF images that are
+ * to be used in the bounce animation
+ * 
+ * @author Harry She
+ *
+ */
 public class BounceCreator extends SwingWorker<Void, Void> {
 
 	private String _inputFile;
@@ -16,14 +23,12 @@ public class BounceCreator extends SwingWorker<Void, Void> {
 	protected AnimationViewer animationViewer;
 	private int _duration;
 
-	// Replace and Overlay constructor
 	public BounceCreator(String inputFile, int numShapes, int duration) {
 		_inputFile = inputFile;
 		_numShapes = numShapes;
 		_duration = duration;
 	}
 
-	// Strip audio track constructor
 
 	/**
 	 * Calls avconv command to perform a specific audio task.

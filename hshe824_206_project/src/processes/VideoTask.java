@@ -25,6 +25,8 @@ import ui.VideoEditor;
  * credits and then the concatenation of the input video with this generated
  * title video.
  * 
+ *  NB: Taken from assignment 3.
+ *  
  * @author Greggory & Harry
  *
  */

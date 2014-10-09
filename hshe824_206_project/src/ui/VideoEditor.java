@@ -54,6 +54,8 @@ import javax.swing.border.BevelBorder;
  * This includes the ability to preview edited text and resume working from
  * where you were on this file last time.
  * 
+ * NB: Taken from assignment 3.
+ * 
  * @author Harry She and Greggory Tan
  *
  */

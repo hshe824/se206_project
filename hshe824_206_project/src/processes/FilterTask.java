@@ -16,6 +16,13 @@ import javax.swing.SwingWorker;
 
 import ui.Library;
 
+/**
+ * Class responsible for adding filters to videos
+ * and also previewing them
+ * 
+ * @author Harry She
+ *
+ */
 public class FilterTask extends SwingWorker<Void, Void>{
 	private String _inputFile;
 	private String _outputFile;
@@ -28,7 +35,6 @@ public class FilterTask extends SwingWorker<Void, Void>{
 	private String _colour;
 	
 	
-	// Replace and Overlay constructor
 	public FilterTask(String inputFile, String outputFile, String cmd, boolean isPreview, Color colourTint) {
 		_inputFile = inputFile;
 		_outputFile = outputFile;
@@ -38,16 +44,12 @@ public class FilterTask extends SwingWorker<Void, Void>{
 		_colour = String
 				.format("%02x%02x%02x%02x", _colourTint.getRed(),
 						_colourTint.getGreen(), _colourTint.getBlue(), _colourTint.getAlpha());
-	}
-
-	// Strip audio track constructor
-	
+	}	
 
 	/**
-	 * Calls avconv command to perform a specific audio task.
-	 * 
-	 * Can strip audio, replace or overlay audio on another selected input file.
-	 * 
+	 * Calls avconv command to perform a specific filter addition to
+	 * a video
+	 * 	 
 	 * Relays success or errors back to EDT to deal with.
 	 * 
 	 */
