@@ -1,23 +1,41 @@
 package ui;
 
+import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.util.concurrent.ExecutionException;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
+import processes.BounceCreator;
+import processes.DurationFinder;
+import processes.VideoTask;
 import bounce.AnimationViewer;
 
-import javax.swing.border.TitledBorder;
-import javax.swing.border.BevelBorder;
-import javax.swing.JButton;
-import javax.swing.JTextField;
+import javax.swing.JLabel;
+import javax.swing.JProgressBar;
 
 public class Bounce extends JPanel {
 
 	private static Bounce theInstance = null;
 	private JTextField textField;
 	protected AnimationViewer animationViewer;
+	private String _currentFileString = "";
+	private BounceCreator bCreator;
+	private Integer _duration = 0;
+	private JTextField _ShapesField;
+	private int _numberOfShapes;
+	private JProgressBar   progressBar;
 
 	public Bounce() {
 
@@ -28,43 +46,141 @@ public class Bounce extends JPanel {
 				null, null, null, null), "Bounce controls",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		add(panel, "cell 0 1,growx 10,growy");
-		panel.setLayout(new MigLayout("", "[grow][grow]", "[grow][grow]"));
+		panel.setLayout(new MigLayout("", "[grow][][grow]", "[grow][grow]"));
 
-		textField = new JTextField();
-		panel.add(textField, "cell 0 0 2 1,alignx center");
-		textField.setColumns(10);
+		_ShapesField = new JTextField("1");
+		_ShapesField.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				if (Integer.parseInt(_ShapesField.getText()) >= 0 && Integer.parseInt(_ShapesField.getText()) <= 20 || Integer.parseInt(_ShapesField.getText())==42) {
+					_numberOfShapes = Integer.parseInt(_ShapesField.getText());
+				}
+			}
+
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				if (Integer.parseInt(_ShapesField.getText()) >= 0 && Integer.parseInt(_ShapesField.getText()) <= 20 || Integer.parseInt(_ShapesField.getText())==42) {
+					_numberOfShapes = Integer.parseInt(_ShapesField.getText());
+				}
+			}
+		});
+		
+	    progressBar = new JProgressBar();
+		panel.add(progressBar, "cell 0 0 2 1,growx,height 30");
+		
+		JLabel lblEnterHowMany = new JLabel("Enter how many GIF instances to generate:");
+		panel.add(lblEnterHowMany, "flowx,cell 2 0,alignx center");
+
+		panel.add(_ShapesField, "cell 2 0,width 50,alignx center");
+		_ShapesField.setColumns(10);
 
 		JButton bounce = new JButton("Bounce");
-		panel.add(bounce, "cell 0 1,alignx center,aligny center");
+		panel.add(bounce, "cell 0 1,alignx center,growy,aligny center");
 		bounce.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+
+				 bCreator = new BounceCreator(_currentFileString,
+						5, _duration);
+				bCreator.execute();
+				progressBar.setIndeterminate(true);
+				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 				if (animationViewer != null) {
 					remove(animationViewer);
+					validate();
+					repaint();
 				}
+				bCreator.addPropertyChangeListener(new PropertyChangeListener() {
 
-				animationViewer = new AnimationViewer();
-				add(animationViewer, "cell 0 0,growx 90,growy");
-				validate();
-				repaint();
+					@Override
+					public void propertyChange(PropertyChangeEvent evt) {
+						if ("success".equals(evt.getPropertyName())) {
+							progressBar.setIndeterminate(false);
+							setCursor(Cursor.getDefaultCursor());
+							animationViewer = new AnimationViewer();
+							add(animationViewer, "cell 0 0,growx 90,growy");
+							validate();
+							repaint();
+
+						}
+
+					}
+				});
+
 			}
 		});
-
-		JButton btnBouncemania = new JButton("Bouncemania!");
-		panel.add(btnBouncemania, "cell 1 1,alignx center,aligny center");
-		btnBouncemania.addActionListener(new ActionListener() {
+		
+		JButton btnClearScreen = new JButton("Cancel/Clear screen");
+		btnClearScreen.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (animationViewer != null) {
+					bCreator.cancel(true);
+					progressBar.setIndeterminate(false);
+					setCursor(Cursor.getDefaultCursor());
 					remove(animationViewer);
+					validate();
+					repaint();
 				}
-
-				animationViewer = new AnimationViewer(true);
-				add(animationViewer, "cell 0 0,growx 90,growy");
-				validate();
-				repaint();
 			}
 		});
+		panel.add(btnClearScreen, "cell 1 1,growy");
+
+		JButton btnBouncemania = new JButton("Bouncemania!");
+		panel.add(btnBouncemania, "cell 2 1,alignx center,growy,aligny center");
+		btnBouncemania.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				bCreator = new BounceCreator(_currentFileString,
+						_numberOfShapes, _duration);
+				bCreator.execute();
+				progressBar.setIndeterminate(true);
+				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+				progressBar.setIndeterminate(true);
+				if (animationViewer != null) {
+					remove(animationViewer);
+					validate();
+					repaint();
+				}
+				bCreator.addPropertyChangeListener(new PropertyChangeListener() {
+
+					@Override
+					public void propertyChange(PropertyChangeEvent evt) {
+						if ("success".equals(evt.getPropertyName())) {
+							progressBar.setIndeterminate(false);
+							setCursor(Cursor.getDefaultCursor());
+							animationViewer = new AnimationViewer(_numberOfShapes);
+							add(animationViewer, "cell 0 0,growx 90,growy");
+							validate();
+							repaint();
+
+						}
+					}
+
+				});
+			}
+		});
+	}
+
+	/**
+	 * Sets the current input file to bounce
+	 * 
+	 * @param inputFile
+	 */
+	public void setInputFile(String inputFile) {
+		_currentFileString = inputFile;
+		System.out.println(_currentFileString);
+		DurationFinder dFinder = new DurationFinder(_currentFileString);
+		dFinder.execute();
+		try {
+			_duration = dFinder.get();
+			System.out.println(_duration);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		} catch (ExecutionException e1) {
+			e1.printStackTrace();
+		}
+		new File(VideoTask.tempDir).mkdirs();
 	}
 
 	/**

@@ -129,10 +129,10 @@ public class Filters extends JPanel {
 		textPanel.add(horFlip, "flowx,cell 1 1,alignx center");
 		_group.add(horFlip);
 
-		JRadioButton vertFlip = new JRadioButton("Flip upside-down");
-		vertFlip.addActionListener(new FilterListener());
-		textPanel.add(vertFlip, "cell 0 2,alignx center");
-		_group.add(vertFlip);
+		JRadioButton negate = new JRadioButton("Negative");
+		negate.addActionListener(new FilterListener());
+		textPanel.add(negate, "cell 0 2,alignx center");
+		_group.add(negate);
 
 
 		JRadioButton split = new JRadioButton("Fade into start");

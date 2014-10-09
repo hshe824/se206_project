@@ -63,8 +63,8 @@ public class FilterTask extends SwingWorker<Void, Void>{
 		case "Mirror Video":
 			_filter="hflip";
 			break;
-		case "Flip upside-down":
-			_filter="vflip";
+		case "Negative":
+			_filter="negate";
 			break;
 		case "Fade into start":
 			_filter="\"fade=in:0:100\"";

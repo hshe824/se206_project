@@ -1,13 +1,12 @@
 package bounce;
 import java.awt.Color;
 
-/*
+/**
  * This shape class produces an aggregate fractal shape consisting of 
  * varying numbers of overlapping circles that change colour and state
  * upon each bounce with a wall.
  * 
- * 
- * Author: @Harry She
+ * @author Harry She
  */
 public class AggregateShape extends Shape {
 

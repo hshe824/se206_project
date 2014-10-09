@@ -2,14 +2,14 @@ package bounce;
 
 import java.awt.Color;
 
-/*
+/**
  * This shape class produces a dynamic rectangle shape that 
  * changes to a regular rectangle shape appearance when bouncing
  * off the top and bottom walls, and changes to a filled rectangle
  * shape when it bounces off the side walls.
  * 
  * 
- * Author: @Harry She
+ * @author: @Harry She
  */
 
 public class DynamicRectangleShape extends Shape {

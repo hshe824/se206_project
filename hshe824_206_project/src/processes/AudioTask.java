@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
+import javax.print.attribute.standard.OutputDeviceAssigned;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
@@ -91,12 +92,13 @@ public class AudioTask extends SwingWorker<Void, Void> {
 		case "MERGE":
 			builder = new ProcessBuilder("/bin/bash", "-c", "avconv -i "
 					+ _inputFile + " -i " + _replaceOrMergeFile
-					+  " -filter_complex amix=duration=shortest -vcodec copy -shortest -y -strict experimental " + _outputFile);
+					+  " -filter_complex amix=duration=longest -vcodec copy -shortest -y -strict experimental " + _outputFile);
 			break;
 		case "REPLACE":
+			String outNoExtensions=_outputFile.substring(0,_outputFile.lastIndexOf('.'));
 			builder = new ProcessBuilder("/bin/bash", "-c", "avconv -i "
 					+ _inputFile + " -i " + _replaceOrMergeFile
-					+ " -c copy -map 0:v -map 1:a " + _outputFile);
+					+ " -c copy -map 0:v -map 1:a " + outNoExtensions+".mp4");
 			break;
 		}
 		process(builder);

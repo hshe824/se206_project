@@ -208,6 +208,8 @@ public class Library extends JPanel {
 						play.setEnabled(false);
 						editAudio.setEnabled(false);
 						editVideo.setEnabled(false);
+						btnBounce.setEnabled(false);
+						filters.setEnabled(false);
 					} else {
 						_detailsInputArea.setText(getDetails(
 								_currentFileInputString).toString());
@@ -225,11 +227,15 @@ public class Library extends JPanel {
 					if (hasVideo) {
 						play.setEnabled(true);
 						editVideo.setEnabled(true);
+						btnBounce.setEnabled(true);
+						filters.setEnabled(true);
 						Main.play.setEnabled(true);
 						Main.editVideo.setEnabled(true);
 					} else {
+						btnBounce.setEnabled(false);
 						play.setEnabled(false);
 						editVideo.setEnabled(false);
+						filters.setEnabled(false);
 						Main.play.setEnabled(false);
 						Main.editVideo.setEnabled(false);
 					}
@@ -263,6 +269,8 @@ public class Library extends JPanel {
 					if (file.toString().equals(outputDir)) {
 						_detailsOutputArea.setText(defaultOutputLibString);
 						Main.play.setEnabled(false);
+						btnBounce.setEnabled(false);
+						filters.setEnabled(false);
 						Main.editVideo.setEnabled(false);
 						Main.editAudio.setEnabled(false);
 						play.setEnabled(false);
@@ -283,11 +291,15 @@ public class Library extends JPanel {
 					boolean hasAudio = fc.checkAVFile("Audio");
 					boolean hasVideo = fc.checkAVFile("Video");
 					if (hasVideo) {
+						filters.setEnabled(true);
+						btnBounce.setEnabled(true);
 						play.setEnabled(true);
 						editVideo.setEnabled(true);
 						Main.play.setEnabled(true);
 						Main.editVideo.setEnabled(true);
 					} else {
+						filters.setEnabled(false);
+						btnBounce.setEnabled(false);
 						play.setEnabled(false);
 						editVideo.setEnabled(false);
 						Main.play.setEnabled(false);
@@ -318,7 +330,7 @@ public class Library extends JPanel {
 		buttonPanel.setToolTipText("");
 		add(buttonPanel, "cell 0 1,grow");
 		buttonPanel
-				.setLayout(new MigLayout("", "[96.00px,grow][110.00px,grow][][136.00px,grow][123.00px,grow][168.00px,grow]", "[86.00,grow 50][86,grow 50]"));
+				.setLayout(new MigLayout("", "[96.00px,grow][110.00px,grow][110px,grow][136.00px,grow][123.00px,grow][168.00px,grow]", "[86.00,grow 50][86,grow 50]"));
 
 		/*
 		 * This is a popup menu that the user can bring up by right clicking in
@@ -544,19 +556,20 @@ public class Library extends JPanel {
 				if (_currentFileString != null
 						&& !_currentFileString.equals("")) {
 					if (Main._tabbedPane.indexOfTab("Video Editor") == -1) {
-						Main.createNewTab("Video Editor",
-								VideoEditor.getInstance(),
-								Main._tabbedPane.getTabCount());
-						VideoEditor.getInstance().setInputFile(
-								_currentFileString);
-						Main._tabbedPane.setSelectedIndex(Main._tabbedPane
-								.getTabCount() - 1);
+					Main.createNewTab("Video Editor",
+							VideoEditor.getInstance(),
+							Main._tabbedPane.getTabCount());
+					Main._tabbedPane.setSelectedIndex(Main._tabbedPane
+							.getTabCount() - 1);
 					} else {
 						Main._tabbedPane.setSelectedIndex(Main._tabbedPane
 								.indexOfTab("Video Editor"));
 					}
+					VideoEditor.getInstance().setInputFile(_currentFileString);
 				}
 			}
+		
+		
 		}
 		editAudio.setVerticalTextPosition(SwingConstants.BOTTOM);
 		editAudio.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -603,6 +616,8 @@ public class Library extends JPanel {
 				if (Main._tabbedPane.indexOfTab("Bounce!") == -1) {
 					Main.createNewTab("Bounce!", Bounce.getInstance(),
 							Main._tabbedPane.getTabCount());
+					Bounce.getInstance().setInputFile(
+							_currentFileString);
 					Main._tabbedPane.setSelectedIndex(Main._tabbedPane
 							.getTabCount() - 1);
 				} else {

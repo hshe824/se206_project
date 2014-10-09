@@ -1,11 +1,11 @@
 package bounce;
 
-/*
+/**
  * This shape class produces a fractal shape consisting of 
  * overlapping circles.
  * 
  * 
- * Author: @Harry She
+ * @author: @Harry She
  */
 public class FractalShape extends Shape {
 	private int radius;

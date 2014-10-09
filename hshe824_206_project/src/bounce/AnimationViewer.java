@@ -33,10 +33,7 @@ public class AnimationViewer extends JPanel implements ActionListener {
 
 	// Collection of Shapes to animate.
 	private List<Shape> _shapes;
-
 	private Timer _timer = new Timer(DELAY, this);
-
-	private static boolean _empty = false;
 
 	/**
 	 * Creates an AnimationViewer instance with a list of Shape objects and
@@ -47,132 +44,67 @@ public class AnimationViewer extends JPanel implements ActionListener {
 		_shapes = new ArrayList<Shape>();
 		int minXY = 0;
 		int maxXY = 1000;
-		int minDXY = -4;
-		int maxDXY = 4;
+		int minDXY = -2;
+		int maxDXY = 2;
 
 		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED,
 				Color.BLACK, Color.DARK_GRAY));
 		// Populate the list of Shapes.
-		for (int i = 0; i < 5; i++) {
-			int randomX = minXY + (int) (Math.random() * ((maxXY - minXY) + 1));
-			int randomY = minXY + (int) (Math.random() * ((maxXY - minXY) + 1));
-			int randomDX = minDXY
-					+ (int) (Math.random() * ((maxDXY - minDXY) + 1));
-			int randomDY = minDXY
-					+ (int) (Math.random() * ((maxDXY - minDXY) + 1));
-			_shapes.add(new StaticImageShape(randomX, randomY, randomDX,
-					randomDY, 320, 240,i));
-		}
 
-		if (_shapes.size() == 0) {
-			_shapes.add(new RectangleShape(300, 300, 0, 0, 400, 400,
-					"CONGRATULATIONS!! You found an Easter Egg!! :)"));
-			_shapes.add(new OvalShape(10, 10, 5, 7, 50, 70));
-			_shapes.add(new DynamicRectangleShape(0, 500, 10, 25, 40, 60,
-					Color.blue));
-			_shapes.add(new DynamicRectangleShape(0, 0, -5, -3, 200, 50,
-					Color.green, "Now you see me..."));
-			_shapes.add(new FractalShape(400, 400, -10, 0, 60, 70, 2));
-			_shapes.add(new AggregateShape(250, 100, -10, 1, 120, 70, 5));
-		}
-
+		int randomX = minXY + (int) (Math.random() * ((maxXY - minXY) + 1));
+		int randomY = minXY + (int) (Math.random() * ((maxXY - minXY) + 1));
+		int randomDX = minDXY + (int) (Math.random() * ((maxDXY - minDXY) + 1));
+		int randomDY = minDXY + (int) (Math.random() * ((maxDXY - minDXY) + 1));
+		_shapes.add(new BounceNorm(randomX, randomY, randomDX,
+				randomDY, 320, 240));
 		// Start the animation.
 		_timer.start();
 	}
-	
-	public AnimationViewer(boolean isEasterEgg) {
+
+	public AnimationViewer(int numShapes) {
+		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED,
+				Color.BLACK, Color.DARK_GRAY));
 		_shapes = new ArrayList<Shape>();
+		int minXY = 0;
+		int maxXY = 1000;
+		int minDXY = 1;
+		int maxDXY = 3;
 
-		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED,
-				Color.BLACK, Color.DARK_GRAY));
 		// Populate the list of Shapes.
+		if (numShapes == 42) {
 
-			_shapes.add(new RectangleShape(300, 300, 0, 0, 400, 400,
-					"CONGRATULATIONS!! You found an Easter Egg!! :)"));
+			_shapes.add(new DynamicRectangleShape(0, 0, -5, -3, 300, 150,
+					Color.green, "Easter egg!!"));
 			_shapes.add(new OvalShape(10, 10, 5, 7, 50, 70));
 			_shapes.add(new DynamicRectangleShape(0, 500, 10, 25, 40, 60,
 					Color.blue));
-			_shapes.add(new DynamicRectangleShape(0, 0, -5, -3, 200, 50,
-					Color.green, "Now you see me..."));
-			_shapes.add(new FractalShape(400, 400, -10, 0, 60, 70, 2));
+			_shapes.add(new FractalShape(400, 400, -10, 0, 60, 70, 4));
 			_shapes.add(new AggregateShape(250, 100, -10, 1, 120, 70, 5));
-		
 
-		// Start the animation.
+			
+		} else {
+			for (int i = 1; i <= numShapes; i++) {
+				int randomX = minXY
+						+ (int) (Math.random() * ((maxXY - minXY) + 1));
+				int randomY = minXY
+						+ (int) (Math.random() * ((maxXY - minXY) + 1));
+				int randomDX = minDXY
+						+ (int) (Math.random() * ((maxDXY - minDXY) + 1));
+				int randomDY = minDXY
+						+ (int) (Math.random() * ((maxDXY - minDXY) + 1));
+				_shapes.add(new Bouncemania(randomX, randomY, randomDX,
+						randomDY, 320, 240, i, numShapes));
+			}
+
+			setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED,
+					Color.BLACK, Color.DARK_GRAY));
+			// Populate the list of Shapes.
+
+			// Start the animation.
+		}
 		_timer.start();
+
 	}
-
-
-//	public AnimationViewer(final PhotoCollection photoCollection,
-//			int _numberOfShapes) {
-//		int minXY = 0;
-//		int maxXY = 750;
-//		int minDXY = -10;
-//		int maxDXY = 10;
-//		_shapes = new ArrayList<Shape>();
-//
-//		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED,
-//				Color.BLACK, Color.DARK_GRAY));
-//		// Populate the list of Shapes.
-//		for (int i = 0; i < _numberOfShapes; i++) {
-//			int randomX = minXY + (int) (Math.random() * ((maxXY - minXY) + 1));
-//			int randomY = minXY + (int) (Math.random() * ((maxXY - minXY) + 1));
-//			int randomDX = minDXY
-//					+ (int) (Math.random() * ((maxDXY - minDXY) + 1));
-//			int randomDY = minDXY
-//					+ (int) (Math.random() * ((maxDXY - minDXY) + 1));
-//
-//			_shapes.add(new ImageShape(randomX, randomY, randomDX, randomDY,
-//					200, 200, photoCollection));
-//		}
-//
-//		if (_empty == true) {
-//			_shapes.add(new RectangleShape(300, 300, 0, 0, 400, 400,
-//					"NO FAVOURITES EXIST!! So enjoy a little Easter Egg!! :)"));
-//			_shapes.add(new OvalShape(10, 10, 5, 7, 50, 70));
-//			_shapes.add(new DynamicRectangleShape(0, 500, 10, 25, 40, 60,
-//					Color.blue));
-//			_shapes.add(new DynamicRectangleShape(0, 0, -5, -3, 200, 50,
-//					Color.green, "Now you see me..."));
-//			_shapes.add(new FractalShape(400, 400, -10, 0, 60, 70, 2));
-//			_shapes.add(new AggregateShape(250, 100, -10, 1, 120, 70, 5));
-//		}
-//
-//		// Start the animation.
-//		_timer.start();
-//
-//		addMouseListener(new MouseAdapter() {
-//
-//			@Override
-//			public void mousePressed(MouseEvent e) {
-//				if (e.getModifiers() != MouseEvent.BUTTON3_MASK) {
-//					int minXY = 0;
-//					int maxXY = 750;
-//					int minDXY = -10;
-//					int maxDXY = 10;
-//					int randomX = minXY
-//							+ (int) (Math.random() * ((maxXY - minXY) + 1));
-//					int randomY = minXY
-//							+ (int) (Math.random() * ((maxXY - minXY) + 1));
-//					int randomDX = minDXY
-//							+ (int) (Math.random() * ((maxDXY - minDXY) + 1));
-//					int randomDY = minDXY
-//							+ (int) (Math.random() * ((maxDXY - minDXY) + 1));
-//
-//					_shapes.add(new ImageShape(randomX, randomY, randomDX,
-//							randomDY, 200, 200, photoCollection));
-//				}
-//				if (e.getModifiers() == MouseEvent.BUTTON3_MASK) {
-//					if (_shapes.size() != 0)
-//						_shapes.remove(_shapes.size() - 1);
-//				}
-//			}
-//
-//			@Override
-//			public void mouseReleased(MouseEvent e) {
-//			}
-//		});
-//	}
 
 	/**
 	 * Called by the Swing framework whenever this AnimationViewer object should
@@ -209,31 +141,4 @@ public class AnimationViewer extends JPanel implements ActionListener {
 		// called.
 		repaint();
 	}
-
-	public static void isEmpty() {
-		_empty = true;
-
-	}
-
-	public static void isNotEmpty() {
-		_empty = false;
-	}
-
-	public static boolean getEmptyStatus() {
-		return _empty;
-	}
-
-	/**
-	 * Main program method to create an AnimationViewer object and display this
-	 * within a JFrame window.
-	 */
-	// public static void main(String[] args) {
-	// JFrame frame = new JFrame("Animation viewer");
-	// frame.add(new AnimationViewer());
-	//
-	// // Set window properties.
-	// frame.setSize(500, 500);
-	// frame.setVisible(true);
-	// frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-	// }
 }

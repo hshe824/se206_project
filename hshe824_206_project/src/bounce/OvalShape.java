@@ -1,9 +1,8 @@
 package bounce;
-
 /**
  * This shape class produces an oval shape.
  * 
- * @author: Harry She
+ * @author Harry She
  */
 public class OvalShape extends Shape {
 
