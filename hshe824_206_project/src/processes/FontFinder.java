@@ -27,14 +27,7 @@ public class FontFinder {
 	 * Font directory into a HashMap
 	 */
 	public void setUp() {
-		File folder = new File(getClass().getResource(
-				File.separator + "fonts"+File.separator).getFile().replaceAll("%20", " ").replaceAll("!", ""));
-		JOptionPane
-		.showMessageDialog(
-				null,
-				"Fonts folder: "+folder,
-				"Error!",
-				JOptionPane.WARNING_MESSAGE);
+		File folder = new File("/usr/share/fonts/truetype/dejavu");
 		File[] listofFiles = folder.listFiles();
 		System.out.println(listofFiles.toString());
 

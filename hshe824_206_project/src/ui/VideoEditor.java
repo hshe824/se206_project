@@ -583,7 +583,7 @@ public class VideoEditor extends JPanel {
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
-			writeSetting("Garuda", 12, "ffffffff", 0, 0);
+			writeSetting("DejaVu Sans", 12, "ffffffff", 0, 0);
 		}
 
 		// Loads font, size and color from file
@@ -591,7 +591,7 @@ public class VideoEditor extends JPanel {
 		// Checks if there is 5 arguments. If it doesn't it would reset the .cfg
 		// file
 		if (settings.length < 5) {
-			writeSetting("Garuda", 12, "ffffffff", 0, 0);
+			writeSetting("DejaVu Sans", 12, "ffffffff", 0, 0);
 			settings = readSetting(true);
 
 		}

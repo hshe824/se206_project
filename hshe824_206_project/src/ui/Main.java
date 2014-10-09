@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -20,10 +21,14 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import net.miginfocom.swing.MigLayout;
+
+import org.apache.commons.io.FileUtils;
 
 /**
  * This the main class of the VAMIX Application. It is responsible for setting
@@ -33,8 +38,9 @@ import net.miginfocom.swing.MigLayout;
  * @author Harry She
  * 
  */
-//BoilerPlate code of JFileChooser, ProcessBuilder, JColorChooser from Java API and example
-//tutorial code
+// BoilerPlate code of JFileChooser, ProcessBuilder, JColorChooser from Java API
+// and example
+// tutorial code
 @SuppressWarnings("serial")
 public class Main extends JFrame {
 
@@ -159,7 +165,6 @@ public class Main extends JFrame {
 		menuPlay.add(play);
 
 		JMenu menuHelp = new JMenu("Help");
-		menuBar.add(menuHelp);
 
 		JMenuItem manual = new JMenuItem("Help", KeyEvent.VK_H);
 		manual.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H,
@@ -170,9 +175,9 @@ public class Main extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (Desktop.isDesktopSupported()) {
 					try {
-						File file = new File(getClass().getResource(
-								File.separator + "manual" + File.separator
-										+ "VAMIX_User_Manual.pdf").getFile());
+						File file = new File(System.getProperty("user.home")
+								+ File.separator + "vamix" + File.separator
+								+ "VAMIX_User_Manual.pdf");
 						Desktop.getDesktop().open(file);
 					} catch (IOException ex) {
 					}
@@ -192,6 +197,63 @@ public class Main extends JFrame {
 							"Please read manual",
 							JOptionPane.INFORMATION_MESSAGE);
 		}
+
+		/**
+		 * Listener responsible for dynamically chaning the 
+		 * theme (look and feel) of the program when requested
+		 * by the user.
+		 * 
+		 * @author harry
+		 *
+		 */
+		class lookAndFeelListener implements ActionListener {
+			private String _lookAndFeel;
+
+			public lookAndFeelListener(String lookAndFeel) {
+				_lookAndFeel = lookAndFeel;
+			}
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					UIManager.setLookAndFeel(_lookAndFeel);
+				} catch (ClassNotFoundException e1) {
+					JOptionPane.showMessageDialog(null,
+							"Warning: The look and feel: " + _lookAndFeel
+									+ " was not found on this machine",
+							"Warning: Theme not found!",
+							JOptionPane.WARNING_MESSAGE);
+					return;
+				} catch (InstantiationException e1) {
+				} catch (IllegalAccessException e1) {
+				} catch (UnsupportedLookAndFeelException e1) {
+				}
+				SwingUtilities.updateComponentTreeUI(window);
+			}
+		}
+		JMenu menuThemes = new JMenu("Themes");
+		menuBar.add(menuThemes);
+		menuBar.add(menuHelp);
+
+		JMenuItem metal = new JMenuItem("Metal theme");
+		menuThemes.add(metal);
+		metal.addActionListener(new lookAndFeelListener(
+				"javax.swing.plaf.metal.MetalLookAndFeel"));
+
+		JMenuItem nimbus = new JMenuItem("Nimbus theme");
+		menuThemes.add(nimbus);
+		nimbus.addActionListener(new lookAndFeelListener(
+				"javax.swing.plaf.nimbus.NimbusLookAndFeel"));
+
+		JMenuItem motif = new JMenuItem("Motif theme");
+		menuThemes.add(motif);
+		motif.addActionListener(new lookAndFeelListener(
+				"com.sun.java.swing.plaf.motif.MotifLookAndFeel"));
+
+		JMenuItem gtk = new JMenuItem("GTK theme");
+		menuThemes.add(gtk);
+		gtk.addActionListener(new lookAndFeelListener(
+				"com.sun.java.swing.plaf.gtk.GTKLookAndFeel"));
 
 	}
 
@@ -258,6 +320,18 @@ public class Main extends JFrame {
 			_output.mkdirs();
 			firstTime = true;
 		}
+
+		URL inputUrl = getClass().getResource(
+				File.separator + "manual" + File.separator
+						+ "VAMIX_User_Manual.pdf");
+		File dest = new File(System.getProperty("user.home") + File.separator
+				+ "vamix" + File.separator + "VAMIX_User_Manual.pdf");
+		try {
+			FileUtils.copyURLToFile(inputUrl, dest);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		return firstTime;
 	}
 }
