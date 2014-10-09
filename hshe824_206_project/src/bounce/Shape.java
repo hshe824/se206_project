@@ -6,6 +6,8 @@ package bounce;
  * common movement algorithm. Shape subclasses must override method paint() to
  * handle shape-specific painting.
  * 
+ * * NB: Class adapted from Ian Warren's bounce code from Softeng 251
+ * 
  * @author Ian Warren & Harry She
  * 
  */

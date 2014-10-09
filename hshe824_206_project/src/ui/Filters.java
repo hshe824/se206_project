@@ -233,8 +233,8 @@ public class Filters extends JPanel {
 							JOptionPane
 									.showMessageDialog(
 											null,
-											"Merging of audio layers to the output library was successful!",
-											"Merge Successful",
+											"Adding of filter to:" + _inputFile+ " was successful!",
+											"Filter added!",
 											JOptionPane.INFORMATION_MESSAGE);
 							_textProgressBar.setValue(0);
 						} else if ("cancelled".equals(evt.getPropertyName())) {

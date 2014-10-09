@@ -71,7 +71,6 @@ public class FilterTask extends SwingWorker<Void, Void>{
 			break;
 		case "Add colour tint":
 			_filter="\"color=0x"+_colour+"@0.3:"+(int)_videoSize.getWidth()+"x"+(int)_videoSize.getHeight()+":10 [color]; [in][color] overlay [out]\"";
-			System.out.println(_filter);
 			break;
 		}
 		if (_isPreview){
@@ -80,8 +79,6 @@ public class FilterTask extends SwingWorker<Void, Void>{
 			process(builder);
 		}else {
 		builder = new ProcessBuilder("/bin/bash", "-c",  "avconv -i "
-				+ _inputFile + " -strict experimental -vf " + _filter + " -y "+ _outputFile);
-		System.out.println("avconv -i "
 				+ _inputFile + " -strict experimental -vf " + _filter + " -y "+ _outputFile);
 		process(builder);
 		}
@@ -126,8 +123,6 @@ public class FilterTask extends SwingWorker<Void, Void>{
 		try {
 			while ((line = stdoutBuffered.readLine()) != null) {
 				last = line;
-				//Debugging
-				//System.out.println(line);
 				if (isCancelled()) {
 					process.destroy();
 					return;

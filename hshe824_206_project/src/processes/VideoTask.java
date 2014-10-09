@@ -88,7 +88,7 @@ public class VideoTask extends SwingWorker<Void, Void> {
 		_tempLocation = tempDir + File.separator + filenameNoExtension
 				+ "[Temp]" + videoExtension;
 		_editedLocation = Library.outputDir + File.separator
-				+ filenameNoExtension + "[VAMIX-TEXTEDITED].mpg";
+				+ filenameNoExtension + "[TEXTEDITED-VAMIX].mpg";
 		_previewFile = tempDir + File.separator + filenameNoExtension
 				+ "[Preview]" + videoExtension;
 	}
@@ -123,8 +123,6 @@ public class VideoTask extends SwingWorker<Void, Void> {
 			ProcessBuilder pb1 = new ProcessBuilder("/bin/bash", "-c",
 					"avconv -i " + _tempLocation + " -y " + tempDir
 							+ File.separator + "text.mpg");
-			System.out.println("avconv -i " + _tempLocation + " -y " + tempDir
-					+ File.separator + "text.mpg");
 			pb1.redirectErrorStream(true);
 			Process p1 = pb1.start();
 			p1.waitFor();
@@ -143,8 +141,6 @@ public class VideoTask extends SwingWorker<Void, Void> {
 	private void mpgCreate() throws InterruptedException {
 		ProcessBuilder pb2 = new ProcessBuilder("/bin/bash", "-c", "avconv -i "
 				+ _inputFile + " -y " + tempDir + File.separator + "input.mpg");
-		System.out.println("avconv -i " + _inputFile + " -y " + tempDir
-				+ File.separator + "input.mpg");
 		pb2.redirectErrorStream(true);
 		Process p2 = null;
 		try {

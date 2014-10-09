@@ -24,6 +24,10 @@ import javax.swing.border.BevelBorder;
  * receiving an event from the Timer, the AnimationViewer iterates through a
  * list of Shapes requesting that each Shape paints and moves itself.
  * 
+ * NB: Class adapted from Ian Warren's bounce code from Softeng 251.
+ * All credit for the base code such as AnimationViewer, Shape, Painter and Graphics
+ * Painter goes to him, but all other classes are my own work.
+ * 
  * @author Ian Warren & Harry She
  */
 @SuppressWarnings("serial")

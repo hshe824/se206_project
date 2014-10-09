@@ -6,6 +6,8 @@ import java.awt.Image;
 /**
  * Interface to represent a type that offers primitive drawing methods.
  * 
+ * NB: Class adapted from Ian Warren's bounce code from Softeng 251
+ * 
  * @author Ian Warren and Harry She
  */
 public interface Painter {

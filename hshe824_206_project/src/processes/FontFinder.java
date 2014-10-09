@@ -29,7 +29,6 @@ public class FontFinder {
 	public void setUp() {
 		File folder = new File("/usr/share/fonts/truetype/dejavu");
 		File[] listofFiles = folder.listFiles();
-		System.out.println(listofFiles.toString());
 
 		for (int i = 0; i < listofFiles.length; i++) {
 			if (listofFiles[i].isFile()) {

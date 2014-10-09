@@ -31,8 +31,6 @@ public class Download extends JFrame {
 
 	private DownloadTask dl = null;
 
-	// Input library where to store downloads
-
 	protected Download() {
 
 		JLabel _label = new JLabel("Please enter URL of mp3 to download:");

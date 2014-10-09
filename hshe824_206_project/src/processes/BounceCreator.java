@@ -52,7 +52,6 @@ public class BounceCreator extends SwingWorker<Void, Void> {
 							+ _inputFile
 							+ " -vf scale=320:-1,format=rgb8,format=rgb24 -t 10 -r 10 -y "
 							+ VideoTask.tempDir + File.separator + i + ".gif");
-			System.out.println(_startTimeRnd);
 			process = builder.start();
 			process.waitFor();
 		}

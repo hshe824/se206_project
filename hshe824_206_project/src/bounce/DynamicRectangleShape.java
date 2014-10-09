@@ -9,7 +9,7 @@ import java.awt.Color;
  * shape when it bounces off the side walls.
  * 
  * 
- * @author: @Harry She
+ * @author: Harry She
  */
 
 public class DynamicRectangleShape extends Shape {

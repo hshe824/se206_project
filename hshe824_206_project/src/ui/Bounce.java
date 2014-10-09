@@ -5,13 +5,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
@@ -21,9 +25,6 @@ import processes.BounceCreator;
 import processes.DurationFinder;
 import processes.VideoTask;
 import bounce.AnimationViewer;
-
-import javax.swing.JLabel;
-import javax.swing.JProgressBar;
 
 public class Bounce extends JPanel {
 
@@ -49,6 +50,20 @@ public class Bounce extends JPanel {
 		panel.setLayout(new MigLayout("", "[grow][][grow]", "[grow][grow]"));
 
 		_ShapesField = new JTextField("1");
+		_ShapesField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (_ShapesField.getText().length() < 2) {
+					if (!(Character.isDigit(c) || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))) {
+						e.consume();
+					}
+				} else {
+					e.consume();
+				}
+			}
+		});
+		
 		_ShapesField.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
@@ -61,14 +76,14 @@ public class Bounce extends JPanel {
 			public void focusLost(FocusEvent arg0) {
 				if (Integer.parseInt(_ShapesField.getText()) >= 0 && Integer.parseInt(_ShapesField.getText()) <= 20 || Integer.parseInt(_ShapesField.getText())==42) {
 					_numberOfShapes = Integer.parseInt(_ShapesField.getText());
-				}
+				} 
 			}
 		});
 		
 	    progressBar = new JProgressBar();
 		panel.add(progressBar, "cell 0 0 2 1,growx,height 30");
 		
-		JLabel lblEnterHowMany = new JLabel("Enter how many GIF instances to generate:");
+		JLabel lblEnterHowMany = new JLabel("Enter how many GIF instances to generate (1-20 max):");
 		panel.add(lblEnterHowMany, "flowx,cell 2 0,alignx center");
 
 		panel.add(_ShapesField, "cell 2 0,width 50,alignx center");
@@ -163,18 +178,16 @@ public class Bounce extends JPanel {
 	}
 
 	/**
-	 * Sets the current input file to bounce
+	 * Sets the current input file to bounce and finds the duration of that file
 	 * 
 	 * @param inputFile
 	 */
 	public void setInputFile(String inputFile) {
 		_currentFileString = inputFile;
-		System.out.println(_currentFileString);
 		DurationFinder dFinder = new DurationFinder(_currentFileString);
 		dFinder.execute();
 		try {
 			_duration = dFinder.get();
-			System.out.println(_duration);
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		} catch (ExecutionException e1) {

@@ -82,8 +82,6 @@ public class VideoEditor extends JPanel {
 
 	protected VideoTask videoTask;
 
-	private boolean _previewExists;
-
 	/**
 	 * Create the panel.
 	 * 
