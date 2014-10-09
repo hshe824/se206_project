@@ -47,9 +47,11 @@ public class Main extends JFrame {
 	public static JTabbedPane _tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 	public static JMenuItem importFile = new JMenuItem();
 	public static JMenuItem editAudio;
-	public static JMenuItem editVideo;
 	public static JMenuItem download;
 	public static JMenuItem play;
+	public static JMenuItem addText;
+	public static JMenuItem addFilter;
+	public static JMenuItem bounce;
 	public static Main window;
 
 	/**
@@ -130,9 +132,7 @@ public class Main extends JFrame {
 		download.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D,
 				ActionEvent.CTRL_MASK));
 		menuFile.add(download);
-
-		JSeparator separator_1 = new JSeparator();
-		menuFile.add(separator_1);
+		menuFile.add(new JSeparator());
 
 		JMenuItem quit = new JMenuItem("Quit", KeyEvent.VK_Q);
 		quit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,
@@ -151,18 +151,35 @@ public class Main extends JFrame {
 		editAudio.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E,
 				ActionEvent.CTRL_MASK));
 		edit.add(editAudio);
+		
+		edit.add(new JSeparator());
 
-		editVideo = new JMenuItem("Edit Video", KeyEvent.VK_V);
-		editVideo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V,
+		addText = new JMenuItem("Add Video text", KeyEvent.VK_T);
+		addText.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T,
 				ActionEvent.CTRL_MASK));
-		editVideo.setEnabled(false);
-		edit.add(editVideo);
+		addText.setEnabled(false);
+		edit.add(addText);
+		
+		addFilter = new JMenuItem("Add Video filters", KeyEvent.VK_F);
+		addFilter.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F,
+				ActionEvent.CTRL_MASK));
+		addFilter.setEnabled(false);
+		edit.add(addFilter);
+		
 
 		play = new JMenuItem("Play", KeyEvent.VK_P);
 		play.setEnabled(false);
 		play.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P,
 				ActionEvent.CTRL_MASK));
 		menuPlay.add(play);
+		menuPlay.add(new JSeparator());
+
+		
+		bounce = new JMenuItem("Bounce!", KeyEvent.VK_B);
+		bounce.setEnabled(false);
+		bounce.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B,
+				ActionEvent.CTRL_MASK));
+		menuPlay.add(bounce);
 
 		JMenu menuHelp = new JMenu("Help");
 

@@ -203,8 +203,10 @@ public class Library extends JPanel {
 					if (file.toString().equals(inputDir)) {
 						_detailsInputArea.setText(defaultMessageString);
 						Main.play.setEnabled(false);
-						Main.editVideo.setEnabled(false);
+						Main.addText.setEnabled(false);
 						Main.editAudio.setEnabled(false);
+						Main.addFilter.setEnabled(false);
+						Main.bounce.setEnabled(false);
 						play.setEnabled(false);
 						editAudio.setEnabled(false);
 						editVideo.setEnabled(false);
@@ -229,15 +231,19 @@ public class Library extends JPanel {
 						editVideo.setEnabled(true);
 						btnBounce.setEnabled(true);
 						filters.setEnabled(true);
+						Main.addFilter.setEnabled(true);
+						Main.bounce.setEnabled(true);
 						Main.play.setEnabled(true);
-						Main.editVideo.setEnabled(true);
+						Main.addText.setEnabled(true);
 					} else {
 						btnBounce.setEnabled(false);
 						play.setEnabled(false);
 						editVideo.setEnabled(false);
 						filters.setEnabled(false);
+						Main.addFilter.setEnabled(false);
+						Main.bounce.setEnabled(false);
 						Main.play.setEnabled(false);
-						Main.editVideo.setEnabled(false);
+						Main.addText.setEnabled(false);
 					}
 					if (hasAudio) {
 						editAudio.setEnabled(true);
@@ -269,13 +275,15 @@ public class Library extends JPanel {
 					if (file.toString().equals(outputDir)) {
 						_detailsOutputArea.setText(defaultOutputLibString);
 						Main.play.setEnabled(false);
-						btnBounce.setEnabled(false);
-						filters.setEnabled(false);
-						Main.editVideo.setEnabled(false);
+						Main.addText.setEnabled(false);
 						Main.editAudio.setEnabled(false);
+						Main.addFilter.setEnabled(false);
+						Main.bounce.setEnabled(false);
 						play.setEnabled(false);
 						editAudio.setEnabled(false);
 						editVideo.setEnabled(false);
+						btnBounce.setEnabled(false);
+						filters.setEnabled(false);
 					} else {
 						_detailsOutputArea.setText(getDetails(
 								_currentFileOutputString).toString());
@@ -291,28 +299,33 @@ public class Library extends JPanel {
 					boolean hasAudio = fc.checkAVFile("Audio");
 					boolean hasVideo = fc.checkAVFile("Video");
 					if (hasVideo) {
-						filters.setEnabled(true);
-						btnBounce.setEnabled(true);
 						play.setEnabled(true);
 						editVideo.setEnabled(true);
+						btnBounce.setEnabled(true);
+						filters.setEnabled(true);
+						Main.addFilter.setEnabled(true);
+						Main.bounce.setEnabled(true);
 						Main.play.setEnabled(true);
-						Main.editVideo.setEnabled(true);
+						Main.addText.setEnabled(true);
 					} else {
-						filters.setEnabled(false);
 						btnBounce.setEnabled(false);
 						play.setEnabled(false);
 						editVideo.setEnabled(false);
+						filters.setEnabled(false);
+						Main.addFilter.setEnabled(false);
+						Main.bounce.setEnabled(false);
 						Main.play.setEnabled(false);
-						Main.editVideo.setEnabled(false);
+						Main.addText.setEnabled(false);
 					}
 					if (hasAudio) {
 						editAudio.setEnabled(true);
-						play.setEnabled(true);
 						Main.play.setEnabled(true);
 						Main.editAudio.setEnabled(true);
+						play.setEnabled(true);
 					} else {
 						editAudio.setEnabled(false);
 						Main.editAudio.setEnabled(false);
+
 					}
 				}
 			}
@@ -601,7 +614,7 @@ public class Library extends JPanel {
 		buttonPanel.add(importButton,
 				"cell 0 1,alignx center,height 50,aligny center,grow");
 		importButton.addActionListener(new importListener());
-		Main.editVideo.addActionListener(new editVideoListener());
+		Main.addText.addActionListener(new editVideoListener());
 		
 		//BOUNCE BUTTON
 		btnBounce.setFont(titleFont);
@@ -609,8 +622,9 @@ public class Library extends JPanel {
 		btnBounce.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnBounce.setIcon(createImageIcon("bounce.png"));
 		buttonPanel.add(btnBounce, "cell 2 0 1 2,grow");
-		btnBounce.addActionListener(new ActionListener() {
-			
+		
+		class BounceListener implements ActionListener {
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (Main._tabbedPane.indexOfTab("Bounce!") == -1) {
@@ -625,8 +639,11 @@ public class Library extends JPanel {
 							.indexOfTab("Bounce!"));				
 			}
 			}
-		});
+			}
+			
 		
+		btnBounce.addActionListener(new BounceListener());
+		Main.bounce.addActionListener(new BounceListener());
 		
 
 		// FILTERS BUTTON
@@ -656,6 +673,7 @@ public class Library extends JPanel {
 		}
 
 		filters.addActionListener(new editFilterListener());
+		Main.addFilter.addActionListener(new editFilterListener());
 
 	}
 
