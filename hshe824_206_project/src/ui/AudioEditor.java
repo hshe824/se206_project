@@ -155,6 +155,7 @@ public class AudioEditor extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser _chooseInputFile = new JFileChooser(
 						Library.inputDir);
+				_chooseInputFile.setAcceptAllFileFilterUsed(false);
 				_chooseInputFile.setFileFilter(new FileNameExtensionFilter(
 						"Video files", Library._validVideoOnly));
 				int returnValue = _chooseInputFile.showOpenDialog(null);
@@ -310,6 +311,7 @@ public class AudioEditor extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser _chooseInputFile = new JFileChooser(
 						Library.inputDir);
+				_chooseInputFile.setAcceptAllFileFilterUsed(false);
 				_chooseInputFile.setFileFilter(new FileNameExtensionFilter(
 						"Audio and Video", Library._validExtensions));
 				int returnValue = _chooseInputFile.showOpenDialog(null);
@@ -417,6 +419,7 @@ public class AudioEditor extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser _chooseInputFile = new JFileChooser(
 						Library.inputDir);
+				_chooseInputFile.setAcceptAllFileFilterUsed(false);
 				_chooseInputFile.setFileFilter(new FileNameExtensionFilter(
 						"Audio and Video", Library._validExtensions));
 				int returnValue = _chooseInputFile.showOpenDialog(null);
@@ -551,6 +554,7 @@ public class AudioEditor extends JPanel {
 				+ filenameNoExtension + "[REPLACED_AUDIO-VAMIX]" + Extension;
 		_details.setText(Library.getDetails(_inputFile).toString());
 		_miniPlayback.startPlayer(_inputFile);
+		//_miniPlayback.stopPlayer();
 
 	}
 

@@ -499,6 +499,7 @@ public class Library extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser chooseImport = new JFileChooser();
+				chooseImport.setAcceptAllFileFilterUsed(false);
 				chooseImport.setFileFilter(new FileNameExtensionFilter(
 						"Audio and Video files only", _validExtensions));
 				int returnValue = chooseImport.showOpenDialog(null);

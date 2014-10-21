@@ -192,6 +192,8 @@ public class Playback extends JPanel {
 		
 		_mediaPlayer.mute(false);
 		_volume.setValue(50);
+		_mediaPlayer.setVolume(50);
+
 		_totalTime.setText(time(length));
 		_seekbar.setMaximum((int) length);
 
@@ -286,6 +288,8 @@ public class Playback extends JPanel {
 				} else if (_mediaPlayer.getRate() == 4.0) {
 					_mediaPlayer.setRate((float) 8.0);
 				}
+				changeButton(_playPauseButton, TEXT_PLAY);
+				_playPauseButton.validate();
 			}
 		});
 
@@ -319,9 +323,17 @@ public class Playback extends JPanel {
 				_rewind.setEnabled(true);
 				if (((RoundButton) action.getSource()).getDescription().equals(
 						TEXT_PLAY)) {
+					if (_mediaPlayer.getRate() > 1.0) {
+						_mediaPlayer.setRate((float) 1.0);
+						changeButton(_playPauseButton, TEXT_PAUSE);
+						_playPauseButton.validate();
+						_mediaPlayer.skip(-1);
+						return;
+					} else {
 					_mediaPlayer.play();
 					changeButton(_playPauseButton, TEXT_PAUSE);
 					_playPauseButton.validate();
+					}
 				} else {
 					_mediaPlayer.pause();
 					changeButton(_playPauseButton, TEXT_PLAY);

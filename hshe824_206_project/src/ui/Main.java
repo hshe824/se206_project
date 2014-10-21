@@ -302,8 +302,8 @@ public class Main extends JFrame {
 				x.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
+						//Stop players
 						if (pane instanceof Playback) {
-							// Put stop media method here
 							((Playback) pane).stopPlayer();
 						} else if (pane instanceof AudioEditor) {
 							((AudioEditor) pane)._miniPlayback.stopPlayer();
