@@ -693,6 +693,8 @@ public class Library extends JPanel {
 				if ("failure".equals(evt.getPropertyName())) {
 					JOptionPane.showMessageDialog(null, evt.getNewValue(),
 							"Error!", JOptionPane.WARNING_MESSAGE);
+					refreshTree();
+					setCursor(Cursor.getDefaultCursor());
 				} else if ("success".equals(evt.getPropertyName())) {
 					JOptionPane.showMessageDialog(null, "Import of " + input
 							+ " to the input library was successful!",
@@ -700,7 +702,15 @@ public class Library extends JPanel {
 							JOptionPane.INFORMATION_MESSAGE);
 					refreshTree();
 					setCursor(Cursor.getDefaultCursor());
-				}
+				} else if ("invalid".equals(evt.getPropertyName())) {
+					JOptionPane.showMessageDialog(null, "The file " + input
+							+ " does not have any video or audio streams and hence will not be copied!",
+							"Error: Invalid file!",
+							JOptionPane.WARNING_MESSAGE);
+					refreshTree();
+					setCursor(Cursor.getDefaultCursor());
+					return;
+			}
 			}
 		});
 		it.execute();

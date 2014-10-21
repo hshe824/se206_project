@@ -17,6 +17,7 @@ public class ImportTask extends SwingWorker<Void, Void> {
 
 	private Path _input;
 	private Path _importPath;
+	private boolean errorState=false;
 
 	public ImportTask(Path input, Path importPath) {
 		_input = input;
@@ -25,6 +26,15 @@ public class ImportTask extends SwingWorker<Void, Void> {
 
 	@Override
 	protected Void doInBackground() throws Exception {
+		FileChecker fc = new FileChecker(_input.toString());
+		boolean hasAudio = fc.checkAVFile("Audio");
+		boolean hasVideo = fc.checkAVFile("Video");
+		if (!hasVideo && !hasAudio) {
+			firePropertyChange("invalid", null,null);
+			errorState=true;
+			return null;
+		}
+		
 		try {
 			Files.copy(_input, _importPath);
 		} catch (IOException e) {
@@ -36,7 +46,9 @@ public class ImportTask extends SwingWorker<Void, Void> {
 	@Override
 	protected void done() {
 		Library.getInstance().refreshTree();
+		if (!errorState){
 		firePropertyChange("success", null, "success");
+		}
 	}
 
 }

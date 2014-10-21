@@ -76,7 +76,7 @@ public class VideoEditor extends JPanel {
 	private JSpinner _secSpinner;
 	private File _cfgFile;
 	private ButtonGroup _group;
-	final JTextArea _textArea = new JTextArea();
+	final JTextArea _textArea = new JTextArea("Please enter text here");
 
 	private FontFinder _fonts = new FontFinder();
 
@@ -583,7 +583,7 @@ public class VideoEditor extends JPanel {
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
-			writeSetting("DejaVu Sans", 12, "ffffffff", 0, 0);
+			writeSetting("DejaVu Sans", 25, "ffffffff", 0, 0);
 		}
 
 		// Loads font, size and color from file
@@ -591,7 +591,7 @@ public class VideoEditor extends JPanel {
 		// Checks if there is 5 arguments. If it doesn't it would reset the .cfg
 		// file
 		if (settings.length < 5) {
-			writeSetting("DejaVu Sans", 12, "ffffffff", 0, 0);
+			writeSetting("DejaVu Sans", 25, "ffffffff", 0, 0);
 			settings = readSetting(true);
 
 		}
