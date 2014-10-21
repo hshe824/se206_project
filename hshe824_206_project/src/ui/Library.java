@@ -601,7 +601,7 @@ public class Library extends JPanel {
 		editVideo.setEnabled(false);
 		editVideo.setFont(titleFont);
 		buttonPanel.add(editVideo,
-				"cell 4 0 1 2,alignx center,height 50,aligny center,grow");
+				"cell 4 0,alignx center,height 50,aligny center,grow");
 		editVideo.addActionListener(new editVideoListener());
 
 		buttonPanel.add(filters, "cell 5 0 1 2,grow");
@@ -652,6 +652,8 @@ public class Library extends JPanel {
 		filters.setVerticalTextPosition(SwingConstants.BOTTOM);
 		filters.setHorizontalTextPosition(SwingConstants.CENTER);
 		filters.setIcon(createImageIcon("filters.png"));
+		
+	
 
 		class editFilterListener implements ActionListener {
 			@Override
@@ -675,8 +677,38 @@ public class Library extends JPanel {
 
 		filters.addActionListener(new editFilterListener());
 		Main.addFilter.addActionListener(new editFilterListener());
-
+		
+		JButton btnAddSubtitles = new JButton("Add Subtitles");
+		buttonPanel.add(btnAddSubtitles, "cell 4 1,grow");
+		
+		
+		class subtitleListener implements ActionListener {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (_currentFileString != null
+						&& !_currentFileString.equals("")) {
+					if (Main._tabbedPane.indexOfTab("Subtitles") == -1) {
+						Main.createNewTab("Subtitles", SubtitleEditor.getInstance(),
+								Main._tabbedPane.getTabCount());
+						SubtitleEditor.getInstance().setInputFile(
+								_currentFileString);
+						Main._tabbedPane.setSelectedIndex(Main._tabbedPane
+								.getTabCount() - 1);
+					} else {
+						Main._tabbedPane.setSelectedIndex(Main._tabbedPane
+								.indexOfTab("Subtitles"));
+					}
+				}
+			}
+		}
+		
+		btnAddSubtitles.addActionListener(new subtitleListener());
 	}
+	
+
+//	  public void paintComponent(Graphics g) {
+//	    g.drawImage(createImageIcon("aback.jpg").getImage(), 0, 0, null);
+//	  }
 
 	/**
 	 * This helper method creates a subtask that is run within a swingworker to

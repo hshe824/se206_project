@@ -46,17 +46,17 @@ public class AnimationViewer extends JPanel implements ActionListener {
 	 */
 	public AnimationViewer() {
 		_shapes = new ArrayList<Shape>();
-		int minXY = 0;
-		int maxXY = 1000;
-		int minDXY = -2;
-		int maxDXY = 2;
+		int maxX = this.getWidth();
+		int maxY = this.getHeight();
+		int minDXY = -5;
+		int maxDXY = 5;
 
 		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED,
 				Color.BLACK, Color.DARK_GRAY));
 		// Populate the list of Shapes.
 
-		int randomX = minXY + (int) (Math.random() * ((maxXY - minXY) + 1));
-		int randomY = minXY + (int) (Math.random() * ((maxXY - minXY) + 1));
+		int randomX =  5+(int) (Math.random() * (maxX + 1));
+		int randomY =  5+(int) (Math.random() * (maxY + 1));
 		int randomDX = minDXY + (int) (Math.random() * ((maxDXY - minDXY) + 1));
 		int randomDY = minDXY + (int) (Math.random() * ((maxDXY - minDXY) + 1));
 		_shapes.add(new BounceNorm(randomX, randomY, randomDX,
@@ -69,10 +69,10 @@ public class AnimationViewer extends JPanel implements ActionListener {
 		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED,
 				Color.BLACK, Color.DARK_GRAY));
 		_shapes = new ArrayList<Shape>();
-		int minXY = 0;
-		int maxXY = 1000;
-		int minDXY = 1;
-		int maxDXY = 3;
+		int maxX = this.getWidth();
+		int maxY = this.getHeight();
+		int minDXY = -5;
+		int maxDXY = 5;
 
 		// Populate the list of Shapes.
 		if (numShapes == 42) {
@@ -82,16 +82,14 @@ public class AnimationViewer extends JPanel implements ActionListener {
 			_shapes.add(new OvalShape(10, 10, 5, 7, 50, 70));
 			_shapes.add(new DynamicRectangleShape(0, 500, 10, 25, 40, 60,
 					Color.blue));
-			_shapes.add(new FractalShape(400, 400, -10, 0, 60, 70, 4));
+			_shapes.add(new FractalShape(500, 500, -10, 0, 60, 70, 4));
 			_shapes.add(new AggregateShape(250, 100, -10, 1, 120, 70, 5));
 
 			
 		} else {
 			for (int i = 1; i <= numShapes; i++) {
-				int randomX = minXY
-						+ (int) (Math.random() * ((maxXY - minXY) + 1));
-				int randomY = minXY
-						+ (int) (Math.random() * ((maxXY - minXY) + 1));
+				int randomX = 5+(int) (Math.random() * (maxX  + 1));
+				int randomY = 5+(int) (Math.random() * (maxY  + 1));
 				int randomDX = minDXY
 						+ (int) (Math.random() * ((maxDXY - minDXY) + 1));
 				int randomDY = minDXY

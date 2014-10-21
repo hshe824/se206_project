@@ -311,6 +311,8 @@ public class Main extends JFrame {
 							((VideoEditor) pane).stopAllPlayers();
 						} else if (pane instanceof Filters) {
 							((Filters) pane).stopAllPlayers();
+						} else if (pane instanceof SubtitleEditor) {
+							((SubtitleEditor) pane).stopAllPlayers();
 						}
 						_tabbedPane.remove(pane);
 					}

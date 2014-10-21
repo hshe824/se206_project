@@ -425,8 +425,9 @@ public class VideoEditor extends JPanel {
 
 			@Override
 			public void insertUpdate(DocumentEvent e) {
-				writeText(_textArea.getText());
-
+				System.out.println(_textArea.getText());
+				writeText(_textArea.getText().replaceAll("\r", "test"));
+				System.out.println(_textArea.getText());
 			}
 
 			@Override
