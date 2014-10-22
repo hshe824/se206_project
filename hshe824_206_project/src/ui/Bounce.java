@@ -14,6 +14,7 @@ import java.util.concurrent.ExecutionException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTextField;
@@ -62,7 +63,7 @@ public class Bounce extends JPanel {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				char c = e.getKeyChar();
-				if (_ShapesField.getText().length() < 2) {
+				if (_ShapesField.getText().length() < 3) {
 					if (!(Character.isDigit(c) || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))) {
 						e.consume();
 					}
@@ -75,14 +76,14 @@ public class Bounce extends JPanel {
 		_ShapesField.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
-				if (Integer.parseInt(_ShapesField.getText()) >= 0 && Integer.parseInt(_ShapesField.getText()) <= 20 || Integer.parseInt(_ShapesField.getText())==42) {
+				if (Integer.parseInt(_ShapesField.getText()) >= 0) {
 					_numberOfShapes = Integer.parseInt(_ShapesField.getText());
 				}
 			}
 
 			@Override
 			public void focusLost(FocusEvent arg0) {
-				if (Integer.parseInt(_ShapesField.getText()) >= 0 && Integer.parseInt(_ShapesField.getText()) <= 20 || Integer.parseInt(_ShapesField.getText())==42) {
+				if (Integer.parseInt(_ShapesField.getText()) >= 0) {
 					_numberOfShapes = Integer.parseInt(_ShapesField.getText());
 				} 
 			}
@@ -124,10 +125,7 @@ public class Bounce extends JPanel {
 							add(animationViewer, "cell 0 0,growx 90,growy");
 							validate();
 							repaint();
-
-						}
-
-					}
+						} }
 				});
 
 			}
@@ -176,10 +174,24 @@ public class Bounce extends JPanel {
 							add(animationViewer, "cell 0 0,growx 90,growy");
 							validate();
 							repaint();
+						}else if ("failure".equals(evt.getPropertyName())) {
+								progressBar.setIndeterminate(false);
+								setCursor(Cursor.getDefaultCursor());
+								JOptionPane
+								.showMessageDialog(
+										null,
+										"Please enter a valid number between 1-20!",
+										"Error!",
+										JOptionPane.WARNING_MESSAGE);
+								if (animationViewer != null) {
+									remove(animationViewer);
+									validate();
+									repaint();
+								}
+						}
 
 						}
-					}
-
+					
 				});
 			}
 		});

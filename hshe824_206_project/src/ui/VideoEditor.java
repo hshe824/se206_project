@@ -35,17 +35,19 @@ import javax.swing.JTextArea;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
+import javax.swing.border.BevelBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
 
 import net.miginfocom.swing.MigLayout;
 import processes.FontFinder;
 import processes.VideoTask;
-import javax.swing.border.BevelBorder;
 
 /**
  * Class that deals with the text editing of videos. Ie. The creation of title
@@ -122,6 +124,7 @@ public class VideoEditor extends JPanel {
 		_textArea.setLineWrap(true);
 		_textArea.setWrapStyleWord(true);
 		_textArea.setBackground(Color.black);
+		
 		scrollPane.setViewportView(_textArea);
 
 		JLabel fontSizeLabel = new JLabel("Font Size");
@@ -213,6 +216,23 @@ public class VideoEditor extends JPanel {
 	 * This method sets up the listeners for the components
 	 */
 	public void setUpListener() {
+		
+		class Filter extends DocumentFilter {  
+			   
+			public void insertString(DocumentFilter.FilterBypass fb, int offset,  
+			String text, AttributeSet attr) throws BadLocationException {  
+			fb.insertString(offset, text.replaceAll("\n", ""), attr);  
+			}  
+			   
+			// no need to override remove(): inherited version allows all removals  
+			   
+			public void replace(DocumentFilter.FilterBypass fb, int offset, int length,  
+			String text, AttributeSet attr) throws BadLocationException {  
+			fb.replace(offset, length, text.replaceAll("\n", ""), attr);  
+			}  
+		}
+		  AbstractDocument d = (AbstractDocument) _textArea.getDocument();
+		    d.setDocumentFilter(new Filter());
 
 		_saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -415,26 +435,9 @@ public class VideoEditor extends JPanel {
 				}
 			}
 		});
-
-		_textArea.getDocument().addDocumentListener(new DocumentListener() {
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				writeText(_textArea.getText());
-
-			}
-
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				System.out.println(_textArea.getText());
-				writeText(_textArea.getText().replaceAll("\r", "test"));
-				System.out.println(_textArea.getText());
-			}
-
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-			}
-		});
 	}
+
+	
 
 	/**
 	 * This method is to be called when there is change to the settings like

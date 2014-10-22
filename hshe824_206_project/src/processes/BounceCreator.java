@@ -31,9 +31,9 @@ public class BounceCreator extends SwingWorker<Void, Void> {
 
 
 	/**
-	 * Calls avconv command to perform a specific audio task.
-	 * 
-	 * Can strip audio, replace or overlay audio on another selected input file.
+	 * Calls command to perform a specific bounce task.
+	 *
+	 * This is where GIFs are generated to be displayed in the animation viewer
 	 * 
 	 * Relays success or errors back to EDT to deal with.
 	 * 
@@ -44,6 +44,10 @@ public class BounceCreator extends SwingWorker<Void, Void> {
 		ProcessBuilder builder = null;
 		Process process = null;
 		if (_numShapes == 42){
+			return null;
+		} else if (_numShapes >20 ){
+			firePropertyChange("failure", null,"failure");
+			errorState=true;
 			return null;
 		} else {
 		for (int i = 1; i <= _numShapes; i++) {
@@ -71,7 +75,7 @@ public class BounceCreator extends SwingWorker<Void, Void> {
 			if (errorState == false) {
 				this.get();
 				firePropertyChange("success", null, "success");
-			}
+			} 
 		} catch (CancellationException e) {
 			return;
 		} catch (InterruptedException e) {
