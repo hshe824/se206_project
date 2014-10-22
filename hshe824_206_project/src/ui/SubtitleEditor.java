@@ -49,13 +49,13 @@ public class SubtitleEditor extends JPanel {
 	 * Create the panel.
 	 */
 	public SubtitleEditor() {
-		setLayout(new MigLayout("", "[grow][grow]", "[244px][339px]"));
+		setLayout(new MigLayout("", "[grow][grow]", "[450px][150px]"));
 		
 		 _model= new SubtitleModel();
 
 		_playback = new Playback();
 
-		add(_playback, "cell 0 0,grow");
+		add(_playback, "cell 0 0 2 1,grow");
 
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED,
@@ -63,8 +63,7 @@ public class SubtitleEditor extends JPanel {
 				TitledBorder.LEADING, TitledBorder.TOP, null,
 				new Color(0, 0, 0)));
 		add(panel, "cell 0 1 2 1,grow");
-		panel.setLayout(new MigLayout("", "[grow][50px,grow]",
-				"[grow][grow][grow]"));
+		panel.setLayout(new MigLayout("", "[grow][50px,grow]", "[grow][grow][grow][grow][grow]"));
 
 		JButton browse = new JButton("Browse Subtitle file (.srt)");
 		browse.addActionListener(new ActionListener() {
@@ -92,52 +91,50 @@ public class SubtitleEditor extends JPanel {
 		 */
 		
 		panel.add(browse, "flowx,cell 0 0,alignx center");
-
-		JButton setStartTime = new JButton("Set start time");
-		setStartTime.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-					long currentTime=_playback.getMediaPlayer().getTime();
-					String timeFormattedString= time(currentTime);
-					System.out.println(timeFormattedString);
-					int selectedRow = _table.getSelectedRow();
-					try {
-					_model.setValueAt(timeFormattedString, selectedRow, 0);
-					} catch (NullPointerException ne){
-						
-					}
-					_model.fireTableDataChanged();
-			}
-		});
-		
-		panel.add(setStartTime, "flowx,cell 1 0,alignx center");
 		_table = new JTable(_model);
 		_table.getColumnModel().getColumn(0).setPreferredWidth(50);
 		_table.getColumnModel().getColumn(1).setPreferredWidth(50);
 		_table.getColumnModel().getColumn(2).setPreferredWidth(1000);
+		
+		JLabel lblNewLabel = new JLabel("Please select subtitle and press below to set times from video:");
+		panel.add(lblNewLabel, "cell 1 0,alignx center");
 
 		JScrollPane jScrollPane = new JScrollPane(_table);
-		panel.add(jScrollPane, "cell 0 1 1 2,grow");
+		panel.add(jScrollPane, "cell 0 1 1 4,grow");
+				
+						JButton setStartTime = new JButton("Set start time");
+						setStartTime.addActionListener(new ActionListener() {
+							
+							@Override
+							public void actionPerformed(ActionEvent e) {
+									long currentTime=_playback.getMediaPlayer().getTime();
+									String timeFormattedString= time(currentTime);
+									System.out.println(timeFormattedString);
+									int selectedRow = _table.getSelectedRow();
+									try {
+									_model.setValueAt(timeFormattedString, selectedRow, 0);
+									} catch (NullPointerException ne){
+										
+									}
+									_model.fireTableDataChanged();
+							}
+						});
+						
+						panel.add(setStartTime, "flowx,cell 1 1 1 2,alignx center,growy");
 		
-		
+				JButton addSub = new JButton("Add subtitle row");
+				panel.add(addSub, "cell 1 3,alignx center");
+				addSub.addActionListener(new ActionListener() {
 
-		JButton btnSaveSubtitleFile = new JButton("Save subtitle file");
-		panel.add(btnSaveSubtitleFile, "cell 0 0,alignx center");
-
-		JButton addSub = new JButton("Add subtitle row");
-		panel.add(addSub, "cell 1 1,alignx center");
-		addSub.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				_model.addRow();
-				_model.fireTableDataChanged();
-			}
-		});
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						_model.addRow();
+						_model.fireTableDataChanged();
+					}
+				});
 
 		JButton removeSub = new JButton("Remove subtitle row");
-		panel.add(removeSub, "cell 1 2,alignx center");
+		panel.add(removeSub, "cell 1 4,alignx center");
 		removeSub.addActionListener(new ActionListener() {
 
 			@Override
@@ -149,51 +146,56 @@ public class SubtitleEditor extends JPanel {
 				}
 			}
 		});
-
-		JButton setEndTime = new JButton("Set end time");
 		
-		setEndTime.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-					long currentTime=_playback.getMediaPlayer().getTime();
-					String timeFormattedString= time(currentTime);
-					System.out.println(timeFormattedString);
-					int selectedRow = _table.getSelectedRow();
-					try {
-						_model.setValueAt(timeFormattedString, selectedRow, 1);
-						} catch (NullPointerException ne) {
-							
-						}
-					_model.fireTableDataChanged();
-			}
-		});
-		panel.add(setEndTime, "cell 1 0,alignx center");
-
-		btnSaveSubtitleFile.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (_srtFile.exists()) {
-					_srtFile.delete();
-				}
-				try (PrintWriter out = new PrintWriter(new BufferedWriter(
-						new FileWriter(_srtFile, true)))) {
-					List<Subtitle> subs = _model.getSubtitleList();
-					for (int i = 0; i < subs.size(); i++) {
-						Subtitle s = subs.get(i);
-						out.println((i + 1) + "\n" + s.getStartTime() + ",000"
-								+ " --> " + s.getEndTime() + ",000" + "\n"
-								+ s.getSubtitle() + "\n");
+				JButton setEndTime = new JButton("Set end time");
+				
+				setEndTime.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+							long currentTime=_playback.getMediaPlayer().getTime();
+							String timeFormattedString= time(currentTime);
+							System.out.println(timeFormattedString);
+							int selectedRow = _table.getSelectedRow();
+							try {
+								_model.setValueAt(timeFormattedString, selectedRow, 1);
+								} catch (NullPointerException ne) {
+									
+								}
+							_model.fireTableDataChanged();
 					}
-					JOptionPane.showMessageDialog(null, "Saving of .srt file: "
-							+ _srtFile + " to the Input Library was successful!",
-							"Save Successful", JOptionPane.INFORMATION_MESSAGE);
-					_playback.stopPlayer();
-				} catch (IOException ie) {
-				}
-			}
-		});
+				});
+				panel.add(setEndTime, "cell 1 1,alignx center,growy");
+				
+				
+
+				JButton btnSaveSubtitleFile = new JButton("Save subtitle file");
+				panel.add(btnSaveSubtitleFile, "cell 0 0,alignx center");
+				
+						btnSaveSubtitleFile.addActionListener(new ActionListener() {
+				
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								if (_srtFile.exists()) {
+									_srtFile.delete();
+								}
+								try (PrintWriter out = new PrintWriter(new BufferedWriter(
+										new FileWriter(_srtFile, true)))) {
+									List<Subtitle> subs = _model.getSubtitleList();
+									for (int i = 0; i < subs.size(); i++) {
+										Subtitle s = subs.get(i);
+										out.println((i + 1) + "\n" + s.getStartTime() + ",000"
+												+ " --> " + s.getEndTime() + ",000" + "\n"
+												+ s.getSubtitle() + "\n");
+									}
+									JOptionPane.showMessageDialog(null, "Saving of .srt file: "
+											+ _srtFile + " to the Input Library was successful!",
+											"Save Successful", JOptionPane.INFORMATION_MESSAGE);
+									_playback.stopPlayer();
+								} catch (IOException ie) {
+								}
+							}
+						});
 
 		/*
 		 * 
