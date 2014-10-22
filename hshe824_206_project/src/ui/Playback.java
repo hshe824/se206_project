@@ -28,7 +28,9 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.plaf.SliderUI;
 
+import model.MarqueeControls;
 import model.RoundButton;
 import net.miginfocom.swing.MigLayout;
 import processes.RewindTask;
@@ -38,6 +40,8 @@ import uk.co.caprica.vlcj.player.MediaPlayerFactory;
 import uk.co.caprica.vlcj.player.embedded.DefaultFullScreenStrategy;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import uk.co.caprica.vlcj.player.embedded.x.XFullScreenStrategy;
+
+import javax.swing.JButton;
 /**
  * This class creates the layout of the playback panel
  * and the listeners for the components
@@ -91,7 +95,8 @@ public class Playback extends JPanel {
 	protected RewindTask rw;
 
 	private boolean isFullScreen = false;
-
+	private final JButton effects = new JButton("Effects");
+	
 	/**
 	 * This constructor is for the main 
 	 * playback tab
@@ -136,7 +141,9 @@ public class Playback extends JPanel {
 		if (isPlayback) {
 			add(_labelPanel, "cell 0 3,growx");
 		}
-
+		
+		effects.setIcon(createImageIcon("effects.png"));
+		
 		_playerBG.setBackground(Color.BLACK);
 		_playerBG.setVisible(true);
 		_mediaPlayerFactory = new MediaPlayerFactory();
@@ -153,6 +160,8 @@ public class Playback extends JPanel {
 		_playbackPanel.add(_stop, "cell 1 0");
 		_playbackPanel.add(_rewind, "cell 3 0");
 		_playbackPanel.add(_fastForward, "cell 4 0");
+		
+		_playbackPanel.add(effects, "cell 5 0,alignx right");
 		_playbackPanel.add(_mute, "cell 6 0");
 		_playbackPanel.add(_volume, "cell 7 0");
 
@@ -267,6 +276,18 @@ public class Playback extends JPanel {
 	 * This method adds the listeners for all the components
 	 */
 	private void addListeners(Boolean isPlayback) {
+		
+		 effects.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+			JFrame effectsFrame = new JFrame("Effects");
+			effectsFrame.setMinimumSize(new Dimension (500,300));
+			effectsFrame.getContentPane().add(new MarqueeControls(_mediaPlayer));
+			effectsFrame.setVisible(true);
+			}
+		});
+
 		_mediaPlayer.addMediaPlayerEventListener(new MediaPlayerEventAdapter() {
 			public void finished(MediaPlayer mediaPlayer) {
 				_stop.doClick();
@@ -436,7 +457,7 @@ public class Playback extends JPanel {
 						JPanel p = new JPanel();
 						p.setLayout(new BorderLayout());
 						p.add(c, BorderLayout.CENTER);
-						frame.add(p, BorderLayout.CENTER);
+						frame.getContentPane().add(p, BorderLayout.CENTER);
 						final EmbeddedMediaPlayer mediaPlayer = mediaPlayerFactory
 								.newEmbeddedMediaPlayer(new DefaultFullScreenStrategy(
 										frame));
