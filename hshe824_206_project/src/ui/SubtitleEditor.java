@@ -11,6 +11,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,9 +93,30 @@ public class SubtitleEditor extends JPanel {
 		
 		panel.add(browse, "flowx,cell 0 0,alignx center");
 
-		JButton btnPreview = new JButton("Preview");
-		panel.add(btnPreview, "flowx,cell 1 0,alignx center");
+		JButton setStartTime = new JButton("Set start time");
+		setStartTime.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+					long currentTime=_playback.getMediaPlayer().getTime();
+					String timeFormattedString= time(currentTime);
+					System.out.println(timeFormattedString);
+					int selectedRow = _table.getSelectedRow();
+					try {
+					_model.setValueAt(timeFormattedString, selectedRow, 0);
+					} catch (NullPointerException ne){
+						
+					}
+					_model.fireTableDataChanged();
+			}
+		});
+		
+		panel.add(setStartTime, "flowx,cell 1 0,alignx center");
 		_table = new JTable(_model);
+		_table.getColumnModel().getColumn(0).setPreferredWidth(50);
+		_table.getColumnModel().getColumn(1).setPreferredWidth(50);
+		_table.getColumnModel().getColumn(2).setPreferredWidth(1000);
+
 		JScrollPane jScrollPane = new JScrollPane(_table);
 		panel.add(jScrollPane, "cell 0 1 1 2,grow");
 		
@@ -128,8 +150,25 @@ public class SubtitleEditor extends JPanel {
 			}
 		});
 
-		JButton btnHardCode = new JButton("Hard code");
-		panel.add(btnHardCode, "cell 1 0,alignx center");
+		JButton setEndTime = new JButton("Set end time");
+		
+		setEndTime.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+					long currentTime=_playback.getMediaPlayer().getTime();
+					String timeFormattedString= time(currentTime);
+					System.out.println(timeFormattedString);
+					int selectedRow = _table.getSelectedRow();
+					try {
+						_model.setValueAt(timeFormattedString, selectedRow, 1);
+						} catch (NullPointerException ne) {
+							
+						}
+					_model.fireTableDataChanged();
+			}
+		});
+		panel.add(setEndTime, "cell 1 0,alignx center");
 
 		btnSaveSubtitleFile.addActionListener(new ActionListener() {
 
@@ -150,8 +189,7 @@ public class SubtitleEditor extends JPanel {
 					JOptionPane.showMessageDialog(null, "Saving of .srt file: "
 							+ _srtFile + " to the Input Library was successful!",
 							"Save Successful", JOptionPane.INFORMATION_MESSAGE);
-					_playback.stopPlayer();;
-					_playback.startPlayer(_inputFile);
+					_playback.stopPlayer();
 				} catch (IOException ie) {
 				}
 			}
@@ -242,6 +280,26 @@ public class SubtitleEditor extends JPanel {
 		_playback.stopPlayer();
 	}
 
+	/**
+	 * This method takes the length in millisecond and converts it into the
+	 * format "HOUR:MINUTER:SECOND"
+	 * 
+	 * @param millisec
+	 * @return
+	 */
+	private String time(long millisec) {
+		String time = "";
+		int duration = (int) (millisec / 1000.00);
+		int sec = (duration % 3600) % 60;
+		int min = (duration % 3600) / 60;
+		int hour = duration / 3600;
+		DecimalFormat formatter = new DecimalFormat("00");
+			time = formatter.format(hour) + ":" + formatter.format(min) + ":"
+					+ formatter.format(sec);
+		
+		return time;
+	}
+	
 	public static SubtitleEditor getInstance() {
 		if (theInstance == null) {
 			theInstance = new SubtitleEditor();

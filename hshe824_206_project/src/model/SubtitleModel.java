@@ -82,6 +82,7 @@ public class SubtitleModel extends AbstractTableModel
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex)
     {
+    	try {
         Subtitle row = subtitleList.get(rowIndex);
         if(0 == columnIndex) {
             row.setStartTime((String) aValue);
@@ -92,6 +93,8 @@ public class SubtitleModel extends AbstractTableModel
         else if(2 == columnIndex) {
             row.setSubtitle((String) aValue);
         }
+    	} catch (ArrayIndexOutOfBoundsException a) {
+    	}
     }
 
 	public void addRow() {

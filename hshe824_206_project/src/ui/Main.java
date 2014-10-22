@@ -53,6 +53,8 @@ public class Main extends JFrame {
 	public static JMenuItem addText;
 	public static JMenuItem addFilter;
 	public static JMenuItem bounce;
+	public static JMenuItem addSubtitles;
+
 	public static Main window;
 
 	/**
@@ -87,6 +89,7 @@ public class Main extends JFrame {
 			}
 		});
 	}
+
 
 	/**
 	 * Create the application.
@@ -160,6 +163,12 @@ public class Main extends JFrame {
 				ActionEvent.CTRL_MASK));
 		addText.setEnabled(false);
 		edit.add(addText);
+		
+		addSubtitles = new JMenuItem("Add Subtitles", KeyEvent.VK_S);
+		addSubtitles.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
+				ActionEvent.CTRL_MASK));
+		addSubtitles.setEnabled(false);
+		edit.add(addSubtitles);
 		
 		addFilter = new JMenuItem("Add Video filters", KeyEvent.VK_F);
 		addFilter.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F,

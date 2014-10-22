@@ -116,6 +116,20 @@ public class Library extends JPanel {
 
 	private JTabbedPane tabbedPane;
 
+	private JButton download;
+
+	private JButton play;
+
+	private JButton editAudio;
+
+	private JButton editVideo;
+
+	private JButton filters;
+
+	private JButton btnBounce;
+
+	private JButton btnAddSubtitles;
+
 	/**
 	 * Create the panel.
 	 */
@@ -176,12 +190,12 @@ public class Library extends JPanel {
 		_outputScrollPane.setPreferredSize(new Dimension(500, 500));
 
 		// Instantiate buttons and icons
-		final JButton download = new JButton("Download");
-		final JButton play = new JButton("Play");
-		final JButton editAudio = new JButton("Edit Audio");
-		final JButton editVideo = new JButton("Add Video Text");
-		final JButton filters = new JButton("Add Video Filters");
-		final JButton btnBounce = new JButton("Bounce!");
+		download = new JButton("Download");
+		play = new JButton("Play");
+		 editAudio = new JButton("Edit Audio");
+		 editVideo = new JButton("Add Title/Credits");
+		 filters = new JButton("Add Video Filters");
+		btnBounce = new JButton("Bounce!");
 
 
 		download.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -202,16 +216,8 @@ public class Library extends JPanel {
 					_currentFileString = _currentFileInputString;
 					if (file.toString().equals(inputDir)) {
 						_detailsInputArea.setText(defaultMessageString);
-						Main.play.setEnabled(false);
-						Main.addText.setEnabled(false);
-						Main.editAudio.setEnabled(false);
-						Main.addFilter.setEnabled(false);
-						Main.bounce.setEnabled(false);
-						play.setEnabled(false);
-						editAudio.setEnabled(false);
-						editVideo.setEnabled(false);
-						btnBounce.setEnabled(false);
-						filters.setEnabled(false);
+						noMedia();
+						
 					} else {
 						_detailsInputArea.setText(getDetails(
 								_currentFileInputString).toString());
@@ -226,38 +232,16 @@ public class Library extends JPanel {
 					FileChecker fc = new FileChecker(_currentFileString);
 					boolean hasAudio = fc.checkAVFile("Audio");
 					boolean hasVideo = fc.checkAVFile("Video");
-					if (hasVideo) {
-						play.setEnabled(true);
-						editVideo.setEnabled(true);
-						btnBounce.setEnabled(true);
-						filters.setEnabled(true);
-						Main.addFilter.setEnabled(true);
-						Main.bounce.setEnabled(true);
-						Main.play.setEnabled(true);
-						Main.addText.setEnabled(true);
-					} else {
-						btnBounce.setEnabled(false);
-						play.setEnabled(false);
-						editVideo.setEnabled(false);
-						filters.setEnabled(false);
-						Main.addFilter.setEnabled(false);
-						Main.bounce.setEnabled(false);
-						Main.play.setEnabled(false);
-						Main.addText.setEnabled(false);
+					if (hasAudio && hasVideo) {
+						bothAV();
+					} else if (hasAudio && !hasVideo) {
+						audioNoVideo();
+					} else if (!hasAudio && hasVideo) {
+						videoNoAudio();
+					} else{
+						noMedia();
 					}
-					if (hasAudio) {
-						editAudio.setEnabled(true);
-						Main.play.setEnabled(true);
-						Main.editAudio.setEnabled(true);
-						play.setEnabled(true);
-					} else {
-						editAudio.setEnabled(false);
-						Main.editAudio.setEnabled(false);
-
-					}
-
 				}
-
 			}
 		});
 
@@ -274,16 +258,7 @@ public class Library extends JPanel {
 					_currentFileString = _currentFileOutputString;
 					if (file.toString().equals(outputDir)) {
 						_detailsOutputArea.setText(defaultOutputLibString);
-						Main.play.setEnabled(false);
-						Main.addText.setEnabled(false);
-						Main.editAudio.setEnabled(false);
-						Main.addFilter.setEnabled(false);
-						Main.bounce.setEnabled(false);
-						play.setEnabled(false);
-						editAudio.setEnabled(false);
-						editVideo.setEnabled(false);
-						btnBounce.setEnabled(false);
-						filters.setEnabled(false);
+						noMedia();
 					} else {
 						_detailsOutputArea.setText(getDetails(
 								_currentFileOutputString).toString());
@@ -298,34 +273,14 @@ public class Library extends JPanel {
 					FileChecker fc = new FileChecker(_currentFileString);
 					boolean hasAudio = fc.checkAVFile("Audio");
 					boolean hasVideo = fc.checkAVFile("Video");
-					if (hasVideo) {
-						play.setEnabled(true);
-						editVideo.setEnabled(true);
-						btnBounce.setEnabled(true);
-						filters.setEnabled(true);
-						Main.addFilter.setEnabled(true);
-						Main.bounce.setEnabled(true);
-						Main.play.setEnabled(true);
-						Main.addText.setEnabled(true);
-					} else {
-						btnBounce.setEnabled(false);
-						play.setEnabled(false);
-						editVideo.setEnabled(false);
-						filters.setEnabled(false);
-						Main.addFilter.setEnabled(false);
-						Main.bounce.setEnabled(false);
-						Main.play.setEnabled(false);
-						Main.addText.setEnabled(false);
-					}
-					if (hasAudio) {
-						editAudio.setEnabled(true);
-						Main.play.setEnabled(true);
-						Main.editAudio.setEnabled(true);
-						play.setEnabled(true);
-					} else {
-						editAudio.setEnabled(false);
-						Main.editAudio.setEnabled(false);
-
+					if (hasAudio && hasVideo) {
+						bothAV();
+					} else if (hasAudio && !hasVideo) {
+						audioNoVideo();
+					} else if (!hasAudio && hasVideo) {
+						videoNoAudio();
+					} else{
+						noMedia();
 					}
 				}
 			}
@@ -601,10 +556,10 @@ public class Library extends JPanel {
 		editVideo.setEnabled(false);
 		editVideo.setFont(titleFont);
 		buttonPanel.add(editVideo,
-				"cell 4 0,alignx center,height 50,aligny center,grow");
+				"cell 5 0,alignx center,height 50,aligny center,grow");
 		editVideo.addActionListener(new editVideoListener());
 
-		buttonPanel.add(filters, "cell 5 0 1 2,grow");
+		buttonPanel.add(filters, "cell 4 0 1 2,grow");
 		final JButton importButton = new JButton("Import Local files");
 		importButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 		importButton.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -619,6 +574,7 @@ public class Library extends JPanel {
 		
 		//BOUNCE BUTTON
 		btnBounce.setFont(titleFont);
+		btnBounce.setEnabled(false);
 		btnBounce.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnBounce.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnBounce.setIcon(createImageIcon("bounce.png"));
@@ -649,6 +605,7 @@ public class Library extends JPanel {
 
 		// FILTERS BUTTON
 		filters.setFont(titleFont);
+		filters.setEnabled(false);
 		filters.setVerticalTextPosition(SwingConstants.BOTTOM);
 		filters.setHorizontalTextPosition(SwingConstants.CENTER);
 		filters.setIcon(createImageIcon("filters.png"));
@@ -678,8 +635,13 @@ public class Library extends JPanel {
 		filters.addActionListener(new editFilterListener());
 		Main.addFilter.addActionListener(new editFilterListener());
 		
-		JButton btnAddSubtitles = new JButton("Add Subtitles");
-		buttonPanel.add(btnAddSubtitles, "cell 4 1,grow");
+	 btnAddSubtitles = new JButton("Add Subtitles");
+		btnAddSubtitles.setFont(titleFont);
+		btnAddSubtitles.setEnabled(false);
+		btnAddSubtitles.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnAddSubtitles.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnAddSubtitles.setIcon(createImageIcon("subtitles.png"));
+		buttonPanel.add(btnAddSubtitles, "cell 5 1,grow");
 		
 		
 		class subtitleListener implements ActionListener {
@@ -703,6 +665,7 @@ public class Library extends JPanel {
 		}
 		
 		btnAddSubtitles.addActionListener(new subtitleListener());
+		Main.addSubtitles.addActionListener(new subtitleListener());
 	}
 	
 
@@ -856,5 +819,68 @@ public class Library extends JPanel {
 		}
 		return theInstance;
 	}
+	
+	private void bothAV() {
+		Main.play.setEnabled(true);
+		Main.addText.setEnabled(true);
+		Main.editAudio.setEnabled(true);
+		Main.addFilter.setEnabled(true);
+		Main.bounce.setEnabled(true);
+		Main.addSubtitles.setEnabled(true);
+		btnAddSubtitles.setEnabled(true);
+		play.setEnabled(true);
+		editAudio.setEnabled(true);
+		editVideo.setEnabled(true);
+		btnBounce.setEnabled(true);
+		filters.setEnabled(true);
+	}
+
+	private void audioNoVideo() {
+		Main.play.setEnabled(true);
+		Main.addText.setEnabled(false);
+		Main.editAudio.setEnabled(true);
+		Main.addFilter.setEnabled(false);
+		Main.bounce.setEnabled(false);
+		Main.addSubtitles.setEnabled(false);
+		btnAddSubtitles.setEnabled(false);
+		play.setEnabled(true);
+		editAudio.setEnabled(true);
+		editVideo.setEnabled(false);
+		btnBounce.setEnabled(false);
+		filters.setEnabled(false);
+	}
+	
+	private void videoNoAudio() {
+		Main.play.setEnabled(true);
+		Main.addText.setEnabled(true);
+		Main.editAudio.setEnabled(false);
+		Main.addFilter.setEnabled(true);
+		Main.bounce.setEnabled(true);
+		Main.addSubtitles.setEnabled(true);
+		btnAddSubtitles.setEnabled(true);
+		play.setEnabled(true);
+		editAudio.setEnabled(false);
+		editVideo.setEnabled(true);
+		btnBounce.setEnabled(true);
+		filters.setEnabled(true);
+	}
+	
+	
+	private void noMedia() {
+		Main.play.setEnabled(false);
+		Main.addText.setEnabled(false);
+		Main.editAudio.setEnabled(false);
+		Main.addFilter.setEnabled(false);
+		Main.bounce.setEnabled(false);
+		Main.addSubtitles.setEnabled(false);
+		btnAddSubtitles.setEnabled(false);
+		play.setEnabled(false);
+		editAudio.setEnabled(false);
+		editVideo.setEnabled(false);
+		btnBounce.setEnabled(false);
+		filters.setEnabled(false);
+	}
+	
+	
 
 }

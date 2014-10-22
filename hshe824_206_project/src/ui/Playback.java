@@ -501,5 +501,9 @@ public class Playback extends JPanel {
 		}
 		return time;
 	}
+	
+	public EmbeddedMediaPlayer getMediaPlayer() {
+		return this._mediaPlayer;
+	}
 
 }
