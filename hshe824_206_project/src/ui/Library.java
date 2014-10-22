@@ -2,6 +2,7 @@ package ui;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -357,14 +358,39 @@ public class Library extends JPanel {
 				}
 			}
 		});
+		
+		JMenuItem openInFolder = new JMenuItem("Open in folder");
+		openInFolder.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Desktop.getDesktop().open(new File(Library.inputDir));
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		
+		JMenuItem openInFolder2 = new JMenuItem("Open in folder");
+		openInFolder2.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Desktop.getDesktop().open(new File(Library.outputDir));
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
 
-		JSeparator separator = new JSeparator();
 		pop.add(del);
-		pop.add(separator);
+		pop.add(new JSeparator());
 		pop.add(ref);
+		pop.add(openInFolder);
 		pop2.add(del2);
-		pop2.add(separator);
+		pop2.add(new JSeparator());
 		pop2.add(ref2);
+		pop2.add(openInFolder2);
 
 		/*
 		 * Listeners to listen for right clicks on a selected item to bring up

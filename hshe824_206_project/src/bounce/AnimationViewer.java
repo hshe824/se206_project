@@ -46,21 +46,14 @@ public class AnimationViewer extends JPanel implements ActionListener {
 	 */
 	public AnimationViewer() {
 		_shapes = new ArrayList<Shape>();
-		int maxX = this.getWidth();
-		int maxY = this.getHeight();
-		int minDXY = -5;
-		int maxDXY = 5;
+	
 
 		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED,
 				Color.BLACK, Color.DARK_GRAY));
 		// Populate the list of Shapes.
 
-		int randomX =  5+(int) (Math.random() * (maxX + 1));
-		int randomY =  5+(int) (Math.random() * (maxY + 1));
-		int randomDX = minDXY + (int) (Math.random() * ((maxDXY - minDXY) + 1));
-		int randomDY = minDXY + (int) (Math.random() * ((maxDXY - minDXY) + 1));
-		_shapes.add(new BounceNorm(randomX, randomY, randomDX,
-				randomDY, 320, 240));
+		_shapes.add(new BounceNorm(this.getWidth()/2, this.getHeight()/2, 1,
+				1, 320, 240));
 		// Start the animation.
 		_timer.start();
 	}

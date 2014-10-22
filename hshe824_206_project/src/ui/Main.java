@@ -44,6 +44,8 @@ import org.apache.commons.io.FileUtils;
 */ 
 @SuppressWarnings("serial")
 public class Main extends JFrame {
+	
+	public static Main window;
 
 	public static JTabbedPane _tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 	public static JMenuItem importFile = new JMenuItem();
@@ -54,8 +56,9 @@ public class Main extends JFrame {
 	public static JMenuItem addFilter;
 	public static JMenuItem bounce;
 	public static JMenuItem addSubtitles;
+	public static JMenuItem outputLibrary;
+	public static JMenuItem inputLibrary;
 
-	public static Main window;
 
 	/**
 	 * Launch the application.
@@ -89,6 +92,8 @@ public class Main extends JFrame {
 			}
 		});
 	}
+
+	
 
 
 	/**
@@ -137,6 +142,39 @@ public class Main extends JFrame {
 				ActionEvent.CTRL_MASK));
 		menuFile.add(download);
 		menuFile.add(new JSeparator());
+		
+		inputLibrary = new JMenuItem("Open Input Library");
+		inputLibrary.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Desktop.getDesktop().open(new File(Library.inputDir));
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		menuFile.add(inputLibrary);
+
+
+
+	 outputLibrary = new JMenuItem("Open Output Library");
+		outputLibrary.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Desktop.getDesktop().open(new File(Library.inputDir));
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		menuFile.add(outputLibrary);
+		
+		
+		menuFile.add(new JSeparator());
+
 
 		JMenuItem quit = new JMenuItem("Quit", KeyEvent.VK_Q);
 		quit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,

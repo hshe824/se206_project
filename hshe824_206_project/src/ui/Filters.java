@@ -258,6 +258,7 @@ public class Filters extends JPanel {
 	 _previewButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				_originalPlayback.stopPlayer();
 				filterTask = new FilterTask(_inputFile, _outputLocationFiltered, _cmd,true,_colourTint);
 				filterTask.addPropertyChangeListener(new PropertyChangeListener() {
 					@Override
