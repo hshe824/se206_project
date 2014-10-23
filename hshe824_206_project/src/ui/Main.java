@@ -43,6 +43,9 @@ import model.LookAndFeelListener;
  * the look and feel of the GUI, creating and showing the GUI and also is
  * responsible for the creation of new tabs.
  * 
+ * The library pane consists of a number of features including displaying file
+ * details as well as having a right click menu for file operations.
+ * 
  * @author Harry She
  * 
  */
@@ -215,7 +218,7 @@ public class Main extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					Desktop.getDesktop().open(new File(Library.inputDir));
+					Desktop.getDesktop().open(new File(Library.outputDir));
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
@@ -364,26 +367,27 @@ public class Main extends JFrame {
 
 		return firstTime;
 	}
-	
+
 	/**
 	 * Method used to delete temporary directory.
 	 * 
-	 * Boilerplate code from http://www.coderanch.com/t/278832/java-io/java/delete-directory-VM-exits;
+	 * Boilerplate code from
+	 * http://www.coderanch.com/t/278832/java-io/java/delete-directory-VM-exits;
+	 * 
 	 * @param dir
 	 */
-    private static void deleteDirOnExit(File dir)  
-    {  
-        // call deleteOnExit for the folder first, so it will get deleted last  
-        dir.deleteOnExit();  
-        File[] files = dir.listFiles();  
-        if (files != null)  {  
-        	for (File f: files) {  
-                if (f.isDirectory()) {  
-                    deleteDirOnExit(f);  
-                } else {  
-                    f.deleteOnExit();  
-                }  
-            }  
-        }  
-    }  
+	private static void deleteDirOnExit(File dir) {
+		// call deleteOnExit for the folder first, so it will get deleted last
+		dir.deleteOnExit();
+		File[] files = dir.listFiles();
+		if (files != null) {
+			for (File f : files) {
+				if (f.isDirectory()) {
+					deleteDirOnExit(f);
+				} else {
+					f.deleteOnExit();
+				}
+			}
+		}
+	}
 }
