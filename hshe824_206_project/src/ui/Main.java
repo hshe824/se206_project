@@ -9,6 +9,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -28,6 +29,7 @@ import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.io.FileUtils;
 
+import processes.video.VideoTask;
 import ui.editors.AudioEditor;
 import ui.editors.Playback;
 import ui.editors.SubtitleEditor;
@@ -144,8 +146,13 @@ public class Main extends JFrame {
 		// Sets up the ability to dynamically change look and feel
 		setupDynamicLookAndFeel();
 
+		// Deletes temporary files on exit.
+		deleteDirOnExit(new File(VideoTask.tempDir));
 	}
 
+	/*
+	 * Sets up listeners for changing the look and feel dynamically.
+	 */
 	private void setupDynamicLookAndFeel() {
 		JMenu menuThemes = new JMenu("Themes");
 		menuBar.add(menuThemes);
@@ -357,5 +364,32 @@ public class Main extends JFrame {
 
 		return firstTime;
 	}
+	
+	/**
+	 * Method used to delete temporary directory.
+	 * 
+	 * Boilerplate code from http://www.coderanch.com/t/278832/java-io/java/delete-directory-VM-exits;
+	 * @param dir
+	 */
+    private static void deleteDirOnExit(File dir)  
+    {  
+        // call deleteOnExit for the folder first, so it will get deleted last  
+        dir.deleteOnExit();  
+        File[] files = dir.listFiles();  
+        if (files != null)  
+        {  
+            for (File f: files)  
+            {  
+                if (f.isDirectory())  
+                {  
+                    deleteDirOnExit(f);  
+                }  
+                else  
+                {  
+                    f.deleteOnExit();  
+                }  
+            }  
+        }  
+    }  
 
 }
