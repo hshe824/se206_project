@@ -37,6 +37,7 @@ public abstract class Pane extends JPanel {
 	protected Font mainFont = new Font(_font, Font.BOLD, _bodyFontSize);
 	protected Font sideFont = new Font(_font, Font.PLAIN, _bodyFontSize);
 	protected Font tabFont = new Font(_font, Font.BOLD, _bodyFontSize);
+	protected Font normFont=new Font(_font, Font.BOLD, 12);
 
 	public abstract void setInputFile(String inputFile);
 }

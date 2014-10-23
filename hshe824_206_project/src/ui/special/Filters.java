@@ -85,7 +85,8 @@ public class Filters extends Pane {
 		textPanel.setLayout(new MigLayout("", "[200px,grow][200px,grow][200px,grow][200px,grow]",
 				"[50px,grow][50px,grow][50px,grow][50px,grow]"));
 
-		JLabel typeLabel = new JLabel("Type:");
+		JLabel typeLabel = new JLabel("Please select Filter type:");
+		typeLabel.setFont(normFont);
 		textPanel.add(typeLabel, "cell 0 0 2 1,alignx center");
 
 		_previewButton = new JButton("Preview");
@@ -112,32 +113,36 @@ public class Filters extends Pane {
 
 		JRadioButton blur = new JRadioButton("Blur");
 		blur.setSelected(true);
+		blur.setFont(normFont);
 		blur.addActionListener(new FilterListener());
 		textPanel.add(blur, "cell 0 1,alignx center");
 		_group.add(blur);
 
 		JRadioButton horFlip = new JRadioButton("Mirror Video");
+		horFlip.setFont(normFont);
 		horFlip.addActionListener(new FilterListener());
 		textPanel.add(horFlip, "flowx,cell 1 1,alignx center");
 		_group.add(horFlip);
 
 		JRadioButton negate = new JRadioButton("Negative");
+		negate.setFont(normFont);
 		negate.addActionListener(new FilterListener());
 		textPanel.add(negate, "cell 0 2,alignx center");
 		_group.add(negate);
 
 		JRadioButton split = new JRadioButton("Fade into start");
+		split.setFont(normFont);
 		split.addActionListener(new FilterListener());
 		textPanel.add(split, "cell 1 2,alignx center");
 		_group.add(split);
 
 		JRadioButton rdbtnAddColourTint = new JRadioButton("Add colour tint");
+		rdbtnAddColourTint.setFont(normFont);
 		textPanel.add(rdbtnAddColourTint, "cell 0 3,alignx center,growy");
 		rdbtnAddColourTint.addActionListener(new FilterListener());
 		_group.add(rdbtnAddColourTint);
 
-		JButton _colourButton = new JButton();
-		_colourButton.setText("Choose colour tint");
+		JButton _colourButton = new JButton("Select colour");
 		textPanel.add(_colourButton, "cell 1 3,alignx center,growy");
 		_colourButton.addActionListener(new ActionListener() {
 			@Override
@@ -148,13 +153,6 @@ public class Filters extends Pane {
 				}
 			}
 		});
-
-		// JRadioButton radioButton = new JRadioButton("Credits");
-		// textPanel.add(radioButton, "cell 0 4,alignx center");
-		//
-		// JRadioButton radioButton_1 = new JRadioButton("fdsafd");
-		// textPanel.add(radioButton_1, "cell 1 4,alignx center");
-
 		textPanel.add(cancelButton, "cell 2 3 2 1,alignx center,grow");
 
 		setUpListener();

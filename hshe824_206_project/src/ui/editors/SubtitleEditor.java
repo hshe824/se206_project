@@ -190,6 +190,7 @@ public class SubtitleEditor extends Pane {
 							+ " to the Input Library was successful!", "Save Successful",
 							JOptionPane.INFORMATION_MESSAGE);
 					_playback.stopPlayer();
+					_playback._mediaPlayer.play();
 				} catch (IOException ie) {
 				}
 			}

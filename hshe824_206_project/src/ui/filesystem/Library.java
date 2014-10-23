@@ -168,6 +168,7 @@ public class Library extends Pane {
 						refreshTree();
 					} catch (NullPointerException ne) {
 					}
+					noMedia();
 				}
 			}
 		});
@@ -194,6 +195,7 @@ public class Library extends Pane {
 						refreshTree();
 					} catch (NullPointerException ne) {
 					}
+					noMedia();
 				}
 			}
 		});

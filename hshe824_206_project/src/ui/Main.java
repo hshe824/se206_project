@@ -376,20 +376,14 @@ public class Main extends JFrame {
         // call deleteOnExit for the folder first, so it will get deleted last  
         dir.deleteOnExit();  
         File[] files = dir.listFiles();  
-        if (files != null)  
-        {  
-            for (File f: files)  
-            {  
-                if (f.isDirectory())  
-                {  
+        if (files != null)  {  
+        	for (File f: files) {  
+                if (f.isDirectory()) {  
                     deleteDirOnExit(f);  
-                }  
-                else  
-                {  
+                } else {  
                     f.deleteOnExit();  
                 }  
             }  
         }  
     }  
-
 }
