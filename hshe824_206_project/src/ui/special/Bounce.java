@@ -1,4 +1,4 @@
-package ui;
+package ui.special;
 
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
@@ -22,9 +22,9 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
-import processes.BounceCreator;
-import processes.DurationFinder;
-import processes.VideoTask;
+import processes.bounce.BounceCreator;
+import processes.bounce.DurationFinder;
+import ui.Pane;
 import bounce.AnimationViewer;
 
 /**
@@ -35,7 +35,7 @@ import bounce.AnimationViewer;
  * @author Harry She
  *
  */
-public class Bounce extends JPanel {
+public class Bounce extends Pane {
 
 	private static Bounce theInstance = null;
 	private JTextField textField;
@@ -213,7 +213,7 @@ public class Bounce extends JPanel {
 		} catch (ExecutionException e1) {
 			e1.printStackTrace();
 		}
-		new File(VideoTask.tempDir).mkdirs();
+		new File(processes.video.VideoTask.tempDir).mkdirs();
 	}
 
 	/**

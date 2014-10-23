@@ -1,12 +1,10 @@
 package bounce;
 
 import java.io.File;
-import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
-import processes.VideoTask;
-import ui.VideoEditor;
+import processes.video.VideoTask;
 
 /**
  * Class that displays an animated GIF image of the video passed.

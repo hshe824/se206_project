@@ -1,4 +1,4 @@
-package ui;
+package ui.special;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -24,8 +24,11 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 import net.miginfocom.swing.MigLayout;
-import processes.FilterTask;
-import processes.VideoTask;
+import processes.video.FilterTask;
+import processes.video.VideoTask;
+import ui.Pane;
+import ui.editors.Playback;
+import ui.filesystem.Library;
 
 /**
  * Class that deals with the text editing of videos. Ie. The creation of title
@@ -35,7 +38,7 @@ import processes.VideoTask;
  *
  */
 @SuppressWarnings("serial")
-public class Filters extends JPanel {
+public class Filters extends Pane {
 
 	private static Filters theInstance = null;
 

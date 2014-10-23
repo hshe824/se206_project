@@ -1,4 +1,4 @@
-package processes;
+package processes.video;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 
 import javax.swing.SwingWorker;
 
-import ui.Library;
+import ui.filesystem.Library;
 
 /**
  * Class responsible for adding filters to videos
@@ -78,11 +78,11 @@ public class FilterTask extends SwingWorker<Void, Void>{
 		if (_isPreview){
 			builder = new ProcessBuilder("/bin/bash", "-c",  "avplay -i "
 					+ _inputFile + " -strict experimental -vf " + _filter);
-			process(builder);
+			startProcess(builder);
 		}else {
 		builder = new ProcessBuilder("/bin/bash", "-c",  "avconv -i "
 				+ _inputFile + " -strict experimental -vf " + _filter + " -y "+ _outputFile);
-		process(builder);
+		startProcess(builder);
 		}
 		return null;
 	}
@@ -108,7 +108,7 @@ public class FilterTask extends SwingWorker<Void, Void>{
 		}
 	}
 
-	private void process(ProcessBuilder builder) {
+	private void startProcess(ProcessBuilder builder) {
 		Process process = null;
 		builder.redirectErrorStream(true);
 		try {

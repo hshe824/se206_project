@@ -1,4 +1,4 @@
-package ui;
+package ui.filesystem;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -52,8 +52,16 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 import net.miginfocom.swing.MigLayout;
-import processes.FileChecker;
-import processes.ImportTask;
+import processes.file.FileChecker;
+import processes.file.ImportTask;
+import ui.Main;
+import ui.Pane;
+import ui.editors.AudioEditor;
+import ui.editors.Playback;
+import ui.editors.SubtitleEditor;
+import ui.editors.VideoEditor;
+import ui.special.Bounce;
+import ui.special.Filters;
 
 /**
  * Library class that is responsible for the main file I/O system: This includes
@@ -71,24 +79,10 @@ import processes.ImportTask;
  *
  */
 @SuppressWarnings("serial")
-public class Library extends JPanel {
+public class Library extends Pane {
 
 	// Singleton - only need and want one library class
 	private static Library theInstance = null;
-
-	public static final String inputDir = System.getProperty("user.home")
-			+ File.separator + "vamix" + File.separator + "InputLibrary";
-
-	public static final String outputDir = System.getProperty("user.home")
-			+ File.separator + "vamix" + File.separator + "OutputLibrary";
-
-	public static final String[] _validExtensions = { "mp3", "mp4", "avi",
-			"mkv", "wmv", "wav", "wma", "ra", "ram", "rm", "mid", "ogg", "3gp",
-			"aac", "m4a", "m4p", "msv", "vox", "webm", "flv", "ogv", "mov",
-			"qt", "mpg", "mp2", "mpeg", "mpg", "m4v", "svi" };
-
-	public static final String[] _validVideoOnly = { "mp4", "avi", "mkv",
-			"flv", "ogv", "ogg", "rm", "m4v", "wmv", "m4p", "mpg", "svi", "3gp" };
 
 	private String defaultMessageString = "INFO:\n\nPlease import files using\n\n\"Import local Files\"\n \nor\n\n\"Download\"\n";
 	private String defaultOutputLibString = "INFO:\n\nListed here are in the Output library \nwill be the output files of any edit\n operation";
@@ -104,32 +98,24 @@ public class Library extends JPanel {
 	private JTree inputTree;
 	private JTree outputTree;
 
-	protected final static int _titleFontSize = 16;
-	protected final static int _bodyFontSize = 14;
-	protected final static String _font = "DejaVu Sans";
-	Font titleFont = new Font(_font, Font.BOLD, _titleFontSize);
-	Font mainFont = new Font(_font, Font.BOLD, _bodyFontSize);
-	Font sideFont = new Font(_font, Font.PLAIN, _bodyFontSize);
-	Font tabFont = new Font(_font, Font.BOLD, _bodyFontSize);
 
 	protected String _currentFileInputString;
 	protected String _currentFileOutputString;
 
 	private JTabbedPane tabbedPane;
-
 	private JButton download;
-
 	private JButton play;
-
 	private JButton editAudio;
-
 	private JButton editVideo;
-
 	private JButton filters;
-
 	private JButton btnBounce;
-
 	private JButton btnAddSubtitles;
+	private JTextArea _detailsInputArea;
+	private JTextArea _detailsOutputArea;
+	private JSplitPane splitPane;
+	private JSplitPane splitPane_1;
+	private JScrollPane _inputScrollPane;
+	private JScrollPane _outputScrollPane;
 
 	/**
 	 * Create the panel.
@@ -139,157 +125,28 @@ public class Library extends JPanel {
 				"[550px,grow 90][300px,grow 10]"));
 
 		// Tabs
-		tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
-		tabbedPane.setBackground(Color.WHITE);
-		tabbedPane.setFont(tabFont);
-		add(tabbedPane, "cell 0 0,growpriox 50,grow");
-
-		JSplitPane splitPane = new JSplitPane();
-		JSplitPane splitPane_1 = new JSplitPane();
-
-		tabbedPane.addTab(null, null, splitPane_1, null);
-
-		JLabel lbl = new JLabel(
-				"<html><body height ='40'>Input Library</body></html>");
-		lbl.setFont(mainFont);
-		Icon icon = createImageIcon("library.png");
-		lbl.setIcon(icon);
-		lbl.setHorizontalTextPosition(SwingConstants.CENTER);
-		lbl.setVerticalTextPosition(SwingConstants.TOP);
-		tabbedPane.setTabComponentAt(0, lbl);
-
-		tabbedPane.addTab(null, null, splitPane, null);
-		splitPane_1.setDividerLocation(500);
-		splitPane.setDividerLocation(500);
-
-		JLabel lbl2 = new JLabel(
-				"<html><body height ='40'>Output Library</body></html>");
-		lbl2.setFont(mainFont);
-		lbl2.setIcon(icon);
-		lbl2.setHorizontalTextPosition(SwingConstants.CENTER);
-		lbl2.setVerticalTextPosition(SwingConstants.TOP);
-		tabbedPane.setTabComponentAt(1, lbl2);
+		setupTabs();
 
 		// Details text area to show avprobe output
-		final JTextArea _detailsInputArea = new JTextArea(defaultMessageString);
-		final JTextArea _detailsOutputArea = new JTextArea(
-				defaultOutputLibString);
-
-		_detailsInputArea.setFont(sideFont);
-		_detailsInputArea.setEditable(false);
-		_detailsInputArea.setWrapStyleWord(true);
-		_detailsOutputArea.setFont(sideFont);
-		_detailsOutputArea.setEditable(false);
-		_detailsOutputArea.setWrapStyleWord(true);
-		JScrollPane _inputScrollPane = new JScrollPane(_detailsInputArea);
-		_inputScrollPane
-				.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		_inputScrollPane.setPreferredSize(new Dimension(500, 500));
-		JScrollPane _outputScrollPane = new JScrollPane(_detailsOutputArea);
-		_outputScrollPane
-				.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		_outputScrollPane.setPreferredSize(new Dimension(500, 500));
+		setupDetailsTextArea();
 
 		// Instantiate buttons and icons
 		download = new JButton("Download");
 		play = new JButton("Play");
-		 editAudio = new JButton("Edit Audio");
-		 editVideo = new JButton("Add Title/Credits");
-		 filters = new JButton("Add Video Filters");
+		editAudio = new JButton("Edit Audio");
+		editVideo = new JButton("Add Title/Credits");
+		filters = new JButton("Add Video Filters");
 		btnBounce = new JButton("Bounce!");
-
 
 		download.setVerticalTextPosition(SwingConstants.BOTTOM);
 		download.setHorizontalTextPosition(SwingConstants.CENTER);
 		download.setIcon(createImageIcon("download.png"));
 
-		// Input library Tree
-		inputTree = new JTree();
-		inputTree.setFont(mainFont);
-		inputTree.setModel(configureTree("Input"));
-		inputTree.addTreeSelectionListener(new TreeSelectionListener() {
-			public void valueChanged(TreeSelectionEvent event) {
-				Object file = inputTree.getLastSelectedPathComponent();
-
-				if (file != null) {
-					_currentFileInputString = inputDir + File.separator
-							+ file.toString();
-					_currentFileString = _currentFileInputString;
-					if (file.toString().equals(inputDir)) {
-						_detailsInputArea.setText(defaultMessageString);
-						noMedia();
-						
-					} else {
-						_detailsInputArea.setText(getDetails(
-								_currentFileInputString).toString());
-					}
-
-					/*
-					 * Check if valid file first here: and then allow to be
-					 * played/edited etc.
-					 * 
-					 * if (File is audio or video) then enable play, edit etc...
-					 */
-					FileChecker fc = new FileChecker(_currentFileString);
-					boolean hasAudio = fc.checkAVFile("Audio");
-					boolean hasVideo = fc.checkAVFile("Video");
-					if (hasAudio && hasVideo) {
-						bothAV();
-					} else if (hasAudio && !hasVideo) {
-						audioNoVideo();
-					} else if (!hasAudio && hasVideo) {
-						videoNoAudio();
-					} else{
-						noMedia();
-					}
-				}
-			}
-		});
-
-		// Output library Tree
-		outputTree = new JTree();
-		outputTree.setFont(mainFont);
-		outputTree.setModel(configureTree("Output"));
-		outputTree.addTreeSelectionListener(new TreeSelectionListener() {
-			public void valueChanged(TreeSelectionEvent event) {
-				Object file = outputTree.getLastSelectedPathComponent();
-				if (file != null) {
-					_currentFileOutputString = outputDir + File.separator
-							+ file.toString();
-					_currentFileString = _currentFileOutputString;
-					if (file.toString().equals(outputDir)) {
-						_detailsOutputArea.setText(defaultOutputLibString);
-						noMedia();
-					} else {
-						_detailsOutputArea.setText(getDetails(
-								_currentFileOutputString).toString());
-					}
-
-					/*
-					 * Check if valid file first here: and then allow to be
-					 * played/edited etc.
-					 * 
-					 * if (File is audio or video) then enable play, edit etc...
-					 */
-					FileChecker fc = new FileChecker(_currentFileString);
-					boolean hasAudio = fc.checkAVFile("Audio");
-					boolean hasVideo = fc.checkAVFile("Video");
-					if (hasAudio && hasVideo) {
-						bothAV();
-					} else if (hasAudio && !hasVideo) {
-						audioNoVideo();
-					} else if (!hasAudio && hasVideo) {
-						videoNoAudio();
-					} else{
-						noMedia();
-					}
-				}
-			}
-		});
+		// Sets up the input and output Library
+		setupLibraryFileSystem();
 
 		splitPane.setLeftComponent(outputTree);
 		splitPane_1.setLeftComponent(inputTree);
-
 		splitPane_1.setRightComponent(_inputScrollPane);
 		splitPane.setRightComponent(_outputScrollPane);
 
@@ -299,7 +156,10 @@ public class Library extends JPanel {
 		buttonPanel.setToolTipText("");
 		add(buttonPanel, "cell 0 1,grow");
 		buttonPanel
-				.setLayout(new MigLayout("", "[96.00px,grow][110.00px,grow][110px,grow][136.00px,grow][123.00px,grow][168.00px,grow]", "[86.00,grow 50][86,grow 50]"));
+				.setLayout(new MigLayout(
+						"",
+						"[96.00px,grow][110.00px,grow][110px,grow][136.00px,grow][123.00px,grow][168.00px,grow]",
+						"[86.00,grow 50][86,grow 50]"));
 
 		/*
 		 * This is a popup menu that the user can bring up by right clicking in
@@ -358,7 +218,7 @@ public class Library extends JPanel {
 				}
 			}
 		});
-		
+
 		JMenuItem openInFolder = new JMenuItem("Open in folder");
 		openInFolder.addActionListener(new ActionListener() {
 			@Override
@@ -370,7 +230,7 @@ public class Library extends JPanel {
 				}
 			}
 		});
-		
+
 		JMenuItem openInFolder2 = new JMenuItem("Open in folder");
 		openInFolder2.addActionListener(new ActionListener() {
 			@Override
@@ -515,25 +375,7 @@ public class Library extends JPanel {
 		}
 		Main.play.addActionListener(new playListener());
 
-		class editAudioListener implements ActionListener {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (_currentFileString != null
-						&& !_currentFileString.equals("")) {
-					if (Main._tabbedPane.indexOfTab("Audio Editor") == -1) {
-						Main.createNewTab("Audio Editor",
-								AudioEditor.getInstance(),
-								Main._tabbedPane.getTabCount());
-						Main._tabbedPane.setSelectedIndex(Main._tabbedPane
-								.getTabCount() - 1);
-					} else {
-						Main._tabbedPane.setSelectedIndex(Main._tabbedPane
-								.indexOfTab("Audio Editor"));
-					}
-					AudioEditor.getInstance().setInputFile(_currentFileString);
-				}
-			}
-		}
+	
 		play.setVerticalTextPosition(SwingConstants.BOTTOM);
 		play.setHorizontalTextPosition(SwingConstants.CENTER);
 		play.setIcon(createImageIcon("playMenu.png"));
@@ -543,29 +385,8 @@ public class Library extends JPanel {
 		buttonPanel.add(play,
 				"cell 1 0 1 2,alignx center,height 50,aligny center,grow");
 		play.addActionListener(new playListener());
-		Main.editAudio.addActionListener(new editAudioListener());
+		Main.editAudio.addActionListener(new OpenListener("Audio Editor"));
 
-		class editVideoListener implements ActionListener {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (_currentFileString != null
-						&& !_currentFileString.equals("")) {
-					if (Main._tabbedPane.indexOfTab("Video Editor") == -1) {
-					Main.createNewTab("Video Editor",
-							VideoEditor.getInstance(),
-							Main._tabbedPane.getTabCount());
-					Main._tabbedPane.setSelectedIndex(Main._tabbedPane
-							.getTabCount() - 1);
-					} else {
-						Main._tabbedPane.setSelectedIndex(Main._tabbedPane
-								.indexOfTab("Video Editor"));
-					}
-					VideoEditor.getInstance().setInputFile(_currentFileString);
-				}
-			}
-		
-		
-		}
 		editAudio.setVerticalTextPosition(SwingConstants.BOTTOM);
 		editAudio.setHorizontalTextPosition(SwingConstants.CENTER);
 		editAudio.setIcon(createImageIcon("audio.png"));
@@ -574,7 +395,7 @@ public class Library extends JPanel {
 		editAudio.setEnabled(false);
 		buttonPanel.add(editAudio,
 				"cell 3 0 1 2,alignx center,height 50,aligny center,grow");
-		editAudio.addActionListener(new editAudioListener());
+		editAudio.addActionListener(new OpenListener("Audio Editor"));
 		editVideo.setVerticalTextPosition(SwingConstants.BOTTOM);
 		editVideo.setHorizontalTextPosition(SwingConstants.CENTER);
 		editVideo.setIcon(createImageIcon("text.png"));
@@ -583,7 +404,7 @@ public class Library extends JPanel {
 		editVideo.setFont(titleFont);
 		buttonPanel.add(editVideo,
 				"cell 5 0,alignx center,height 50,aligny center,grow");
-		editVideo.addActionListener(new editVideoListener());
+		editVideo.addActionListener(new OpenListener("Video Editor"));
 
 		buttonPanel.add(filters, "cell 4 0 1 2,grow");
 		final JButton importButton = new JButton("Import Local files");
@@ -596,38 +417,19 @@ public class Library extends JPanel {
 		buttonPanel.add(importButton,
 				"cell 0 1,alignx center,height 50,aligny center,grow");
 		importButton.addActionListener(new importListener());
-		Main.addText.addActionListener(new editVideoListener());
-		
-		//BOUNCE BUTTON
+		Main.addText.addActionListener(new OpenListener("Video Editor"));
+
+		// BOUNCE BUTTON
 		btnBounce.setFont(titleFont);
 		btnBounce.setEnabled(false);
 		btnBounce.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnBounce.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnBounce.setIcon(createImageIcon("bounce.png"));
 		buttonPanel.add(btnBounce, "cell 2 0 1 2,grow");
-		
-		class BounceListener implements ActionListener {
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (Main._tabbedPane.indexOfTab("Bounce!") == -1) {
-					Main.createNewTab("Bounce!", Bounce.getInstance(),
-							Main._tabbedPane.getTabCount());
-					Bounce.getInstance().setInputFile(
-							_currentFileString);
-					Main._tabbedPane.setSelectedIndex(Main._tabbedPane
-							.getTabCount() - 1);
-				} else {
-					Main._tabbedPane.setSelectedIndex(Main._tabbedPane
-							.indexOfTab("Bounce!"));				
-			}
-			}
-			}
-			
-		
-		btnBounce.addActionListener(new BounceListener());
-		Main.bounce.addActionListener(new BounceListener());
-		
+
+		btnBounce.addActionListener(new OpenListener("Bounce!"));
+		Main.bounce.addActionListener(new OpenListener("Bounce!"));
 
 		// FILTERS BUTTON
 		filters.setFont(titleFont);
@@ -635,69 +437,168 @@ public class Library extends JPanel {
 		filters.setVerticalTextPosition(SwingConstants.BOTTOM);
 		filters.setHorizontalTextPosition(SwingConstants.CENTER);
 		filters.setIcon(createImageIcon("filters.png"));
-		
-	
 
-		class editFilterListener implements ActionListener {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (_currentFileString != null
-						&& !_currentFileString.equals("")) {
-					if (Main._tabbedPane.indexOfTab("Filters") == -1) {
-						Main.createNewTab("Filters", Filters.getInstance(),
-								Main._tabbedPane.getTabCount());
-						Filters.getInstance().setInputFile(
-								_currentFileString);
-						Main._tabbedPane.setSelectedIndex(Main._tabbedPane
-								.getTabCount() - 1);
-					} else {
-						Main._tabbedPane.setSelectedIndex(Main._tabbedPane
-								.indexOfTab("Filters"));
-					}
-				}
-			}
-		}
+		filters.addActionListener(new OpenListener("Filters"));
+		Main.addFilter.addActionListener(new OpenListener("Filters"));
 
-		filters.addActionListener(new editFilterListener());
-		Main.addFilter.addActionListener(new editFilterListener());
-		
-	 btnAddSubtitles = new JButton("Add Subtitles");
+		btnAddSubtitles = new JButton("Add Subtitles");
 		btnAddSubtitles.setFont(titleFont);
 		btnAddSubtitles.setEnabled(false);
 		btnAddSubtitles.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnAddSubtitles.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnAddSubtitles.setIcon(createImageIcon("subtitles.png"));
 		buttonPanel.add(btnAddSubtitles, "cell 5 1,grow");
-		
-		
-		class subtitleListener implements ActionListener {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (_currentFileString != null
-						&& !_currentFileString.equals("")) {
-					if (Main._tabbedPane.indexOfTab("Subtitles") == -1) {
-						Main.createNewTab("Subtitles", SubtitleEditor.getInstance(),
-								Main._tabbedPane.getTabCount());
-						SubtitleEditor.getInstance().setInputFile(
-								_currentFileString);
-						Main._tabbedPane.setSelectedIndex(Main._tabbedPane
-								.getTabCount() - 1);
+
+		btnAddSubtitles.addActionListener(new OpenListener("Subtitles"));
+		Main.addSubtitles.addActionListener(new OpenListener("Subtitles"));
+	}
+
+	private void setupLibraryFileSystem() {
+		// Input library Tree
+		inputTree = new JTree();
+		inputTree.setFont(mainFont);
+		inputTree.setModel(configureTree("Input"));
+		inputTree.addTreeSelectionListener(new TreeSelectionListener() {
+			public void valueChanged(TreeSelectionEvent event) {
+				Object file = inputTree.getLastSelectedPathComponent();
+
+				if (file != null) {
+					_currentFileInputString = inputDir + File.separator
+							+ file.toString();
+					_currentFileString = _currentFileInputString;
+					if (file.toString().equals(inputDir)) {
+						_detailsInputArea.setText(defaultMessageString);
+						noMedia();
+
 					} else {
-						Main._tabbedPane.setSelectedIndex(Main._tabbedPane
-								.indexOfTab("Subtitles"));
+						_detailsInputArea.setText(getDetails(
+								_currentFileInputString).toString());
+					}
+
+					/*
+					 * Check if valid file first here: and then allow to be
+					 * played/edited etc.
+					 * 
+					 * if (File is audio or video) then enable play, edit etc...
+					 */
+					FileChecker fc = new FileChecker(_currentFileString);
+					boolean hasAudio = fc.checkAVFile("Audio");
+					boolean hasVideo = fc.checkAVFile("Video");
+					if (hasAudio && hasVideo) {
+						bothAV();
+					} else if (hasAudio && !hasVideo) {
+						audioNoVideo();
+					} else if (!hasAudio && hasVideo) {
+						videoNoAudio();
+					} else {
+						noMedia();
 					}
 				}
 			}
-		}
-		
-		btnAddSubtitles.addActionListener(new subtitleListener());
-		Main.addSubtitles.addActionListener(new subtitleListener());
-	}
-	
+		});
 
-//	  public void paintComponent(Graphics g) {
-//	    g.drawImage(createImageIcon("aback.jpg").getImage(), 0, 0, null);
-//	  }
+		// Output library Tree
+		outputTree = new JTree();
+		outputTree.setFont(mainFont);
+		outputTree.setModel(configureTree("Output"));
+		outputTree.addTreeSelectionListener(new TreeSelectionListener() {
+			public void valueChanged(TreeSelectionEvent event) {
+				Object file = outputTree.getLastSelectedPathComponent();
+				if (file != null) {
+					_currentFileOutputString = outputDir + File.separator
+							+ file.toString();
+					_currentFileString = _currentFileOutputString;
+					if (file.toString().equals(outputDir)) {
+						_detailsOutputArea.setText(defaultOutputLibString);
+						noMedia();
+					} else {
+						_detailsOutputArea.setText(getDetails(
+								_currentFileOutputString).toString());
+					}
+
+					/*
+					 * Check if valid file first here: and then allow to be
+					 * played/edited etc.
+					 * 
+					 * if (File is audio or video) then enable play, edit etc...
+					 */
+					FileChecker fc = new FileChecker(_currentFileString);
+					boolean hasAudio = fc.checkAVFile("Audio");
+					boolean hasVideo = fc.checkAVFile("Video");
+					if (hasAudio && hasVideo) {
+						bothAV();
+					} else if (hasAudio && !hasVideo) {
+						audioNoVideo();
+					} else if (!hasAudio && hasVideo) {
+						videoNoAudio();
+					} else {
+						noMedia();
+					}
+				}
+			}
+		});
+	}
+
+	/**
+	 * Sets up the text area that gets the information from avprobe and displays
+	 * it
+	 */
+	private void setupDetailsTextArea() {
+		_detailsInputArea = new JTextArea(defaultMessageString);
+		_detailsOutputArea = new JTextArea(defaultOutputLibString);
+
+		_detailsInputArea.setFont(sideFont);
+		_detailsInputArea.setEditable(false);
+		_detailsInputArea.setWrapStyleWord(true);
+		_detailsOutputArea.setFont(sideFont);
+		_detailsOutputArea.setEditable(false);
+		_detailsOutputArea.setWrapStyleWord(true);
+		_inputScrollPane = new JScrollPane(_detailsInputArea);
+		_inputScrollPane
+				.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		_inputScrollPane.setPreferredSize(new Dimension(500, 500));
+		_outputScrollPane = new JScrollPane(_detailsOutputArea);
+		_outputScrollPane
+				.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		_outputScrollPane.setPreferredSize(new Dimension(500, 500));
+	}
+
+	/**
+	 * Sets up the tabbed pane for the input and output library and the
+	 * splitpane
+	 */
+	private void setupTabs() {
+		tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
+		tabbedPane.setBackground(Color.WHITE);
+		tabbedPane.setFont(tabFont);
+		add(tabbedPane, "cell 0 0,growpriox 50,grow");
+
+		splitPane = new JSplitPane();
+		splitPane_1 = new JSplitPane();
+
+		tabbedPane.addTab(null, null, splitPane_1, null);
+
+		JLabel lbl = new JLabel(
+				"<html><body height ='40'>Input Library</body></html>");
+		lbl.setFont(mainFont);
+		Icon icon = createImageIcon("library.png");
+		lbl.setIcon(icon);
+		lbl.setHorizontalTextPosition(SwingConstants.CENTER);
+		lbl.setVerticalTextPosition(SwingConstants.TOP);
+		tabbedPane.setTabComponentAt(0, lbl);
+
+		tabbedPane.addTab(null, null, splitPane, null);
+		splitPane_1.setDividerLocation(500);
+		splitPane.setDividerLocation(500);
+
+		JLabel lbl2 = new JLabel(
+				"<html><body height ='40'>Output Library</body></html>");
+		lbl2.setFont(mainFont);
+		lbl2.setIcon(icon);
+		lbl2.setHorizontalTextPosition(SwingConstants.CENTER);
+		lbl2.setVerticalTextPosition(SwingConstants.TOP);
+		tabbedPane.setTabComponentAt(1, lbl2);
+	}
 
 	/**
 	 * This helper method creates a subtask that is run within a swingworker to
@@ -724,14 +625,18 @@ public class Library extends JPanel {
 					refreshTree();
 					setCursor(Cursor.getDefaultCursor());
 				} else if ("invalid".equals(evt.getPropertyName())) {
-					JOptionPane.showMessageDialog(null, "The file " + input
-							+ " does not have any video or audio streams and hence will not be copied!",
-							"Error: Invalid file!",
-							JOptionPane.WARNING_MESSAGE);
+					JOptionPane
+							.showMessageDialog(
+									null,
+									"The file "
+											+ input
+											+ " does not have any video or audio streams and hence will not be copied!",
+									"Error: Invalid file!",
+									JOptionPane.WARNING_MESSAGE);
 					refreshTree();
 					setCursor(Cursor.getDefaultCursor());
 					return;
-			}
+				}
 			}
 		});
 		it.execute();
@@ -746,7 +651,7 @@ public class Library extends JPanel {
 	 * @param file
 	 * @return
 	 */
-	static StringBuffer getDetails(String file) {
+	public static StringBuffer getDetails(String file) {
 		ProcessBuilder builder = new ProcessBuilder("avprobe", file);
 		Process process = null;
 		builder.redirectErrorStream(true);
@@ -845,7 +750,7 @@ public class Library extends JPanel {
 		}
 		return theInstance;
 	}
-	
+
 	private void bothAV() {
 		Main.play.setEnabled(true);
 		Main.addText.setEnabled(true);
@@ -875,7 +780,7 @@ public class Library extends JPanel {
 		btnBounce.setEnabled(false);
 		filters.setEnabled(false);
 	}
-	
+
 	private void videoNoAudio() {
 		Main.play.setEnabled(true);
 		Main.addText.setEnabled(true);
@@ -890,8 +795,7 @@ public class Library extends JPanel {
 		btnBounce.setEnabled(true);
 		filters.setEnabled(true);
 	}
-	
-	
+
 	private void noMedia() {
 		Main.play.setEnabled(false);
 		Main.addText.setEnabled(false);
@@ -906,7 +810,10 @@ public class Library extends JPanel {
 		btnBounce.setEnabled(false);
 		filters.setEnabled(false);
 	}
-	
-	
+
+	@Override
+	public void setInputFile(String inputFile) {
+		throw new UnsupportedOperationException("Cannot set library input file");
+	}
 
 }

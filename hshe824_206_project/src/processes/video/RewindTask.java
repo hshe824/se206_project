@@ -1,8 +1,8 @@
-package processes;
+package processes.video;
 
 import javax.swing.SwingWorker;
 
-import ui.Playback;
+import ui.editors.Playback;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 
 /**

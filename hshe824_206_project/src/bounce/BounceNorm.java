@@ -1,12 +1,11 @@
 package bounce;
 
-import java.awt.Image;
 import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
-import processes.VideoTask;
+import processes.video.VideoTask;
 
 /**
  * This class produces a rectangle shape that contains a gif file which changes

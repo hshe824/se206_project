@@ -1,4 +1,4 @@
-package ui;
+package ui.editors;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -14,18 +14,19 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.border.BevelBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import processes.AudioTask;
-import processes.FileChecker;
 import net.miginfocom.swing.MigLayout;
-
-import javax.swing.JProgressBar;
-import javax.swing.border.BevelBorder;
+import processes.audio.AudioTask;
+import processes.file.FileChecker;
+import ui.Pane;
+import ui.filesystem.Library;
 
 /**
  * This is the Audio Editor pane which is responsible for all audio manipulation
@@ -41,7 +42,7 @@ import javax.swing.border.BevelBorder;
  *
  */
 @SuppressWarnings("serial")
-public class AudioEditor extends JPanel {
+public class AudioEditor extends Pane {
 
 	private static AudioEditor theInstance = null;
 	
@@ -50,7 +51,7 @@ public class AudioEditor extends JPanel {
 	private String _mergeAudio;
 	private String _replaceFile;
 	private JTextArea _details;
-	Playback _miniPlayback;
+	private Playback _miniPlayback;
 	
 	private AudioTask replace;
 	private AudioTask merge;
@@ -94,7 +95,7 @@ public class AudioEditor extends JPanel {
 				"[30px,grow][grow][grow][30px,grow]",
 				"[grow][grow][grow][grow][grow]"));
 		final JLabel overlayLabel = new JLabel("Audio to overlay:");
-		overlayLabel.setMaximumSize(new Dimension(370, 30));
+				overlayLabel.setMaximumSize(new Dimension(370, 30));
 		panel_3.add(overlayLabel, "cell 0 0 4 1,alignx center");
 
 		JPanel panel_4 = new JPanel();
@@ -131,8 +132,8 @@ public class AudioEditor extends JPanel {
 		add(panel_7, "cell 0 0,grow");
 		panel_7.setPreferredSize(new Dimension(425, 300));
 		panel_7.setLayout(new MigLayout("", "[425px,grow]", "[300px,grow]"));
-		_miniPlayback = new Playback();
-		panel_7.add(_miniPlayback, "cell 0 0,alignx left,aligny top, grow");
+		set_miniPlayback(new Playback());
+		panel_7.add(get_miniPlayback(), "cell 0 0,alignx left,aligny top, grow");
 		/*
 		 * End of layout setup
 		 */
@@ -172,7 +173,7 @@ public class AudioEditor extends JPanel {
 								"Warning: No audio stream!",
 								JOptionPane.WARNING_MESSAGE);
 					} 
-					_miniPlayback.stopPlayer();
+					get_miniPlayback().stopPlayer();
 					AudioEditor.getInstance()
 							.setInputFile(inputFile.toString());
 					}
@@ -553,7 +554,7 @@ public class AudioEditor extends JPanel {
 		_outputLocationReplacedAudioVideo= Library.outputDir + File.separator
 				+ filenameNoExtension + "[REPLACED_AUDIO-VAMIX]" + Extension;
 		_details.setText(Library.getDetails(_inputFile).toString());
-		_miniPlayback.startPlayer(_inputFile);
+		get_miniPlayback().startPlayer(_inputFile);
 		//_miniPlayback.stopPlayer();
 
 	}
@@ -568,6 +569,14 @@ public class AudioEditor extends JPanel {
 			theInstance = new AudioEditor();
 		}
 		return theInstance;
+	}
+
+	public Playback get_miniPlayback() {
+		return _miniPlayback;
+	}
+
+	public void set_miniPlayback(Playback _miniPlayback) {
+		this._miniPlayback = _miniPlayback;
 	}
 
 }

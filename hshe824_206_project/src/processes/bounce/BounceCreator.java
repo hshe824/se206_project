@@ -1,4 +1,4 @@
-package processes;
+package processes.bounce;
 
 import java.io.File;
 import java.util.concurrent.CancellationException;
@@ -6,6 +6,7 @@ import java.util.concurrent.ExecutionException;
 
 import javax.swing.SwingWorker;
 
+import processes.video.VideoTask;
 import bounce.AnimationViewer;
 
 /**

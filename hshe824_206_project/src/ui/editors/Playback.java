@@ -1,4 +1,4 @@
-package ui;
+package ui.editors;
 
 import java.awt.BorderLayout;
 import java.awt.Canvas;
@@ -30,10 +30,11 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.SliderUI;
 
-import model.MarqueeControls;
 import model.RoundButton;
 import net.miginfocom.swing.MigLayout;
-import processes.RewindTask;
+import processes.video.RewindTask;
+import ui.Pane;
+import ui.filesystem.Library;
 import uk.co.caprica.vlcj.player.MediaPlayer;
 import uk.co.caprica.vlcj.player.MediaPlayerEventAdapter;
 import uk.co.caprica.vlcj.player.MediaPlayerFactory;
@@ -53,7 +54,7 @@ import javax.swing.JButton;
  *
  */
 @SuppressWarnings("serial")
-public class Playback extends JPanel {
+public class Playback extends Pane {
 
 	private final String TEXT_PLAY = "Play";
 	private final String TEXT_PAUSE = "Pause";
@@ -143,6 +144,7 @@ public class Playback extends JPanel {
 		}
 		
 		effects.setIcon(createImageIcon("effects.png"));
+		effects.setFont(mainFont);
 		
 		_playerBG.setBackground(Color.BLACK);
 		_playerBG.setVisible(true);
@@ -525,6 +527,11 @@ public class Playback extends JPanel {
 	
 	public EmbeddedMediaPlayer getMediaPlayer() {
 		return this._mediaPlayer;
+	}
+
+	@Override
+	public void setInputFile(String inputFile) {
+		throw new UnsupportedOperationException("Cannot set input file for playback this way");
 	}
 
 }

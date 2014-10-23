@@ -1,4 +1,4 @@
-package ui;
+package ui.filesystem;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 
-import processes.DownloadTask;
+import processes.file.DownloadTask;
 import net.miginfocom.swing.MigLayout;
 
 /**

@@ -1,4 +1,4 @@
-package ui;
+package ui.editors;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -46,8 +46,10 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 
 import net.miginfocom.swing.MigLayout;
-import processes.FontFinder;
-import processes.VideoTask;
+import processes.video.FontFinder;
+import processes.video.VideoTask;
+import ui.Pane;
+import ui.filesystem.Library;
 
 /**
  * Class that deals with the text editing of videos. Ie. The creation of title
@@ -62,7 +64,7 @@ import processes.VideoTask;
  *
  */
 @SuppressWarnings("serial")
-public class VideoEditor extends JPanel {
+public class VideoEditor extends Pane {
 
 	private static VideoEditor theInstance = null;
 

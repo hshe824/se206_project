@@ -1,4 +1,4 @@
-package processes;
+package processes.audio;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,7 +13,8 @@ import javax.print.attribute.standard.OutputDeviceAssigned;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
-import ui.Library;
+import processes.file.FileChecker;
+import ui.filesystem.Library;
 
 import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 
@@ -101,7 +102,7 @@ public class AudioTask extends SwingWorker<Void, Void> {
 					+ " -c copy -map 0:v -map 1:a " + outNoExtensions+".mp4");
 			break;
 		}
-		process(builder);
+		startProcess(builder);
 		return null;
 	}
 
@@ -126,7 +127,7 @@ public class AudioTask extends SwingWorker<Void, Void> {
 		}
 	}
 
-	private void process(ProcessBuilder builder) {
+	private void startProcess(ProcessBuilder builder) {
 		Process process = null;
 		builder.redirectErrorStream(true);
 		try {

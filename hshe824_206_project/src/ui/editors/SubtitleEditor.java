@@ -1,4 +1,4 @@
-package ui;
+package ui.editors;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -26,15 +25,13 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import com.sun.corba.se.spi.orbutil.fsm.Action;
-import com.sun.corba.se.spi.orbutil.fsm.FSM;
-import com.sun.corba.se.spi.orbutil.fsm.Input;
-
 import model.Subtitle;
 import model.SubtitleModel;
 import net.miginfocom.swing.MigLayout;
+import ui.Pane;
+import ui.filesystem.Library;
 
-public class SubtitleEditor extends JPanel {
+public class SubtitleEditor extends Pane {
 
 	private static SubtitleEditor theInstance = null;
 

@@ -30,6 +30,13 @@ import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.io.FileUtils;
 
+import ui.editors.AudioEditor;
+import ui.editors.Playback;
+import ui.editors.SubtitleEditor;
+import ui.editors.VideoEditor;
+import ui.filesystem.Library;
+import ui.special.Filters;
+
 /**
  * This the main class of the VAMIX Application. It is responsible for setting
  * the look and feel of the GUI, creating and showing the GUI and also is
@@ -38,16 +45,23 @@ import org.apache.commons.io.FileUtils;
  * @author Harry She
  * 
  */
-/* BoilerPlate code of JFileChooser, ProcessBuilder, JColorChooser from Java API
-* and example
-* tutorial code
-*/ 
+/*
+ * BoilerPlate code of JFileChooser, ProcessBuilder, JColorChooser from Java API
+ * and example tutorial code
+ */
 @SuppressWarnings("serial")
 public class Main extends JFrame {
-	
+
 	public static Main window;
 
 	public static JTabbedPane _tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+	private JMenuBar menuBar;
+	private JMenu menuFile;
+	private JMenu edit;
+	private JMenu menuPlay;
+	private JMenuItem quit;
+	private JMenu menuHelp;
+	private JMenuItem manual;
 	public static JMenuItem importFile = new JMenuItem();
 	public static JMenuItem editAudio;
 	public static JMenuItem download;
@@ -59,14 +73,12 @@ public class Main extends JFrame {
 	public static JMenuItem outputLibrary;
 	public static JMenuItem inputLibrary;
 
-
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-
 				try {
 					// Set look and feel to Nimbus
 					for (LookAndFeelInfo info : UIManager
@@ -85,16 +97,12 @@ public class Main extends JFrame {
 				}
 				try {
 					window = new Main();
-
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
 	}
-
-	
-
 
 	/**
 	 * Create the application.
@@ -123,133 +131,7 @@ public class Main extends JFrame {
 		getContentPane().add(_tabbedPane, "cell 0 0,aligny top,grow");
 
 		// Menu Bar setup
-		JMenuBar menuBar = new JMenuBar();
-		setJMenuBar(menuBar);
-		JMenu menuFile = new JMenu("File");
-		menuBar.add(menuFile);
-		JMenu edit = new JMenu("Edit");
-		menuBar.add(edit);
-		JMenu menuPlay = new JMenu("Play");
-		menuBar.add(menuPlay);
-
-		importFile = new JMenuItem("Import File", KeyEvent.VK_I);
-		importFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I,
-				ActionEvent.CTRL_MASK));
-		menuFile.add(importFile);
-
-		download = new JMenuItem("Download", KeyEvent.VK_D);
-		download.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D,
-				ActionEvent.CTRL_MASK));
-		menuFile.add(download);
-		menuFile.add(new JSeparator());
-		
-		inputLibrary = new JMenuItem("Open Input Library");
-		inputLibrary.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-					Desktop.getDesktop().open(new File(Library.inputDir));
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-			}
-		});
-		menuFile.add(inputLibrary);
-
-
-
-	 outputLibrary = new JMenuItem("Open Output Library");
-		outputLibrary.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-					Desktop.getDesktop().open(new File(Library.inputDir));
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-			}
-		});
-		menuFile.add(outputLibrary);
-		
-		
-		menuFile.add(new JSeparator());
-
-
-		JMenuItem quit = new JMenuItem("Quit", KeyEvent.VK_Q);
-		quit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,
-				ActionEvent.CTRL_MASK));
-		menuFile.add(quit);
-		quit.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				dispose();
-				System.exit(0);
-			}
-		});
-
-		editAudio = new JMenuItem("Edit Audio", KeyEvent.VK_E);
-		editAudio.setEnabled(false);
-		editAudio.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E,
-				ActionEvent.CTRL_MASK));
-		edit.add(editAudio);
-		
-		edit.add(new JSeparator());
-
-		addText = new JMenuItem("Add Video text", KeyEvent.VK_T);
-		addText.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T,
-				ActionEvent.CTRL_MASK));
-		addText.setEnabled(false);
-		edit.add(addText);
-		
-		addSubtitles = new JMenuItem("Add Subtitles", KeyEvent.VK_S);
-		addSubtitles.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
-				ActionEvent.CTRL_MASK));
-		addSubtitles.setEnabled(false);
-		edit.add(addSubtitles);
-		
-		addFilter = new JMenuItem("Add Video filters", KeyEvent.VK_F);
-		addFilter.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F,
-				ActionEvent.CTRL_MASK));
-		addFilter.setEnabled(false);
-		edit.add(addFilter);
-		
-
-		play = new JMenuItem("Play", KeyEvent.VK_P);
-		play.setEnabled(false);
-		play.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P,
-				ActionEvent.CTRL_MASK));
-		menuPlay.add(play);
-		menuPlay.add(new JSeparator());
-
-		
-		bounce = new JMenuItem("Bounce!", KeyEvent.VK_B);
-		bounce.setEnabled(false);
-		bounce.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B,
-				ActionEvent.CTRL_MASK));
-		menuPlay.add(bounce);
-
-		JMenu menuHelp = new JMenu("Help");
-
-		JMenuItem manual = new JMenuItem("Help", KeyEvent.VK_H);
-		manual.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H,
-				ActionEvent.CTRL_MASK));
-		manual.addActionListener(new ActionListener() {
-			// Read VAMIX PDF
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (Desktop.isDesktopSupported()) {
-					try {
-						File file = new File(System.getProperty("user.home")
-								+ File.separator + "vamix" + File.separator
-								+ "VAMIX_User_Manual.pdf");
-						Desktop.getDesktop().open(file);
-					} catch (IOException ex) {
-					}
-				}
-			}
-		});
-		menuHelp.add(manual);
+		setUpMenuBar();
 
 		// Set up library file system.
 		boolean displayHelp = librarySetUp();
@@ -264,9 +146,8 @@ public class Main extends JFrame {
 		}
 
 		/**
-		 * Listener responsible for dynamically chaning the 
-		 * theme (look and feel) of the program when requested
-		 * by the user.
+		 * Listener responsible for dynamically changing the theme (look and
+		 * feel) of the program when requested by the user.
 		 * 
 		 * @author harry
 		 *
@@ -323,6 +204,133 @@ public class Main extends JFrame {
 	}
 
 	/**
+	 * Sets up the JMenuBar at the top of VAMIX frame and all the shortcuts etc.
+	 */
+	private void setUpMenuBar() {
+		menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
+		menuFile = new JMenu("File");
+		menuBar.add(menuFile);
+		edit = new JMenu("Edit");
+		menuBar.add(edit);
+		menuPlay = new JMenu("Play");
+		menuBar.add(menuPlay);
+
+		importFile = new JMenuItem("Import File", KeyEvent.VK_I);
+		importFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I,
+				ActionEvent.CTRL_MASK));
+		menuFile.add(importFile);
+
+		download = new JMenuItem("Download", KeyEvent.VK_D);
+		download.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D,
+				ActionEvent.CTRL_MASK));
+		menuFile.add(download);
+		menuFile.add(new JSeparator());
+
+		inputLibrary = new JMenuItem("Open Input Library");
+		inputLibrary.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Desktop.getDesktop().open(new File(Library.inputDir));
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		menuFile.add(inputLibrary);
+
+		outputLibrary = new JMenuItem("Open Output Library");
+		outputLibrary.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Desktop.getDesktop().open(new File(Library.inputDir));
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		menuFile.add(outputLibrary);
+
+		menuFile.add(new JSeparator());
+
+		quit = new JMenuItem("Quit", KeyEvent.VK_Q);
+		quit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,
+				ActionEvent.CTRL_MASK));
+		menuFile.add(quit);
+		quit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				System.exit(0);
+			}
+		});
+
+		editAudio = new JMenuItem("Edit Audio", KeyEvent.VK_E);
+		editAudio.setEnabled(false);
+		editAudio.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E,
+				ActionEvent.CTRL_MASK));
+		edit.add(editAudio);
+
+		edit.add(new JSeparator());
+
+		addText = new JMenuItem("Add Video text", KeyEvent.VK_T);
+		addText.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T,
+				ActionEvent.CTRL_MASK));
+		addText.setEnabled(false);
+		edit.add(addText);
+
+		addSubtitles = new JMenuItem("Add Subtitles", KeyEvent.VK_S);
+		addSubtitles.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
+				ActionEvent.CTRL_MASK));
+		addSubtitles.setEnabled(false);
+		edit.add(addSubtitles);
+
+		addFilter = new JMenuItem("Add Video filters", KeyEvent.VK_F);
+		addFilter.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F,
+				ActionEvent.CTRL_MASK));
+		addFilter.setEnabled(false);
+		edit.add(addFilter);
+
+		play = new JMenuItem("Play", KeyEvent.VK_P);
+		play.setEnabled(false);
+		play.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P,
+				ActionEvent.CTRL_MASK));
+		menuPlay.add(play);
+		menuPlay.add(new JSeparator());
+
+		bounce = new JMenuItem("Bounce!", KeyEvent.VK_B);
+		bounce.setEnabled(false);
+		bounce.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B,
+				ActionEvent.CTRL_MASK));
+		menuPlay.add(bounce);
+
+		menuHelp = new JMenu("Help");
+
+		manual = new JMenuItem("Help", KeyEvent.VK_H);
+		manual.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H,
+				ActionEvent.CTRL_MASK));
+		manual.addActionListener(new ActionListener() {
+			// Read VAMIX PDF
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (Desktop.isDesktopSupported()) {
+					try {
+						File file = new File(System.getProperty("user.home")
+								+ File.separator + "vamix" + File.separator
+								+ "VAMIX_User_Manual.pdf");
+						Desktop.getDesktop().open(file);
+					} catch (IOException ex) {
+					}
+				}
+			}
+		});
+		menuHelp.add(manual);
+	}
+
+	/**
 	 * Method to create tabs for specific panes, such as Audio Editor, Playback,
 	 * Video Editor. Creates a cross-off option for every tab except the main
 	 * library tab which shouldn't ever be closed in the application.
@@ -349,11 +357,12 @@ public class Main extends JFrame {
 				x.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						//Stop players
+						// Stop players
 						if (pane instanceof Playback) {
 							((Playback) pane).stopPlayer();
 						} else if (pane instanceof AudioEditor) {
-							((AudioEditor) pane)._miniPlayback.stopPlayer();
+							((AudioEditor) pane).get_miniPlayback()
+									.stopPlayer();
 						} else if (pane instanceof VideoEditor) {
 							((VideoEditor) pane).stopAllPlayers();
 						} else if (pane instanceof Filters) {

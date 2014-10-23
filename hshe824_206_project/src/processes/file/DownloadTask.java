@@ -1,4 +1,4 @@
-package processes;
+package processes.file;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
-import ui.Library;
+import ui.filesystem.Library;
 
 /**
  * This task represents the download operation run by the Downloader in response

@@ -1,11 +1,11 @@
-package processes;
+package processes.file;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 import javax.swing.SwingWorker;
 
-import ui.Library;
+import ui.filesystem.Library;
 
 /**
  * This class represents the task of importing any files into the input library of the VAMIX application.
