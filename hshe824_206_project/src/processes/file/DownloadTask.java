@@ -30,8 +30,8 @@ public class DownloadTask extends SwingWorker<Void, String> {
 
 	private boolean errorState = false;
 
-	private String inputDir = System.getProperty("user.home") + File.separator
-			+ "vamix" + File.separator + "InputLibrary" + File.separator;
+	private String inputDir = System.getProperty("user.home") + File.separator + "vamix" + File.separator
+			+ "InputLibrary" + File.separator;
 
 	public DownloadTask(String URL) {
 		_URL = URL;
@@ -45,13 +45,11 @@ public class DownloadTask extends SwingWorker<Void, String> {
 	 */
 	@Override
 	protected Void doInBackground() throws Exception {
-		String _basename = _URL.substring(_URL.lastIndexOf(File.separator),
-				_URL.length());
+		String _basename = _URL.substring(_URL.lastIndexOf(File.separator), _URL.length());
 		inputDir += _basename;
 		errorState = false;
-		ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c",
-				"wget -A --progress=dot --continue " + _URL + " -O " + inputDir
-						+ " 2>&1");
+		ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c", "wget -A --progress=dot --continue " + _URL
+				+ " -O " + inputDir + " 2>&1");
 		Process process = null;
 		builder.redirectErrorStream(true);
 		try {
@@ -60,8 +58,7 @@ public class DownloadTask extends SwingWorker<Void, String> {
 			e1.printStackTrace();
 		}
 		InputStream stdout = process.getInputStream();
-		BufferedReader stdoutBuffered = new BufferedReader(
-				new InputStreamReader(stdout));
+		BufferedReader stdoutBuffered = new BufferedReader(new InputStreamReader(stdout));
 		String line = null;
 		String error = null;
 		Pattern p = Pattern.compile("\\d+%");
@@ -85,36 +82,41 @@ public class DownloadTask extends SwingWorker<Void, String> {
 			e1.printStackTrace();
 		}
 		try {
-			switch (process.waitFor())  {
-				case 1:
+			switch (process.waitFor()) {
+			case 1:
 				firePropertyChange("failure", null, "Generic error code");
 				errorState = true;
 				return null;
-				case 2: 
-					firePropertyChange("failure", null, "Parse error");
-					errorState = true;
-					break;
-				case 3:
-					firePropertyChange("failure", null, "File I/O error");
-					errorState = true;
-					break;
-				case 4:
-					firePropertyChange("failure", null, "Network failure");
-					errorState = true;
-					break;				case 5:
-					firePropertyChange("failure", null, "SSL verification failure");
-					errorState = true;
-					break;				case 6:
-					firePropertyChange("failure", null, "Username/password authentication failure");
-					errorState = true;
-					break;				case 7:
-					firePropertyChange("failure", null, "Protocol errors");
-					errorState = true;
-					break;				case 8:
-					firePropertyChange("failure", null, "Server issued an error response");
-					errorState = true;
-					break;			
-					} return null;
+			case 2:
+				firePropertyChange("failure", null, "Parse error");
+				errorState = true;
+				break;
+			case 3:
+				firePropertyChange("failure", null, "File I/O error");
+				errorState = true;
+				break;
+			case 4:
+				firePropertyChange("failure", null, "Network failure");
+				errorState = true;
+				break;
+			case 5:
+				firePropertyChange("failure", null, "SSL verification failure");
+				errorState = true;
+				break;
+			case 6:
+				firePropertyChange("failure", null, "Username/password authentication failure");
+				errorState = true;
+				break;
+			case 7:
+				firePropertyChange("failure", null, "Protocol errors");
+				errorState = true;
+				break;
+			case 8:
+				firePropertyChange("failure", null, "Server issued an error response");
+				errorState = true;
+				break;
+			}
+			return null;
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}

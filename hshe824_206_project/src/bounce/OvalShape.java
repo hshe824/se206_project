@@ -1,4 +1,5 @@
 package bounce;
+
 /**
  * This shape class produces an oval shape.
  * 
@@ -53,8 +54,7 @@ public class OvalShape extends Shape {
 		super(x, y, deltaX, deltaY, width, height);
 	}
 
-	public OvalShape(int x, int y, int deltaX, int deltaY, int width,
-			int height, String text) {
+	public OvalShape(int x, int y, int deltaX, int deltaY, int width, int height, String text) {
 		super(x, y, deltaX, deltaY, width, height, text);
 		_text = text;
 	}

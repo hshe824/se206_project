@@ -1,4 +1,5 @@
 package processes.file;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -15,13 +16,13 @@ import javax.swing.SwingWorker;
  * @author Harry She
  * 
  */
-public class FileChecker  {
+public class FileChecker {
 	String _file;
 
 	public FileChecker(String file) {
 		_file = file;
 	}
-	
+
 	/**
 	 * Method to check that a file exists.
 	 */
@@ -33,13 +34,14 @@ public class FileChecker  {
 			return false;
 		}
 	}
+
 	/**
 	 * Method to check that a file is truly an audio file by calling file on it
 	 * and checking whether it contains the word "audio" in it.
 	 */
 	public boolean checkAVFile(String type) {
-		ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c",
-				"avprobe " + _file + " 2>&1  | grep -wi '"+type+"'");
+		ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c", "avprobe " + _file + " 2>&1  | grep -wi '"
+				+ type + "'");
 		Process process = null;
 		builder.redirectErrorStream(true);
 		try {
@@ -49,8 +51,7 @@ public class FileChecker  {
 			e1.printStackTrace();
 		}
 		InputStream stdout = process.getInputStream();
-		BufferedReader stdoutBuffered = new BufferedReader(
-				new InputStreamReader(stdout));
+		BufferedReader stdoutBuffered = new BufferedReader(new InputStreamReader(stdout));
 		try {
 			if (stdoutBuffered.readLine() != null) {
 				return true;

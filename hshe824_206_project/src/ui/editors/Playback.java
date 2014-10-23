@@ -43,9 +43,10 @@ import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import uk.co.caprica.vlcj.player.embedded.x.XFullScreenStrategy;
 
 import javax.swing.JButton;
+
 /**
- * This class creates the layout of the playback panel
- * and the listeners for the components
+ * This class creates the layout of the playback panel and the listeners for the
+ * components
  * 
  * NB: Taken from assignment 3.
  * 
@@ -61,21 +62,15 @@ public class Playback extends Pane {
 	private final String TEXT_UNMUTE = "Unmute";
 	private final String TEXT_MUTE = "Mute";
 
-	private RoundButton _playPauseButton = new RoundButton(
-			createImageIcon("pause.png"), createImageIcon("pause_p.png"),
-			createImageIcon("pause_r.png"), TEXT_PAUSE);
-	private RoundButton _mute = new RoundButton(createImageIcon("unmute.png"),
-			createImageIcon("unmute_p.png"), createImageIcon("unmute_r.png"),
-			TEXT_UNMUTE);
-	private RoundButton _stop = new RoundButton(createImageIcon("stop.png"),
-			createImageIcon("stop_p.png"), createImageIcon("stop_r.png"),
-			"Stop");
-	private RoundButton _fastForward = new RoundButton(
-			createImageIcon("fastforward.png"),
-			createImageIcon("fastforward_p.png"),
-			createImageIcon("fastforward_r.png"), "FastForward");
-	private RoundButton _rewind = new RoundButton(
-			createImageIcon("rewind.png"), createImageIcon("rewind_p.png"),
+	private RoundButton _playPauseButton = new RoundButton(createImageIcon("pause.png"),
+			createImageIcon("pause_p.png"), createImageIcon("pause_r.png"), TEXT_PAUSE);
+	private RoundButton _mute = new RoundButton(createImageIcon("unmute.png"), createImageIcon("unmute_p.png"),
+			createImageIcon("unmute_r.png"), TEXT_UNMUTE);
+	private RoundButton _stop = new RoundButton(createImageIcon("stop.png"), createImageIcon("stop_p.png"),
+			createImageIcon("stop_r.png"), "Stop");
+	private RoundButton _fastForward = new RoundButton(createImageIcon("fastforward.png"),
+			createImageIcon("fastforward_p.png"), createImageIcon("fastforward_r.png"), "FastForward");
+	private RoundButton _rewind = new RoundButton(createImageIcon("rewind.png"), createImageIcon("rewind_p.png"),
 			createImageIcon("rewind_r.png"), "Rewind");
 
 	private final JSlider _seekbar = new JSlider(0, 0, 0);
@@ -97,21 +92,17 @@ public class Playback extends Pane {
 
 	private boolean isFullScreen = false;
 	private final JButton effects = new JButton("Effects");
-	
+
 	/**
-	 * This constructor is for the main 
-	 * playback tab
+	 * This constructor is for the main playback tab
 	 */
 	public Playback(String file) {
 		_currentFileString = file;
 		setLayout(new MigLayout("", "[grow]", "[520px,grow][20px][40px][20px]"));
-		_seekPanel.setLayout(new MigLayout("",
-				"[40px,grow 10][700px,grow 90][40px,grow 10]", "[20px]"));
-		_playbackPanel.setLayout(new MigLayout("",
-				"[40px][40px][10px][40px][40px][440px,grow][40px][160px]",
-				"[40px]"));
-		_playbackPanel.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null,
-				null, null, null));
+		_seekPanel.setLayout(new MigLayout("", "[40px,grow 10][700px,grow 90][40px,grow 10]", "[20px]"));
+		_playbackPanel
+				.setLayout(new MigLayout("", "[40px][40px][10px][40px][40px][440px,grow][40px][160px]", "[40px]"));
+		_playbackPanel.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
 		_labelPanel.setLayout(new MigLayout("", "[grow]", "[20px]"));
 		_playerBG.setMinimumSize(new Dimension(950, 430));
 
@@ -123,13 +114,9 @@ public class Playback extends Pane {
 	 */
 	public Playback() {
 		setLayout(new MigLayout("", "[grow]", "[220px,grow][20px][40px][20px]"));
-		_seekPanel.setLayout(new MigLayout("",
-				"[20px,grow 10][350px,grow 90][20px,grow 10]", "[10px]"));
-		_playbackPanel.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null,
-				null, null, null));
-		_playbackPanel.setLayout(new MigLayout("",
-				"[20px][20px][5px][20px][20px][220px,grow][20px][80px]",
-				"[20px]"));
+		_seekPanel.setLayout(new MigLayout("", "[20px,grow 10][350px,grow 90][20px,grow 10]", "[10px]"));
+		_playbackPanel.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
+		_playbackPanel.setLayout(new MigLayout("", "[20px][20px][5px][20px][20px][220px,grow][20px][80px]", "[20px]"));
 		_playerBG.setMinimumSize(new Dimension(360, 220));
 
 		setUp(false);
@@ -142,19 +129,18 @@ public class Playback extends Pane {
 		if (isPlayback) {
 			add(_labelPanel, "cell 0 3,growx");
 		}
-		
+
 		effects.setIcon(createImageIcon("effects.png"));
 		effects.setFont(mainFont);
-		
+
 		_playerBG.setBackground(Color.BLACK);
 		_playerBG.setVisible(true);
 		_mediaPlayerFactory = new MediaPlayerFactory();
-		
-		//BoilerPlate code for media player set up taken
-		//from vlcj api
+
+		// BoilerPlate code for media player set up taken
+		// from vlcj api
 		_mediaPlayer = _mediaPlayerFactory.newEmbeddedMediaPlayer();
-		_mediaPlayer.setVideoSurface(_mediaPlayerFactory
-				.newVideoSurface(_playerBG));
+		_mediaPlayer.setVideoSurface(_mediaPlayerFactory.newVideoSurface(_playerBG));
 		_playerPanel.setLayout(new MigLayout("", "[grow]", "[grow]"));
 		_playerPanel.add(_playerBG, "cell 0 0, grow");
 
@@ -162,7 +148,7 @@ public class Playback extends Pane {
 		_playbackPanel.add(_stop, "cell 1 0");
 		_playbackPanel.add(_rewind, "cell 3 0");
 		_playbackPanel.add(_fastForward, "cell 4 0");
-		
+
 		_playbackPanel.add(effects, "cell 5 0,alignx right");
 		_playbackPanel.add(_mute, "cell 6 0");
 		_playbackPanel.add(_volume, "cell 7 0");
@@ -192,15 +178,15 @@ public class Playback extends Pane {
 		_mediaPlayer.play();
 
 		long length = 0;
-	try {
-		Thread.sleep(1000);
-	} catch (InterruptedException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-			_mediaPlayer.parseMedia();
-			length = _mediaPlayer.getLength();
-		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		_mediaPlayer.parseMedia();
+		length = _mediaPlayer.getLength();
+
 		_mediaPlayer.mute(false);
 		_volume.setValue(50);
 		_mediaPlayer.setVolume(50);
@@ -208,7 +194,7 @@ public class Playback extends Pane {
 		_totalTime.setText(time(length));
 		_seekbar.setMaximum((int) length);
 
-		//Code taken for Nasser's Lecture
+		// Code taken for Nasser's Lecture
 		Timer updater = new Timer(250, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -236,8 +222,7 @@ public class Playback extends Pane {
 	private ImageIcon createImageIcon(String name) {
 		BufferedImage image;
 		try {
-			image = ImageIO.read(getClass().getResourceAsStream(
-					File.separator + "icons" + File.separator + name));
+			image = ImageIO.read(getClass().getResourceAsStream(File.separator + "icons" + File.separator + name));
 			return new ImageIcon(image);
 		} catch (IOException e) {
 			System.err.println("Couldn't find file: " + name);
@@ -256,20 +241,16 @@ public class Playback extends Pane {
 		if (type.equals("")) {
 			// Null checking
 		} else if (type.equals(TEXT_PLAY)) {
-			button.setIcons(createImageIcon("play.png"),
-					createImageIcon("play_p.png"),
-					createImageIcon("play_r.png"), TEXT_PLAY);
+			button.setIcons(createImageIcon("play.png"), createImageIcon("play_p.png"), createImageIcon("play_r.png"),
+					TEXT_PLAY);
 		} else if (type.equals(TEXT_PAUSE)) {
-			button.setIcons(createImageIcon("pause.png"),
-					createImageIcon("pause_p.png"),
+			button.setIcons(createImageIcon("pause.png"), createImageIcon("pause_p.png"),
 					createImageIcon("pause_r.png"), TEXT_PAUSE);
 		} else if (type.equals(TEXT_MUTE)) {
-			button.setIcons(createImageIcon("mute.png"),
-					createImageIcon("mute_p.png"),
-					createImageIcon("mute_r.png"), TEXT_MUTE);
+			button.setIcons(createImageIcon("mute.png"), createImageIcon("mute_p.png"), createImageIcon("mute_r.png"),
+					TEXT_MUTE);
 		} else if (type.equals(TEXT_UNMUTE)) {
-			button.setIcons(createImageIcon("unmute.png"),
-					createImageIcon("unmute_p.png"),
+			button.setIcons(createImageIcon("unmute.png"), createImageIcon("unmute_p.png"),
 					createImageIcon("unmute_r.png"), TEXT_UNMUTE);
 		}
 	}
@@ -278,15 +259,15 @@ public class Playback extends Pane {
 	 * This method adds the listeners for all the components
 	 */
 	private void addListeners(Boolean isPlayback) {
-		
-		 effects.addActionListener(new ActionListener() {
-			
+
+		effects.addActionListener(new ActionListener() {
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-			JFrame effectsFrame = new JFrame("Effects");
-			effectsFrame.setMinimumSize(new Dimension (500,300));
-			effectsFrame.getContentPane().add(new MarqueeControls(_mediaPlayer));
-			effectsFrame.setVisible(true);
+				JFrame effectsFrame = new JFrame("Effects");
+				effectsFrame.setMinimumSize(new Dimension(500, 300));
+				effectsFrame.getContentPane().add(new MarqueeControls(_mediaPlayer));
+				effectsFrame.setVisible(true);
 			}
 		});
 
@@ -344,8 +325,7 @@ public class Playback extends Pane {
 				} catch (NullPointerException ne) {
 				}
 				_rewind.setEnabled(true);
-				if (((RoundButton) action.getSource()).getDescription().equals(
-						TEXT_PLAY)) {
+				if (((RoundButton) action.getSource()).getDescription().equals(TEXT_PLAY)) {
 					if (_mediaPlayer.getRate() > 1.0) {
 						_mediaPlayer.setRate((float) 1.0);
 						changeButton(_playPauseButton, TEXT_PAUSE);
@@ -353,9 +333,9 @@ public class Playback extends Pane {
 						_mediaPlayer.skip(-1);
 						return;
 					} else {
-					_mediaPlayer.play();
-					changeButton(_playPauseButton, TEXT_PAUSE);
-					_playPauseButton.validate();
+						_mediaPlayer.play();
+						changeButton(_playPauseButton, TEXT_PAUSE);
+						_playPauseButton.validate();
 					}
 				} else {
 					_mediaPlayer.pause();
@@ -370,7 +350,7 @@ public class Playback extends Pane {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					rw.cancel(true);
-				} catch (NullPointerException ne){
+				} catch (NullPointerException ne) {
 				}
 				_rewind.setEnabled(true);
 				stopPlayer();
@@ -461,17 +441,14 @@ public class Playback extends Pane {
 						p.add(c, BorderLayout.CENTER);
 						frame.getContentPane().add(p, BorderLayout.CENTER);
 						final EmbeddedMediaPlayer mediaPlayer = mediaPlayerFactory
-								.newEmbeddedMediaPlayer(new DefaultFullScreenStrategy(
-										frame));
-						mediaPlayer.setVideoSurface(mediaPlayerFactory
-								.newVideoSurface(c));
+								.newEmbeddedMediaPlayer(new DefaultFullScreenStrategy(frame));
+						mediaPlayer.setVideoSurface(mediaPlayerFactory.newVideoSurface(c));
 						frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 						frame.setVisible(true);
 						frame.addKeyListener(new KeyAdapter() {
 							@Override
 							public void keyPressed(KeyEvent e) {
-								if (e.getKeyCode() == KeyEvent.VK_ESCAPE
-										|| e.getKeyCode() == KeyEvent.VK_Q) {
+								if (e.getKeyCode() == KeyEvent.VK_ESCAPE || e.getKeyCode() == KeyEvent.VK_Q) {
 									_mediaPlayer.setTime(mediaPlayer.getTime());
 									mediaPlayer.stop();
 									frame.dispose();
@@ -484,7 +461,7 @@ public class Playback extends Pane {
 						c.addMouseListener(new MouseAdapter() {
 							@Override
 							public void mouseClicked(MouseEvent e) {
-								if (e.getClickCount()==2) {
+								if (e.getClickCount() == 2) {
 									_mediaPlayer.setTime(mediaPlayer.getTime());
 									mediaPlayer.stop();
 									frame.dispose();
@@ -519,12 +496,11 @@ public class Playback extends Pane {
 		if (duration < 3600) {
 			time = formatter.format(min) + ":" + formatter.format(sec);
 		} else {
-			time = formatter.format(hour) + ":" + formatter.format(min) + ":"
-					+ formatter.format(sec);
+			time = formatter.format(hour) + ":" + formatter.format(min) + ":" + formatter.format(sec);
 		}
 		return time;
 	}
-	
+
 	public EmbeddedMediaPlayer getMediaPlayer() {
 		return this._mediaPlayer;
 	}

@@ -1,4 +1,4 @@
-package ui.filesystem;
+package model;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,6 +8,7 @@ import ui.Pane;
 import ui.editors.AudioEditor;
 import ui.editors.SubtitleEditor;
 import ui.editors.VideoEditor;
+import ui.filesystem.Library;
 import ui.special.Bounce;
 import ui.special.Filters;
 
@@ -50,16 +51,12 @@ public class OpenListener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (Library._currentFileString != null
-				&& !Library._currentFileString.equals("")) {
+		if (Library._currentFileString != null && !Library._currentFileString.equals("")) {
 			if (Main._tabbedPane.indexOfTab(_tabName) == -1) {
-				Main.createNewTab(_tabName, _currentPane,
-						Main._tabbedPane.getTabCount());
-				Main._tabbedPane.setSelectedIndex(Main._tabbedPane
-						.getTabCount() - 1);
+				Main.createNewTab(_tabName, _currentPane, Main._tabbedPane.getTabCount());
+				Main._tabbedPane.setSelectedIndex(Main._tabbedPane.getTabCount() - 1);
 			} else {
-				Main._tabbedPane.setSelectedIndex(Main._tabbedPane
-						.indexOfTab(_tabName));
+				Main._tabbedPane.setSelectedIndex(Main._tabbedPane.indexOfTab(_tabName));
 			}
 			_currentPane.setInputFile(Library._currentFileString);
 		}

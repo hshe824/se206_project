@@ -47,16 +47,14 @@ public abstract class Shape {
 	 * Creates a Shape object with default values for instance variables.
 	 */
 	public Shape() {
-		this(DEFAULT_X_POS, DEFAULT_Y_POS, DEFAULT_DELTA_X, DEFAULT_DELTA_Y,
-				DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		this(DEFAULT_X_POS, DEFAULT_Y_POS, DEFAULT_DELTA_X, DEFAULT_DELTA_Y, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 	}
 
 	/**
 	 * Creates a Shape object with a specified x and y position.
 	 */
 	public Shape(int x, int y) {
-		this(x, y, DEFAULT_DELTA_X, DEFAULT_DELTA_Y, DEFAULT_WIDTH,
-				DEFAULT_HEIGHT);
+		this(x, y, DEFAULT_DELTA_X, DEFAULT_DELTA_Y, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 	}
 
 	/**
@@ -84,8 +82,7 @@ public abstract class Shape {
 	 * Creates a Shape instance with specified x, y, deltaX, deltaY, width and
 	 * height values and with a CENTRED Text string.
 	 */
-	public Shape(int x, int y, int deltaX, int deltaY, int width, int height,
-			String text) {
+	public Shape(int x, int y, int deltaX, int deltaY, int width, int height, String text) {
 		_x = x;
 		_y = y;
 		_deltaX = deltaX;

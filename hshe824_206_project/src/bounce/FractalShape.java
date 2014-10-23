@@ -1,8 +1,7 @@
 package bounce;
 
 /**
- * This shape class produces a fractal shape consisting of 
- * overlapping circles.
+ * This shape class produces a fractal shape consisting of overlapping circles.
  * 
  * 
  * @author: Harry She
@@ -10,8 +9,7 @@ package bounce;
 public class FractalShape extends Shape {
 	private int radius;
 
-	public FractalShape(int x, int y, int deltaX, int deltaY, int width,
-			int height, int radius) {
+	public FractalShape(int x, int y, int deltaX, int deltaY, int width, int height, int radius) {
 		super(x, y, deltaX, deltaY, width, height);
 		this.radius = radius;
 

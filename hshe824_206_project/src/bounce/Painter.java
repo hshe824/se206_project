@@ -42,7 +42,6 @@ public interface Painter {
 	public void drawCentredText(int x, int y, int width, int height, String text);
 
 	// Draws image
-	public void drawImage(Image img, int i, int j, int _width, int _height,
-			Object object);
+	public void drawImage(Image img, int i, int j, int _width, int _height, Object object);
 
 }

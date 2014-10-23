@@ -28,9 +28,11 @@ import ui.Pane;
 import bounce.AnimationViewer;
 
 /**
- * This pane contains an animation viewer that can be used to 
- * view gifs generated from an input video. They can be made to bounce
- * off the walls and change state.
+ * This pane contains an animation viewer that can be used to view gifs
+ * generated from an input video. They can be made to bounce off the walls and
+ * change state.
+ * 
+ * This can be used by the user for a preview of several parts of a video concurrently.
  * 
  * @author Harry She
  *
@@ -45,16 +47,15 @@ public class Bounce extends Pane {
 	private Integer _duration = 0;
 	private JTextField _ShapesField;
 	private int _numberOfShapes;
-	private JProgressBar   progressBar;
+	private JProgressBar progressBar;
 
 	public Bounce() {
 
 		setLayout(new MigLayout("", "[grow]", "[grow 90][grow 10]"));
 
 		JPanel panel = new JPanel();
-		panel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED,
-				null, null, null, null), "Bounce controls",
-				TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null),
+				"Bounce controls", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		add(panel, "cell 0 1,growx 10,growy");
 		panel.setLayout(new MigLayout("", "[grow][][grow]", "[grow][grow]"));
 
@@ -72,7 +73,7 @@ public class Bounce extends Pane {
 				}
 			}
 		});
-		
+
 		_ShapesField.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
@@ -85,13 +86,13 @@ public class Bounce extends Pane {
 			public void focusLost(FocusEvent arg0) {
 				if (Integer.parseInt(_ShapesField.getText()) >= 0) {
 					_numberOfShapes = Integer.parseInt(_ShapesField.getText());
-				} 
+				}
 			}
 		});
-		
-	    progressBar = new JProgressBar();
+
+		progressBar = new JProgressBar();
 		panel.add(progressBar, "cell 0 0 2 1,growx,height 30");
-		
+
 		JLabel lblEnterHowMany = new JLabel("Enter how many GIF instances to generate (1-20 max):");
 		panel.add(lblEnterHowMany, "flowx,cell 2 0,alignx center");
 
@@ -104,8 +105,7 @@ public class Bounce extends Pane {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				 bCreator = new BounceCreator(_currentFileString,
-						5, _duration);
+				bCreator = new BounceCreator(_currentFileString, 5, _duration);
 				bCreator.execute();
 				progressBar.setIndeterminate(true);
 				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -125,12 +125,13 @@ public class Bounce extends Pane {
 							add(animationViewer, "cell 0 0,growx 90,growy");
 							validate();
 							repaint();
-						} }
+						}
+					}
 				});
 
 			}
 		});
-		
+
 		JButton btnClearScreen = new JButton("Cancel/Clear screen");
 		btnClearScreen.addActionListener(new ActionListener() {
 			@Override
@@ -152,8 +153,7 @@ public class Bounce extends Pane {
 		btnBouncemania.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				bCreator = new BounceCreator(_currentFileString,
-						_numberOfShapes, _duration);
+				bCreator = new BounceCreator(_currentFileString, _numberOfShapes, _duration);
 				bCreator.execute();
 				progressBar.setIndeterminate(true);
 				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -174,24 +174,18 @@ public class Bounce extends Pane {
 							add(animationViewer, "cell 0 0,growx 90,growy");
 							validate();
 							repaint();
-						}else if ("failure".equals(evt.getPropertyName())) {
-								progressBar.setIndeterminate(false);
-								setCursor(Cursor.getDefaultCursor());
-								JOptionPane
-								.showMessageDialog(
-										null,
-										"Please enter a valid number between 1-20!",
-										"Error!",
-										JOptionPane.WARNING_MESSAGE);
-								if (animationViewer != null) {
-									remove(animationViewer);
-									validate();
-									repaint();
-								}
+						} else if ("failure".equals(evt.getPropertyName())) {
+							progressBar.setIndeterminate(false);
+							setCursor(Cursor.getDefaultCursor());
+							JOptionPane.showMessageDialog(null, "Please enter a valid number between 1-20!", "Error!",
+									JOptionPane.WARNING_MESSAGE);
+							if (animationViewer != null) {
+								remove(animationViewer);
+								validate();
+								repaint();
+							}
 						}
-
-						}
-					
+					}
 				});
 			}
 		});

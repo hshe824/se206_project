@@ -5,6 +5,10 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
+import sun.misc.Sort;
+
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
+
 /**
  * 
  * 
@@ -15,13 +19,9 @@ import javax.swing.table.AbstractTableModel;
  */
 public class SubtitleModel extends AbstractTableModel {
 	private List<Subtitle> subtitleList = new ArrayList<Subtitle>();
-	private Subtitle defaultSubtitle = new Subtitle("00:00:00", "00:00:10",
-			"Please enter subtitle here");
 
-	private final String[] columnNames = new String[] { "Start time:",
-			"End time:", "Subtitles" };
-	private final Class[] columnClass = new Class[] { String.class,
-			String.class, String.class };
+	private final String[] columnNames = new String[] { "Start time:", "End time:", "Subtitles" };
+	private final Class[] columnClass = new Class[] { String.class, String.class, String.class };
 
 	public SubtitleModel() {
 	}
@@ -88,8 +88,7 @@ public class SubtitleModel extends AbstractTableModel {
 	}
 
 	public void addRow() {
-		subtitleList.add(new Subtitle("00:00:00", "00:00:10",
-				"Please enter subtitle here"));
+		subtitleList.add(new Subtitle("00:00:00", "00:00:10", "Please enter subtitle here"));
 	}
 
 	public void removeRow(int selectedRow) {
@@ -98,6 +97,12 @@ public class SubtitleModel extends AbstractTableModel {
 
 	public List<Subtitle> getSubtitleList() {
 		return subtitleList;
+		
 	}
-
+	
+	public void setSubtitleList(List<Subtitle> subtitles) {
+		this.subtitleList=subtitles;
+		
+	}
+	
 }

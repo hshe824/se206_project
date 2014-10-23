@@ -21,14 +21,13 @@ public class Bouncemania extends Shape {
 		super();
 	}
 
-	public Bouncemania(int x, int y, int deltaX, int deltaY, int width,
-			int height, int Gif, int numShapes) {
+	public Bouncemania(int x, int y, int deltaX, int deltaY, int width, int height, int Gif, int numShapes) {
 		super(x, y, deltaX, deltaY, width, height);
 		_GIFState = Gif;
-		
-		//Gets gif image to display in this instance
-		_imageIcon=new ImageIcon(VideoTask.tempDir + File.separator + Gif +".gif");
-		
+
+		// Gets gif image to display in this instance
+		_imageIcon = new ImageIcon(VideoTask.tempDir + File.separator + Gif + ".gif");
+
 	}
 
 	/**
@@ -37,10 +36,8 @@ public class Bouncemania extends Shape {
 	protected void paints(Painter painter) {
 		// Paint corresponding current GIF file
 		painter.drawRect(_x, _y, _width, _height);
-		painter.drawImage(_imageIcon.getImage(), _x, _y, _width, _height,
-				null);		
-		}
-	
+		painter.drawImage(_imageIcon.getImage(), _x, _y, _width, _height, null);
+	}
 
 	public void move(int _width, int _height) {
 		super.move(_width, _height);

@@ -21,10 +21,8 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.UnsupportedLookAndFeelException;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -36,6 +34,7 @@ import ui.editors.SubtitleEditor;
 import ui.editors.VideoEditor;
 import ui.filesystem.Library;
 import ui.special.Filters;
+import model.LookAndFeelListener;
 
 /**
  * This the main class of the VAMIX Application. It is responsible for setting
@@ -81,8 +80,7 @@ public class Main extends JFrame {
 			public void run() {
 				try {
 					// Set look and feel to Nimbus
-					for (LookAndFeelInfo info : UIManager
-							.getInstalledLookAndFeels()) {
+					for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 						if ("Nimbus".equals(info.getName())) {
 							UIManager.setLookAndFeel(info.getClassName());
 							break;
@@ -90,8 +88,7 @@ public class Main extends JFrame {
 					}
 				} catch (Exception e) {
 					try {
-						UIManager.setLookAndFeel(UIManager
-								.getCrossPlatformLookAndFeelClassName());
+						UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 					} catch (Exception ex) {
 					}
 				}
@@ -141,66 +138,34 @@ public class Main extends JFrame {
 					.showMessageDialog(
 							null,
 							"We have detected this is your first time running VAMIX. VAMIX requires avconv in the libav library to run.\nPlease read the User help manual by pressing Ctrl-H to learn how to use VAMIX.",
-							"Please read manual",
-							JOptionPane.INFORMATION_MESSAGE);
+							"Please read manual", JOptionPane.INFORMATION_MESSAGE);
 		}
 
-		/**
-		 * Listener responsible for dynamically changing the theme (look and
-		 * feel) of the program when requested by the user.
-		 * 
-		 * @author harry
-		 *
-		 */
-		class lookAndFeelListener implements ActionListener {
-			private String _lookAndFeel;
+		// Sets up the ability to dynamically change look and feel
+		setupDynamicLookAndFeel();
 
-			public lookAndFeelListener(String lookAndFeel) {
-				_lookAndFeel = lookAndFeel;
-			}
+	}
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-					UIManager.setLookAndFeel(_lookAndFeel);
-				} catch (ClassNotFoundException e1) {
-					JOptionPane.showMessageDialog(null,
-							"Warning: The look and feel: " + _lookAndFeel
-									+ " was not found on this machine",
-							"Warning: Theme not found!",
-							JOptionPane.WARNING_MESSAGE);
-					return;
-				} catch (InstantiationException e1) {
-				} catch (IllegalAccessException e1) {
-				} catch (UnsupportedLookAndFeelException e1) {
-				}
-				SwingUtilities.updateComponentTreeUI(window);
-			}
-		}
+	private void setupDynamicLookAndFeel() {
 		JMenu menuThemes = new JMenu("Themes");
 		menuBar.add(menuThemes);
 		menuBar.add(menuHelp);
 
 		JMenuItem metal = new JMenuItem("Metal theme");
 		menuThemes.add(metal);
-		metal.addActionListener(new lookAndFeelListener(
-				"javax.swing.plaf.metal.MetalLookAndFeel"));
+		metal.addActionListener(new LookAndFeelListener("javax.swing.plaf.metal.MetalLookAndFeel"));
 
 		JMenuItem nimbus = new JMenuItem("Nimbus theme");
 		menuThemes.add(nimbus);
-		nimbus.addActionListener(new lookAndFeelListener(
-				"javax.swing.plaf.nimbus.NimbusLookAndFeel"));
+		nimbus.addActionListener(new LookAndFeelListener("javax.swing.plaf.nimbus.NimbusLookAndFeel"));
 
 		JMenuItem motif = new JMenuItem("Motif theme");
 		menuThemes.add(motif);
-		motif.addActionListener(new lookAndFeelListener(
-				"com.sun.java.swing.plaf.motif.MotifLookAndFeel"));
+		motif.addActionListener(new LookAndFeelListener("com.sun.java.swing.plaf.motif.MotifLookAndFeel"));
 
 		JMenuItem gtk = new JMenuItem("GTK theme");
 		menuThemes.add(gtk);
-		gtk.addActionListener(new lookAndFeelListener(
-				"com.sun.java.swing.plaf.gtk.GTKLookAndFeel"));
-
+		gtk.addActionListener(new LookAndFeelListener("com.sun.java.swing.plaf.gtk.GTKLookAndFeel"));
 	}
 
 	/**
@@ -217,13 +182,11 @@ public class Main extends JFrame {
 		menuBar.add(menuPlay);
 
 		importFile = new JMenuItem("Import File", KeyEvent.VK_I);
-		importFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I,
-				ActionEvent.CTRL_MASK));
+		importFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, ActionEvent.CTRL_MASK));
 		menuFile.add(importFile);
 
 		download = new JMenuItem("Download", KeyEvent.VK_D);
-		download.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D,
-				ActionEvent.CTRL_MASK));
+		download.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, ActionEvent.CTRL_MASK));
 		menuFile.add(download);
 		menuFile.add(new JSeparator());
 
@@ -242,7 +205,6 @@ public class Main extends JFrame {
 
 		outputLibrary = new JMenuItem("Open Output Library");
 		outputLibrary.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -253,12 +215,10 @@ public class Main extends JFrame {
 			}
 		});
 		menuFile.add(outputLibrary);
-
 		menuFile.add(new JSeparator());
 
 		quit = new JMenuItem("Quit", KeyEvent.VK_Q);
-		quit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,
-				ActionEvent.CTRL_MASK));
+		quit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK));
 		menuFile.add(quit);
 		quit.addActionListener(new ActionListener() {
 			@Override
@@ -270,57 +230,47 @@ public class Main extends JFrame {
 
 		editAudio = new JMenuItem("Edit Audio", KeyEvent.VK_E);
 		editAudio.setEnabled(false);
-		editAudio.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E,
-				ActionEvent.CTRL_MASK));
+		editAudio.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK));
 		edit.add(editAudio);
-
 		edit.add(new JSeparator());
 
 		addText = new JMenuItem("Add Video text", KeyEvent.VK_T);
-		addText.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T,
-				ActionEvent.CTRL_MASK));
+		addText.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, ActionEvent.CTRL_MASK));
 		addText.setEnabled(false);
 		edit.add(addText);
 
 		addSubtitles = new JMenuItem("Add Subtitles", KeyEvent.VK_S);
-		addSubtitles.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
-				ActionEvent.CTRL_MASK));
+		addSubtitles.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
 		addSubtitles.setEnabled(false);
 		edit.add(addSubtitles);
 
 		addFilter = new JMenuItem("Add Video filters", KeyEvent.VK_F);
-		addFilter.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F,
-				ActionEvent.CTRL_MASK));
+		addFilter.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK));
 		addFilter.setEnabled(false);
 		edit.add(addFilter);
 
 		play = new JMenuItem("Play", KeyEvent.VK_P);
 		play.setEnabled(false);
-		play.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P,
-				ActionEvent.CTRL_MASK));
+		play.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK));
 		menuPlay.add(play);
 		menuPlay.add(new JSeparator());
 
 		bounce = new JMenuItem("Bounce!", KeyEvent.VK_B);
 		bounce.setEnabled(false);
-		bounce.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B,
-				ActionEvent.CTRL_MASK));
+		bounce.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, ActionEvent.CTRL_MASK));
 		menuPlay.add(bounce);
 
 		menuHelp = new JMenu("Help");
-
 		manual = new JMenuItem("Help", KeyEvent.VK_H);
-		manual.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H,
-				ActionEvent.CTRL_MASK));
+		manual.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, ActionEvent.CTRL_MASK));
 		manual.addActionListener(new ActionListener() {
 			// Read VAMIX PDF
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (Desktop.isDesktopSupported()) {
 					try {
-						File file = new File(System.getProperty("user.home")
-								+ File.separator + "vamix" + File.separator
-								+ "VAMIX_User_Manual.pdf");
+						File file = new File(System.getProperty("user.home") + File.separator + "vamix"
+								+ File.separator + "VAMIX_User_Manual.pdf");
 						Desktop.getDesktop().open(file);
 					} catch (IOException ex) {
 					}
@@ -339,7 +289,7 @@ public class Main extends JFrame {
 	 * @param pane
 	 * @param num
 	 */
-	public static void createNewTab(String tabName, final JPanel pane, int num) {
+	public static void createNewTab(String tabName, final Pane pane, int num) {
 
 		// Only create new tab if there isn't the same tab already open
 		if (_tabbedPane.indexOfTab(tabName) == -1 || pane instanceof Playback) {
@@ -361,8 +311,7 @@ public class Main extends JFrame {
 						if (pane instanceof Playback) {
 							((Playback) pane).stopPlayer();
 						} else if (pane instanceof AudioEditor) {
-							((AudioEditor) pane).get_miniPlayback()
-									.stopPlayer();
+							((AudioEditor) pane).get_miniPlayback().stopPlayer();
 						} else if (pane instanceof VideoEditor) {
 							((VideoEditor) pane).stopAllPlayers();
 						} else if (pane instanceof Filters) {
@@ -397,11 +346,9 @@ public class Main extends JFrame {
 			firstTime = true;
 		}
 
-		URL inputUrl = getClass().getResource(
-				File.separator + "manual" + File.separator
-						+ "VAMIX_User_Manual.pdf");
-		File dest = new File(System.getProperty("user.home") + File.separator
-				+ "vamix" + File.separator + "VAMIX_User_Manual.pdf");
+		URL inputUrl = getClass().getResource(File.separator + "manual" + File.separator + "VAMIX_User_Manual.pdf");
+		File dest = new File(System.getProperty("user.home") + File.separator + "vamix" + File.separator
+				+ "VAMIX_User_Manual.pdf");
 		try {
 			FileUtils.copyURLToFile(inputUrl, dest);
 		} catch (IOException e) {
@@ -410,4 +357,5 @@ public class Main extends JFrame {
 
 		return firstTime;
 	}
+
 }

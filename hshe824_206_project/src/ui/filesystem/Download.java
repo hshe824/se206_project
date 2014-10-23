@@ -34,8 +34,7 @@ public class Download extends JFrame {
 	protected Download() {
 
 		JLabel _label = new JLabel("Please enter URL of mp3 to download:");
-		final JLabel _label2 = new JLabel(
-				"The file must be open source to download!");
+		final JLabel _label2 = new JLabel("The file must be open source to download!");
 		final JLabel _downloading = new JLabel("Downloading");
 		final JTextField _URLField = new JTextField("", 30);
 		final JButton _download = new JButton("Download");
@@ -75,8 +74,7 @@ public class Download extends JFrame {
 					_pause.setEnabled(false);
 				} else if ("failure".equals(e.getPropertyName())) {
 					_progress.setString("Download Failed!");
-					JOptionPane.showMessageDialog(null, e.getNewValue(),
-							"Error!", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(null, e.getNewValue(), "Error!", JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		}
@@ -118,21 +116,13 @@ public class Download extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					String _url = _URLField.getText().trim();
-					String _basename = _url.substring(
-							_url.lastIndexOf(File.separator), _url.length());
+					String _basename = _url.substring(_url.lastIndexOf(File.separator), _url.length());
 					File _file = new File(Library.inputDir + _basename);
 					if (_file.exists()) {
 						Object[] options = { "Resume", "Overwrite", "Cancel" };
-						int action = JOptionPane
-								.showOptionDialog(
-										null,
-										"File: "
-												+ _file
-												+ " already exists, do you wish to overwrite?",
-										"ERROR: File already exists:",
-										JOptionPane.CANCEL_OPTION,
-										JOptionPane.QUESTION_MESSAGE, null,
-										options, options[1]);
+						int action = JOptionPane.showOptionDialog(null, "File: " + _file
+								+ " already exists, do you wish to overwrite?", "ERROR: File already exists:",
+								JOptionPane.CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
 						if (action == JOptionPane.YES_OPTION) {
 							// Resume
 						} else if (action == JOptionPane.NO_OPTION) {
@@ -146,8 +136,7 @@ public class Download extends JFrame {
 
 					// Only download if open source
 					if (_openSourceCheck.isSelected()) {
-						_outputLocation.setText(_url.substring(_url
-								.lastIndexOf(File.separator) + 1)
+						_outputLocation.setText(_url.substring(_url.lastIndexOf(File.separator) + 1)
 								+ " will be downloaded to " + Library.inputDir);
 						dl = new DownloadTask(_url);
 						dl.addPropertyChangeListener(new DownloadListener());
@@ -160,8 +149,7 @@ public class Download extends JFrame {
 						_pause.setEnabled(true);
 					}
 				} catch (Exception exp) {
-					JOptionPane.showMessageDialog(null,
-							"Please enter a valid URL", "Error!",
+					JOptionPane.showMessageDialog(null, "Please enter a valid URL", "Error!",
 							JOptionPane.WARNING_MESSAGE);
 				}
 			}

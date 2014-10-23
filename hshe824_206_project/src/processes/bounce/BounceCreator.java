@@ -10,8 +10,8 @@ import processes.video.VideoTask;
 import bounce.AnimationViewer;
 
 /**
- * Class responsible for generating GIF images that are
- * to be used in the bounce animation
+ * Class responsible for generating GIF images that are to be used in the bounce
+ * animation
  * 
  * @author Harry She
  *
@@ -30,7 +30,6 @@ public class BounceCreator extends SwingWorker<Void, Void> {
 		_duration = duration;
 	}
 
-
 	/**
 	 * Calls command to perform a specific bounce task.
 	 *
@@ -44,27 +43,21 @@ public class BounceCreator extends SwingWorker<Void, Void> {
 
 		ProcessBuilder builder = null;
 		Process process = null;
-		if (_numShapes == 42){
+		if (_numShapes == 42) {
 			return null;
-		} else if (_numShapes >20 ){
-			firePropertyChange("failure", null,"failure");
-			errorState=true;
+		} else if (_numShapes > 20) {
+			firePropertyChange("failure", null, "failure");
+			errorState = true;
 			return null;
 		} else {
-		for (int i = 1; i <= _numShapes; i++) {
-			int _startTimeRnd = (int) (Math.random() * ((_duration) + 1));
-			builder = new ProcessBuilder(
-					"/bin/bash",
-					"-c",
-					"avconv -ss "
-							+ _startTimeRnd
-							+ " -i "
-							+ _inputFile
-							+ " -vf scale=320:-1,format=rgb8,format=rgb24 -t 10 -r 10 -y "
-							+ VideoTask.tempDir + File.separator + i + ".gif");
-			process = builder.start();
-			process.waitFor();
-		}
+			for (int i = 1; i <= _numShapes; i++) {
+				int _startTimeRnd = (int) (Math.random() * ((_duration) + 1));
+				builder = new ProcessBuilder("/bin/bash", "-c", "avconv -ss " + _startTimeRnd + " -i " + _inputFile
+						+ " -vf scale=320:-1,format=rgb8,format=rgb24 -t 10 -r 10 -y " + VideoTask.tempDir
+						+ File.separator + i + ".gif");
+				process = builder.start();
+				process.waitFor();
+			}
 		}
 		return null;
 
@@ -76,7 +69,7 @@ public class BounceCreator extends SwingWorker<Void, Void> {
 			if (errorState == false) {
 				this.get();
 				firePropertyChange("success", null, "success");
-			} 
+			}
 		} catch (CancellationException e) {
 			return;
 		} catch (InterruptedException e) {

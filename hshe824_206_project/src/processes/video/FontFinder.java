@@ -11,8 +11,8 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
- * This class provides all the fonts in the font package file.
- * {@link #setUp()} method needs to be called before use.
+ * This class provides all the fonts in the font package file. {@link #setUp()}
+ * method needs to be called before use.
  * 
  * NB: taken from assignment 3
  * 
@@ -25,8 +25,8 @@ public class FontFinder {
 	private List<Font> _fontList = new ArrayList<Font>();
 
 	/**
-	 * Loads all the Fonts into an ArrayList and the String containing the 
-	 * Font directory into a HashMap
+	 * Loads all the Fonts into an ArrayList and the String containing the Font
+	 * directory into a HashMap
 	 */
 	public void setUp() {
 		File folder = new File("/usr/share/fonts/truetype/dejavu");
@@ -35,10 +35,8 @@ public class FontFinder {
 		for (int i = 0; i < listofFiles.length; i++) {
 			if (listofFiles[i].isFile()) {
 				try {
-					Font newFont = Font.createFont(Font.TRUETYPE_FONT,
-							listofFiles[i]);
-					_fontList.add(Font.createFont(Font.TRUETYPE_FONT,
-							listofFiles[i]));
+					Font newFont = Font.createFont(Font.TRUETYPE_FONT, listofFiles[i]);
+					_fontList.add(Font.createFont(Font.TRUETYPE_FONT, listofFiles[i]));
 					_fontDirectory.put(newFont.getName(), listofFiles[i].toString());
 				} catch (FontFormatException | IOException e) {
 					e.printStackTrace();
@@ -50,33 +48,36 @@ public class FontFinder {
 
 	/**
 	 * Returns the List containing all the font objects
+	 * 
 	 * @return
 	 */
 	public List<Font> getFontList() {
 		return _fontList;
 	}
-	
+
 	/**
-	 * Returns the required font based on the name 
+	 * Returns the required font based on the name
+	 * 
 	 * @param fontName
 	 * @return
 	 */
-	public Font searchFont(String fontName){
+	public Font searchFont(String fontName) {
 		Font wantedFont = null;
-		for (Font font :_fontList){
-			if (fontName.equals(font.getName())){
+		for (Font font : _fontList) {
+			if (fontName.equals(font.getName())) {
 				wantedFont = font.deriveFont(12);
 			}
 		}
 		return wantedFont;
 	}
-	
+
 	/**
 	 * Returns the corresponding font directory
+	 * 
 	 * @param fontName
 	 * @return
 	 */
-	public String getFontDirectory(String fontName){
+	public String getFontDirectory(String fontName) {
 		return _fontDirectory.get(fontName);
 	}
 }

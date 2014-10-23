@@ -14,21 +14,21 @@ import javax.swing.JPanel;
  * @author Harry She
  *
  */
+@SuppressWarnings("serial")
 public abstract class Pane extends JPanel {
 
-	public static final String inputDir = System.getProperty("user.home")
-			+ File.separator + "vamix" + File.separator + "InputLibrary";
+	public static final String inputDir = System.getProperty("user.home") + File.separator + "vamix" + File.separator
+			+ "InputLibrary";
 
-	public static final String outputDir = System.getProperty("user.home")
-			+ File.separator + "vamix" + File.separator + "OutputLibrary";
+	public static final String outputDir = System.getProperty("user.home") + File.separator + "vamix" + File.separator
+			+ "OutputLibrary";
 
-	public static final String[] _validExtensions = { "mp3", "mp4", "avi",
-			"mkv", "wmv", "wav", "wma", "ra", "ram", "rm", "mid", "ogg", "3gp",
-			"aac", "m4a", "m4p", "msv", "vox", "webm", "flv", "ogv", "mov",
-			"qt", "mpg", "mp2", "mpeg", "mpg", "m4v", "svi" };
+	public static final String[] _validExtensions = { "mp3", "mp4", "avi", "mkv", "wmv", "wav", "wma", "ra", "ram",
+			"rm", "mid", "ogg", "3gp", "aac", "m4a", "m4p", "msv", "vox", "webm", "flv", "ogv", "mov", "qt", "mpg",
+			"mp2", "mpeg", "mpg", "m4v", "svi" };
 
-	public static final String[] _validVideoOnly = { "mp4", "avi", "mkv",
-			"flv", "ogv", "ogg", "rm", "m4v", "wmv", "m4p", "mpg", "svi", "3gp" };
+	public static final String[] _validVideoOnly = { "mp4", "avi", "mkv", "flv", "ogv", "ogg", "rm", "m4v", "wmv",
+			"m4p", "mpg", "svi", "3gp" };
 
 	protected final static int _titleFontSize = 16;
 	protected final static int _bodyFontSize = 14;

@@ -82,11 +82,9 @@ public class GraphicsPainter implements Painter {
 		 * the width of the shape - the width of the text.
 		 */
 		if (ascent > descent) {
-			_g.drawString(text, x + width / 2 - textWidth / 2, y + height / 2
-					+ (ascent - descent) / 2);
+			_g.drawString(text, x + width / 2 - textWidth / 2, y + height / 2 + (ascent - descent) / 2);
 		} else if (descent > ascent) {
-			_g.drawString(text, x + width / 2 - textWidth / 2, y + height / 2
-					+ (ascent + descent) / 2);
+			_g.drawString(text, x + width / 2 - textWidth / 2, y + height / 2 + (ascent + descent) / 2);
 		}
 	}
 
@@ -96,8 +94,7 @@ public class GraphicsPainter implements Painter {
 	 * @see bounce.Painter#drawImage(java.awt.Image, int, int, int, int,
 	 * java.lang.Object)
 	 */
-	public void drawImage(Image img, int i, int j, int _width, int _height,
-			Object object) {
+	public void drawImage(Image img, int i, int j, int _width, int _height, Object object) {
 		_g.drawImage(img, i, j, _width, _height, null);
 	}
 

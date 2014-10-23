@@ -1,4 +1,3 @@
-
 package ui.editors;
 
 import java.awt.BorderLayout;
@@ -18,11 +17,14 @@ import uk.co.caprica.vlcj.player.MediaPlayer;
 import java.awt.Component;
 
 /**
- * Class adapted from VLCJ Player PlayerVideoAdjustPanel class. 
+ * Class adapted from VLCJ Player PlayerVideoAdjustPanel class.
  * 
- * Available from https://github.com/caprica/vlcj/blob/master/src/test/java/uk/co/caprica/vlcj/test/basic/PlayerVideoAdjustPanel.java
+ * Available from
+ * https://github.com/caprica/vlcj/blob/master/src/test/java/uk/co
+ * /caprica/vlcj/test/basic/PlayerVideoAdjustPanel.java
  * 
- * Allows dynamic changing of video effects during playing including contrast, hue, brightness, saturation and gamma.
+ * Allows dynamic changing of video effects during playing including contrast,
+ * hue, brightness, saturation and gamma.
  * 
  */
 public class MarqueeControls extends JPanel {
@@ -59,14 +61,12 @@ public class MarqueeControls extends JPanel {
 	 */
 	private void createControls() {
 		enableVideoAdjustCheckBox = new JCheckBox("Video Adjust");
-		//enableVideoAdjustCheckBox.setHorizontalAlignment(flags);
+		// enableVideoAdjustCheckBox.setHorizontalAlignment(flags);
 		contrastLabel = new JLabel("Contrast");
 		contrastSlider = new JSlider();
 		contrastSlider.setOrientation(JSlider.HORIZONTAL);
-		contrastSlider
-				.setMinimum(Math.round(LibVlcConst.MIN_CONTRAST * 100.0f));
-		contrastSlider
-				.setMaximum(Math.round(LibVlcConst.MAX_CONTRAST * 100.0f));
+		contrastSlider.setMinimum(Math.round(LibVlcConst.MIN_CONTRAST * 100.0f));
+		contrastSlider.setMaximum(Math.round(LibVlcConst.MAX_CONTRAST * 100.0f));
 		contrastSlider.setPreferredSize(new Dimension(100, 40));
 		contrastSlider.setToolTipText("Change Contrast");
 		contrastSlider.setEnabled(false);
@@ -75,10 +75,8 @@ public class MarqueeControls extends JPanel {
 		brightnessLabel = new JLabel("Brightness");
 		brightnessSlider = new JSlider();
 		brightnessSlider.setOrientation(JSlider.HORIZONTAL);
-		brightnessSlider.setMinimum(Math
-				.round(LibVlcConst.MIN_BRIGHTNESS * 100.0f));
-		brightnessSlider.setMaximum(Math
-				.round(LibVlcConst.MAX_BRIGHTNESS * 100.0f));
+		brightnessSlider.setMinimum(Math.round(LibVlcConst.MIN_BRIGHTNESS * 100.0f));
+		brightnessSlider.setMaximum(Math.round(LibVlcConst.MAX_BRIGHTNESS * 100.0f));
 		brightnessSlider.setPreferredSize(new Dimension(100, 40));
 		brightnessSlider.setToolTipText("Change Brightness");
 		brightnessSlider.setEnabled(false);
@@ -93,10 +91,8 @@ public class MarqueeControls extends JPanel {
 		saturationLabel = new JLabel("Saturation");
 		saturationSlider = new JSlider();
 		saturationSlider.setOrientation(JSlider.HORIZONTAL);
-		saturationSlider.setMinimum(Math
-				.round(LibVlcConst.MIN_SATURATION * 100.0f));
-		saturationSlider.setMaximum(Math
-				.round(LibVlcConst.MAX_SATURATION * 100.0f));
+		saturationSlider.setMinimum(Math.round(LibVlcConst.MIN_SATURATION * 100.0f));
+		saturationSlider.setMaximum(Math.round(LibVlcConst.MAX_SATURATION * 100.0f));
 		saturationSlider.setPreferredSize(new Dimension(100, 40));
 		saturationSlider.setToolTipText("Change ");
 		saturationSlider.setEnabled(false);
@@ -108,13 +104,10 @@ public class MarqueeControls extends JPanel {
 		gammaSlider.setPreferredSize(new Dimension(100, 40));
 		gammaSlider.setToolTipText("Change ");
 		gammaSlider.setEnabled(false);
-		contrastSlider
-				.setValue(Math.round(mediaPlayer.getBrightness() * 100.0f));
-		brightnessSlider
-				.setValue(Math.round(mediaPlayer.getContrast() * 100.0f));
+		contrastSlider.setValue(Math.round(mediaPlayer.getBrightness() * 100.0f));
+		brightnessSlider.setValue(Math.round(mediaPlayer.getContrast() * 100.0f));
 		hueSlider.setValue(mediaPlayer.getHue());
-		saturationSlider
-				.setValue(Math.round(mediaPlayer.getSaturation() * 100.0f));
+		saturationSlider.setValue(Math.round(mediaPlayer.getSaturation() * 100.0f));
 		gammaSlider.setValue(Math.round(mediaPlayer.getGamma() * 100.0f));
 	}
 
@@ -182,7 +175,7 @@ public class MarqueeControls extends JPanel {
 			public void stateChanged(ChangeEvent e) {
 				JSlider source = (JSlider) e.getSource();
 				mediaPlayer.setSaturation(source.getValue() / 100.0f);
-							}
+			}
 		});
 		gammaSlider.addChangeListener(new ChangeListener() {
 			@Override

@@ -1,4 +1,5 @@
 package model;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -18,7 +19,7 @@ import javax.swing.JButton;
  * 
  * Taken from assignment 3.
  * 
- * @author Greggory Tan 
+ * @author Greggory Tan
  */
 public class RoundButton extends JButton {
 	protected Shape shape, base;
@@ -61,8 +62,7 @@ public class RoundButton extends JButton {
 	protected void paintBorder(Graphics g) {
 		initShape();
 		Graphics2D g2 = (Graphics2D) g.create();
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2.setColor(getBackground());
 		g2.dispose();
 	}
@@ -73,8 +73,7 @@ public class RoundButton extends JButton {
 		return shape == null ? false : shape.contains(x, y);
 	}
 
-	public void setIcons(Icon icon, Icon pressedIcon, Icon rolloverIcon,
-			String description) {
+	public void setIcons(Icon icon, Icon pressedIcon, Icon rolloverIcon, String description) {
 		setIcon(icon);
 		setPressedIcon(pressedIcon);
 		setRolloverIcon(rolloverIcon);

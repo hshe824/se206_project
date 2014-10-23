@@ -10,6 +10,7 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -45,14 +46,14 @@ import ui.filesystem.Library;
 public class AudioEditor extends Pane {
 
 	private static AudioEditor theInstance = null;
-	
+
 	private String _inputFile;
 	private JLabel _currentFileLabel;
 	private String _mergeAudio;
 	private String _replaceFile;
 	private JTextArea _details;
 	private Playback _miniPlayback;
-	
+
 	private AudioTask replace;
 	private AudioTask merge;
 	private AudioTask strip;
@@ -62,6 +63,26 @@ public class AudioEditor extends Pane {
 	private String _outputLocationOverlayedVideo;
 	private String _outputLocationReplacedAudioVideo;
 
+	private JPanel panel_1;
+
+	private JPanel panel_2;
+
+	private JComponent panel_3;
+
+	private JPanel panel_5;
+
+	private JPanel panel_6;
+
+	private JPanel panel_7;
+
+	private JPanel panel;
+
+	private JLabel overlayLabel;
+
+	private JPanel panel_4;
+
+	private JLabel rep;
+
 	/**
 	 * Create the Audio Editor panel.
 	 */
@@ -70,81 +91,17 @@ public class AudioEditor extends Pane {
 		/*
 		 * Setting up the AudioEditor panels with miglayout settings
 		 */
-		setLayout(new MigLayout("", "[425px,grow][425px,grow 30]",
-				"[300px,grow][60px,grow][240px,grow]"));
-		JPanel panel = new JPanel();
-		panel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Audio file details:", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		add(panel, "cell 0 2,grow");
-		panel.setLayout(new MigLayout("", "[grow]", "[grow]"));
+		setLayout(new MigLayout("", "[425px,grow][425px,grow 30]", "[300px,grow][60px,grow][240px,grow]"));
 
-		JPanel panel_1 = new JPanel();
-		add(panel_1, "cell 1 0 1 3,grow");
-		panel_1.setLayout(new MigLayout("", "[grow]",
-				"[100px,grow][166px,grow][166px,grow][166px,grow]"));
-
-		JPanel panel_2 = new JPanel();
-		panel_2.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Strip audio", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panel_1.add(panel_2, "cell 0 1,grow");
-		panel_2.setLayout(new MigLayout("", "[grow][grow][grow][grow]",
-				"[grow][grow][grow]"));
-
-		JPanel panel_3 = new JPanel();
-		panel_3.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Overlay layered audio", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panel_1.add(panel_3, "cell 0 2,grow");
-		panel_3.setLayout(new MigLayout("",
-				"[30px,grow][grow][grow][30px,grow]",
-				"[grow][grow][grow][grow][grow]"));
-		final JLabel overlayLabel = new JLabel("Audio to overlay:");
-				overlayLabel.setMaximumSize(new Dimension(370, 30));
-		panel_3.add(overlayLabel, "cell 0 0 4 1,alignx center");
-
-		JPanel panel_4 = new JPanel();
-		panel_4.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Replace existing audio", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panel_1.add(panel_4, "cell 0 3,grow");
-		panel_4.setLayout(new MigLayout("", "[grow][grow][grow][grow]",
-				"[grow][grow][grow][grow][grow]"));
-
-		final JLabel rep = new JLabel("Replacement audio:");
-		rep.setMaximumSize(new Dimension(370, 30));
-		panel_4.add(rep, "cell 0 0 4 1,alignx center");
-
-		JPanel panel_5 = new JPanel();
-		panel_5.setBorder(new TitledBorder(new EtchedBorder(
-				EtchedBorder.LOWERED, null, null),
-				"Current File being edited:", TitledBorder.LEADING,
-				TitledBorder.TOP, null, null));
-		add(panel_5, "cell 0 1,growx");
-		panel_5.setLayout(new MigLayout("", "[grow]", "[grow]"));
-		_currentFileLabel = new JLabel("");
-		_currentFileLabel.setMaximumSize(new Dimension(400, 30));
-		panel_5.add(_currentFileLabel, "cell 0 0");
-
-		JPanel panel_6 = new JPanel();
-		panel_6.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Change current video file", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_1.add(panel_6, "cell 0 0,grow");
-		panel_6.setLayout(new MigLayout("",
-				"[50px,grow][100px,grow][50px,grow]", "[100px]"));
-
-		JPanel panel_7 = new JPanel();
-		panel_7.setBorder(new TitledBorder(new EtchedBorder(
-				EtchedBorder.LOWERED, null, null), "Preview",
-				TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		add(panel_7, "cell 0 0,grow");
-		panel_7.setPreferredSize(new Dimension(425, 300));
-		panel_7.setLayout(new MigLayout("", "[425px,grow]", "[300px,grow]"));
-		set_miniPlayback(new Playback());
-		panel_7.add(get_miniPlayback(), "cell 0 0,alignx left,aligny top, grow");
-		/*
-		 * End of layout setup
-		 */
+		// Sets up the layout of the pane.
+		setupLayout();
 
 		// Make the details Text area
 		_details = new JTextArea();
 		_details.setEditable(false);
 		_details.setWrapStyleWord(true);
 		JScrollPane _detailsScrollPane = new JScrollPane(_details);
-		_detailsScrollPane
-				.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		_detailsScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		_detailsScrollPane.setPreferredSize(new Dimension(200, 300));
 		panel.add(_detailsScrollPane, "cell 0 0,grow");
 
@@ -154,46 +111,32 @@ public class AudioEditor extends Pane {
 		JButton btnChange = new JButton("Change file");
 		btnChange.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser _chooseInputFile = new JFileChooser(
-						Library.inputDir);
+				JFileChooser _chooseInputFile = new JFileChooser(Library.inputDir);
 				_chooseInputFile.setAcceptAllFileFilterUsed(false);
-				_chooseInputFile.setFileFilter(new FileNameExtensionFilter(
-						"Video files", Library._validVideoOnly));
+				_chooseInputFile.setFileFilter(new FileNameExtensionFilter("Video files", Library._validVideoOnly));
 				int returnValue = _chooseInputFile.showOpenDialog(null);
-				
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
 					File inputFile = _chooseInputFile.getSelectedFile();
-					FileChecker fc= new FileChecker(inputFile.toString());
-					//If the file doesn't contain an audio stream, complain.
+					FileChecker fc = new FileChecker(inputFile.toString());
+					// If the file doesn't contain an audio stream, complain.
 					if (!fc.checkAVFile("audio")) {
-						JOptionPane
-						.showMessageDialog(
-								null,
-								"Warning: This video file has no audio stream!",
-								"Warning: No audio stream!",
-								JOptionPane.WARNING_MESSAGE);
-					} 
-					get_miniPlayback().stopPlayer();
-					AudioEditor.getInstance()
-							.setInputFile(inputFile.toString());
+						JOptionPane.showMessageDialog(null, "Warning: This video file has no audio stream!",
+								"Warning: No audio stream!", JOptionPane.WARNING_MESSAGE);
 					}
-			
+					get_miniPlayback().stopPlayer();
+					AudioEditor.getInstance().setInputFile(inputFile.toString());
+				}
+
 			}
 		});
 		panel_6.add(btnChange, "cell 1 0,alignx center,aligny center,grow");
 
-		/*
-		 * Strip Button and listener to create audiotask
-		 */
 		JLabel stripLabel = new JLabel("Strips audio to Output Library");
 		panel_2.add(stripLabel, "cell 1 0 2 1,alignx center,aligny center");
-
 		final JProgressBar stripProgressBar = new JProgressBar();
 		panel_2.add(stripProgressBar, "cell 1 1 2 1,grow");
-
 		JButton stripAudioButton = new JButton("Strip audio");
 		panel_2.add(stripAudioButton, "cell 1 2,grow");
-
 		JButton stripCancel = new JButton("Cancel");
 		stripCancel.addActionListener(new ActionListener() {
 			@Override
@@ -203,51 +146,38 @@ public class AudioEditor extends Pane {
 				stripProgressBar.setIndeterminate(false);
 			}
 		});
-		
+
 		panel_2.add(stripCancel, "cell 2 2,grow");
 		stripAudioButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-				
-				String[] options = {"Get audio only", "Get video only", "Cancel"};
-				String[] outputLocationStrip = {_outputLocationStrippedAudio , _outputLocationStrippedVideo};
-				String cmd="";
-				String outString="";
-				
-				int action = JOptionPane
-						.showOptionDialog(
-								null,
-								"Would you like to save the stripped audio or the video that has will have its audio removed?",
-								"Choose what to save:",
-								JOptionPane.CANCEL_OPTION,
-								JOptionPane.QUESTION_MESSAGE, null,
-								options, options[0]);
+
+				String[] options = { "Get audio only", "Get video only", "Cancel" };
+				String[] outputLocationStrip = { _outputLocationStrippedAudio, _outputLocationStrippedVideo };
+				String cmd = "";
+				String outString = "";
+
+				int action = JOptionPane.showOptionDialog(null,
+						"Would you like to save the stripped audio or the video that has will have its audio removed?",
+						"Choose what to save:", JOptionPane.CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options,
+						options[0]);
 				if (action == JOptionPane.YES_OPTION) {
 					cmd = "STRIP-audio";
-					 outString = outputLocationStrip[0];
+					outString = outputLocationStrip[0];
 				} else if (action == JOptionPane.NO_OPTION) {
-					 cmd = "STRIP-video";
-					 outString = outputLocationStrip[1];
+					cmd = "STRIP-video";
+					outString = outputLocationStrip[1];
 				} else {
-					//cancel
+					// cancel
 					return;
 				}
-				
-				//Check if file exists first
+				// Check if file exists first
 				File _file = new File(outString);
 				if (_file.exists()) {
-					Object[] options2 = {"Overwrite", "Cancel" };
-					int action2 = JOptionPane
-							.showOptionDialog(
-									null,
-									"File: "
-											+ _file
-											+ " already exists, do you wish to overwrite?",
-									"ERROR: File already exists:",
-									JOptionPane.CANCEL_OPTION,
-									JOptionPane.QUESTION_MESSAGE, null,
-									options2, options2[1]);
+					Object[] options2 = { "Overwrite", "Cancel" };
+					int action2 = JOptionPane.showOptionDialog(null, "File: " + _file
+							+ " already exists, do you wish to overwrite?", "ERROR: File already exists:",
+							JOptionPane.CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options2, options2[1]);
 					if (action2 == JOptionPane.YES_OPTION) {
 						// Overwrite
 						_file.delete();
@@ -256,7 +186,9 @@ public class AudioEditor extends Pane {
 						return;
 					}
 				}
-				
+				/*
+				 * Strip Button and listener to create audiotask
+				 */
 				strip = new AudioTask(_inputFile, outString, cmd);
 				stripProgressBar.setIndeterminate(true);
 				strip.addPropertyChangeListener(new PropertyChangeListener() {
@@ -265,32 +197,22 @@ public class AudioEditor extends Pane {
 						if ("failure".equals(evt.getPropertyName())) {
 							setCursor(Cursor.getDefaultCursor());
 							stripProgressBar.setIndeterminate(false);
-							JOptionPane.showMessageDialog(null,
-									evt.getNewValue(), "Error!",
+							JOptionPane.showMessageDialog(null, evt.getNewValue(), "Error!",
 									JOptionPane.WARNING_MESSAGE);
 						} else if ("success".equals(evt.getPropertyName())) {
 							stripProgressBar.setIndeterminate(false);
 							stripProgressBar.setValue(100);
 							setCursor(Cursor.getDefaultCursor());
-							JOptionPane
-									.showMessageDialog(
-											null,
-											"Stripping of file from  "
-													+ _inputFile
-													+ " to the output library was successful!",
-											"Strip Successful",
-											JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(null, "Stripping of file from  " + _inputFile
+									+ " to the output library was successful!", "Strip Successful",
+									JOptionPane.INFORMATION_MESSAGE);
 							stripProgressBar.setValue(0);
-						}else if ("cancelled".equals(evt.getPropertyName())) {
+						} else if ("cancelled".equals(evt.getPropertyName())) {
 							setCursor(Cursor.getDefaultCursor());
 							stripProgressBar.setIndeterminate(false);
-							JOptionPane
-							.showMessageDialog(
-									null,
-									evt.getNewValue(),
-									"Cancelled!",
+							JOptionPane.showMessageDialog(null, evt.getNewValue(), "Cancelled!",
 									JOptionPane.WARNING_MESSAGE);
-						}	
+						}
 					}
 				});
 				strip.execute();
@@ -301,26 +223,19 @@ public class AudioEditor extends Pane {
 		/*
 		 * Browse Button and listener to import audio tracks to overlay.
 		 */
-
-		/*
-		 * Merge Button and listener to create an audiotask to merge the audio
-		 * layers together.
-		 */
 		JButton bt = new JButton("Browse audio track to overlay");
 		bt.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JFileChooser _chooseInputFile = new JFileChooser(
-						Library.inputDir);
+				JFileChooser _chooseInputFile = new JFileChooser(Library.inputDir);
 				_chooseInputFile.setAcceptAllFileFilterUsed(false);
-				_chooseInputFile.setFileFilter(new FileNameExtensionFilter(
-						"Audio and Video", Library._validExtensions));
+				_chooseInputFile
+						.setFileFilter(new FileNameExtensionFilter("Audio and Video", Library._validExtensions));
 				int returnValue = _chooseInputFile.showOpenDialog(null);
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
 					File inputFile = _chooseInputFile.getSelectedFile();
 					_mergeAudio = inputFile.getAbsolutePath();
-					overlayLabel.setText("Audio to overlay: "
-							+ inputFile.getAbsolutePath());
+					overlayLabel.setText("Audio to overlay: " + inputFile.getAbsolutePath());
 				}
 			}
 
@@ -342,24 +257,21 @@ public class AudioEditor extends Pane {
 				overlayProgressBar.setIndeterminate(false);
 			}
 		});
-		
+
+		/*
+		 * Merge Button and listener to create an audiotask to merge the audio
+		 * layers together.
+		 */
 		btnMergeAudio.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//Check if file exists first
+				// Check if file exists first
 				File _file = new File(_outputLocationOverlayedVideo);
 				if (_file.exists()) {
-					Object[] options = {"Overwrite", "Cancel" };
-					int action = JOptionPane
-							.showOptionDialog(
-									null,
-									"File: "
-											+ _file
-											+ " already exists, do you wish to overwrite?",
-									"ERROR: File already exists:",
-									JOptionPane.CANCEL_OPTION,
-									JOptionPane.QUESTION_MESSAGE, null,
-									options, options[1]);
+					Object[] options = { "Overwrite", "Cancel" };
+					int action = JOptionPane.showOptionDialog(null, "File: " + _file
+							+ " already exists, do you wish to overwrite?", "ERROR: File already exists:",
+							JOptionPane.CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
 					if (action == JOptionPane.YES_OPTION) {
 						// Overwrite
 						_file.delete();
@@ -368,8 +280,7 @@ public class AudioEditor extends Pane {
 						return;
 					}
 				}
-				merge = new AudioTask(_inputFile, _outputLocationOverlayedVideo,
-						_mergeAudio, "MERGE");
+				merge = new AudioTask(_inputFile, _outputLocationOverlayedVideo, _mergeAudio, "MERGE");
 				overlayProgressBar.setIndeterminate(true);
 				merge.addPropertyChangeListener(new PropertyChangeListener() {
 					@Override
@@ -377,30 +288,22 @@ public class AudioEditor extends Pane {
 						if ("failure".equals(evt.getPropertyName())) {
 							setCursor(Cursor.getDefaultCursor());
 							overlayProgressBar.setIndeterminate(false);
-							JOptionPane.showMessageDialog(null,
-									evt.getNewValue(), "Error!",
+							JOptionPane.showMessageDialog(null, evt.getNewValue(), "Error!",
 									JOptionPane.WARNING_MESSAGE);
 						} else if ("success".equals(evt.getPropertyName())) {
 							setCursor(Cursor.getDefaultCursor());
 							overlayProgressBar.setIndeterminate(false);
 							overlayProgressBar.setValue(100);
-							JOptionPane
-									.showMessageDialog(
-											null,
-											"Merging of audio layers to the output library was successful!",
-											"Merge Successful",
-											JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(null,
+									"Merging of audio layers to the output library was successful!",
+									"Merge Successful", JOptionPane.INFORMATION_MESSAGE);
 							overlayProgressBar.setValue(0);
 						} else if ("cancelled".equals(evt.getPropertyName())) {
 							setCursor(Cursor.getDefaultCursor());
 							overlayProgressBar.setIndeterminate(false);
-							JOptionPane
-							.showMessageDialog(
-									null,
-									evt.getNewValue(),
-									"Cancelled!",
+							JOptionPane.showMessageDialog(null, evt.getNewValue(), "Cancelled!",
 									JOptionPane.WARNING_MESSAGE);
-						}	
+						}
 					}
 				});
 				merge.execute();
@@ -418,17 +321,15 @@ public class AudioEditor extends Pane {
 		chooseAudio.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JFileChooser _chooseInputFile = new JFileChooser(
-						Library.inputDir);
+				JFileChooser _chooseInputFile = new JFileChooser(Library.inputDir);
 				_chooseInputFile.setAcceptAllFileFilterUsed(false);
-				_chooseInputFile.setFileFilter(new FileNameExtensionFilter(
-						"Audio and Video", Library._validExtensions));
+				_chooseInputFile
+						.setFileFilter(new FileNameExtensionFilter("Audio and Video", Library._validExtensions));
 				int returnValue = _chooseInputFile.showOpenDialog(null);
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
 					File inputFile = _chooseInputFile.getSelectedFile();
 					_replaceFile = (inputFile.getAbsolutePath());
-					rep.setText("Replacement audio: "
-							+ inputFile.getAbsolutePath());
+					rep.setText("Replacement audio: " + inputFile.getAbsolutePath());
 				}
 
 			}
@@ -455,24 +356,16 @@ public class AudioEditor extends Pane {
 				replaceProgressBar.setIndeterminate(false);
 			}
 		});
-		
-		btnReplace.addActionListener(new ActionListener() {
 
+		btnReplace.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				File _file = new File(_outputLocationReplacedAudioVideo);
 				if (_file.exists()) {
-					Object[] options = {"Overwrite", "Cancel" };
-					int action = JOptionPane
-							.showOptionDialog(
-									null,
-									"File: "
-											+ _file
-											+ " already exists, do you wish to overwrite?",
-									"ERROR: File already exists:",
-									JOptionPane.CANCEL_OPTION,
-									JOptionPane.QUESTION_MESSAGE, null,
-									options, options[1]);
+					Object[] options = { "Overwrite", "Cancel" };
+					int action = JOptionPane.showOptionDialog(null, "File: " + _file
+							+ " already exists, do you wish to overwrite?", "ERROR: File already exists:",
+							JOptionPane.CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
 					if (action == JOptionPane.YES_OPTION) {
 						// Overwrite
 						_file.delete();
@@ -481,9 +374,7 @@ public class AudioEditor extends Pane {
 						return;
 					}
 				}
-					
-				replace = new AudioTask(_inputFile, _outputLocationReplacedAudioVideo,
-						_replaceFile, "REPLACE");
+				replace = new AudioTask(_inputFile, _outputLocationReplacedAudioVideo, _replaceFile, "REPLACE");
 				replaceProgressBar.setIndeterminate(true);
 				replace.addPropertyChangeListener(new PropertyChangeListener() {
 					@Override
@@ -491,41 +382,89 @@ public class AudioEditor extends Pane {
 						if ("failure".equals(evt.getPropertyName())) {
 							setCursor(Cursor.getDefaultCursor());
 							replaceProgressBar.setIndeterminate(false);
-							JOptionPane.showMessageDialog(null,
-									evt.getNewValue(), "Error!",
+							JOptionPane.showMessageDialog(null, evt.getNewValue(), "Error!",
 									JOptionPane.WARNING_MESSAGE);
 						} else if ("success".equals(evt.getPropertyName())) {
 							setCursor(Cursor.getDefaultCursor());
 							replaceProgressBar.setIndeterminate(false);
 							replaceProgressBar.setValue(100);
-							JOptionPane
-									.showMessageDialog(
-											null,
-											"Replacement of audio from: "
-													+ _replaceFile
-													+ " to the output library was successful!",
-											"Replacement of audio Successful",
-											JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(null, "Replacement of audio from: " + _replaceFile
+									+ " to the output library was successful!", "Replacement of audio Successful",
+									JOptionPane.INFORMATION_MESSAGE);
 							replaceProgressBar.setValue(0);
-						}else if ("cancelled".equals(evt.getPropertyName())) {
+						} else if ("cancelled".equals(evt.getPropertyName())) {
 							setCursor(Cursor.getDefaultCursor());
 							replaceProgressBar.setIndeterminate(false);
-							JOptionPane
-							.showMessageDialog(
-									null,
-									evt.getNewValue(),
-									"Cancelled!",
+							JOptionPane.showMessageDialog(null, evt.getNewValue(), "Cancelled!",
 									JOptionPane.WARNING_MESSAGE);
-						}	
-
+						}
 					}
 				});
 				replace.execute();
 				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-
 			}
 		});
+	}
 
+	private void setupLayout() {
+		panel = new JPanel();
+		panel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null),
+				"Audio file details:", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		add(panel, "cell 0 2,grow");
+		panel.setLayout(new MigLayout("", "[grow]", "[grow]"));
+
+		panel_1 = new JPanel();
+		add(panel_1, "cell 1 0 1 3,grow");
+		panel_1.setLayout(new MigLayout("", "[grow]", "[100px,grow][166px,grow][166px,grow][166px,grow]"));
+
+		panel_2 = new JPanel();
+		panel_2.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null), "Strip audio",
+				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel_1.add(panel_2, "cell 0 1,grow");
+		panel_2.setLayout(new MigLayout("", "[grow][grow][grow][grow]", "[grow][grow][grow]"));
+
+		panel_3 = new JPanel();
+		panel_3.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null),
+				"Overlay layered audio", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel_1.add(panel_3, "cell 0 2,grow");
+		panel_3.setLayout(new MigLayout("", "[30px,grow][grow][grow][30px,grow]", "[grow][grow][grow][grow][grow]"));
+		overlayLabel = new JLabel("Audio to overlay:");
+		overlayLabel.setMaximumSize(new Dimension(370, 30));
+		panel_3.add(overlayLabel, "cell 0 0 4 1,alignx center");
+
+		panel_4 = new JPanel();
+		panel_4.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null),
+				"Replace existing audio", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel_1.add(panel_4, "cell 0 3,grow");
+		panel_4.setLayout(new MigLayout("", "[grow][grow][grow][grow]", "[grow][grow][grow][grow][grow]"));
+
+		rep = new JLabel("Replacement audio:");
+		rep.setMaximumSize(new Dimension(370, 30));
+		panel_4.add(rep, "cell 0 0 4 1,alignx center");
+
+		panel_5 = new JPanel();
+		panel_5.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null),
+				"Current File being edited:", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		add(panel_5, "cell 0 1,growx");
+		panel_5.setLayout(new MigLayout("", "[grow]", "[grow]"));
+		_currentFileLabel = new JLabel("");
+		_currentFileLabel.setMaximumSize(new Dimension(400, 30));
+		panel_5.add(_currentFileLabel, "cell 0 0");
+
+		panel_6 = new JPanel();
+		panel_6.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null),
+				"Change current video file", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_1.add(panel_6, "cell 0 0,grow");
+		panel_6.setLayout(new MigLayout("", "[50px,grow][100px,grow][50px,grow]", "[100px]"));
+
+		panel_7 = new JPanel();
+		panel_7.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Preview",
+				TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		add(panel_7, "cell 0 0,grow");
+		panel_7.setPreferredSize(new Dimension(425, 300));
+		panel_7.setLayout(new MigLayout("", "[425px,grow]", "[300px,grow]"));
+		set_miniPlayback(new Playback());
+		panel_7.add(get_miniPlayback(), "cell 0 0,alignx left,aligny top, grow");
 	}
 
 	/**
@@ -539,23 +478,20 @@ public class AudioEditor extends Pane {
 	 */
 	public void setInputFile(String _inputFile) {
 		this._inputFile = _inputFile;
-		String basename = _inputFile.substring(_inputFile
-				.lastIndexOf(File.separator) + 1);
+		String basename = _inputFile.substring(_inputFile.lastIndexOf(File.separator) + 1);
 		_currentFileLabel.setText(basename);
-		String filenameNoExtension = basename.substring(0,
-				basename.lastIndexOf("."));
+		String filenameNoExtension = basename.substring(0, basename.lastIndexOf("."));
 		String Extension = basename.substring(basename.lastIndexOf("."));
-		_outputLocationStrippedAudio = Library.outputDir + File.separator
-				+ filenameNoExtension + "[STRIPPED-VAMIX].mp3";
-		_outputLocationStrippedVideo= Library.outputDir + File.separator
-				+ filenameNoExtension + "[STRIPPED-VAMIX]" + Extension;
-		_outputLocationOverlayedVideo = Library.outputDir + File.separator
-				+ filenameNoExtension + "[MERGED_AUDIO-VAMIX]" + Extension;
-		_outputLocationReplacedAudioVideo= Library.outputDir + File.separator
-				+ filenameNoExtension + "[REPLACED_AUDIO-VAMIX]" + Extension;
+		_outputLocationStrippedAudio = Library.outputDir + File.separator + filenameNoExtension
+				+ "[STRIPPED-VAMIX].mp3";
+		_outputLocationStrippedVideo = Library.outputDir + File.separator + filenameNoExtension + "[STRIPPED-VAMIX]"
+				+ Extension;
+		_outputLocationOverlayedVideo = Library.outputDir + File.separator + filenameNoExtension
+				+ "[MERGED_AUDIO-VAMIX]" + Extension;
+		_outputLocationReplacedAudioVideo = Library.outputDir + File.separator + filenameNoExtension
+				+ "[REPLACED_AUDIO-VAMIX]" + Extension;
 		_details.setText(Library.getDetails(_inputFile).toString());
 		get_miniPlayback().startPlayer(_inputFile);
-		//_miniPlayback.stopPlayer();
 
 	}
 

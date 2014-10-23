@@ -1,10 +1,11 @@
 package bounce;
+
 import java.awt.Color;
 
 /**
- * This shape class produces an aggregate fractal shape consisting of 
- * varying numbers of overlapping circles that change colour and state
- * upon each bounce with a wall.
+ * This shape class produces an aggregate fractal shape consisting of varying
+ * numbers of overlapping circles that change colour and state upon each bounce
+ * with a wall.
  * 
  * @author Harry She
  */
@@ -13,8 +14,7 @@ public class AggregateShape extends Shape {
 	private int radius;
 	private int _state;
 
-	public AggregateShape(int x, int y, int deltaX, int deltaY, int width,
-			int height, int radius) {
+	public AggregateShape(int x, int y, int deltaX, int deltaY, int width, int height, int radius) {
 		super(x, y, deltaX, deltaY, width, height);
 		this.radius = radius;
 		_state = 1;

@@ -24,8 +24,8 @@ import javax.swing.border.BevelBorder;
  * receiving an event from the Timer, the AnimationViewer iterates through a
  * list of Shapes requesting that each Shape paints and moves itself.
  * 
- * NB: Class adapted from Ian Warren's bounce code from Softeng 251.
- * All credit for the base code such as AnimationViewer, Shape, Painter and Graphics
+ * NB: Class adapted from Ian Warren's bounce code from Softeng 251. All credit
+ * for the base code such as AnimationViewer, Shape, Painter and Graphics
  * Painter goes to him, but all other classes are my own work.
  * 
  * @author Ian Warren & Harry She
@@ -46,21 +46,17 @@ public class AnimationViewer extends JPanel implements ActionListener {
 	 */
 	public AnimationViewer() {
 		_shapes = new ArrayList<Shape>();
-	
 
-		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED,
-				Color.BLACK, Color.DARK_GRAY));
+		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED, Color.BLACK, Color.DARK_GRAY));
 		// Populate the list of Shapes.
 
-		_shapes.add(new BounceNorm(this.getWidth()/2, this.getHeight()/2, 1,
-				1, 320, 240));
+		_shapes.add(new BounceNorm(this.getWidth() / 2, this.getHeight() / 2, 1, 1, 320, 240));
 		// Start the animation.
 		_timer.start();
 	}
 
 	public AnimationViewer(int numShapes) {
-		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED,
-				Color.BLACK, Color.DARK_GRAY));
+		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED, Color.BLACK, Color.DARK_GRAY));
 		_shapes = new ArrayList<Shape>();
 		int maxX = this.getWidth();
 		int maxY = this.getHeight();
@@ -70,29 +66,22 @@ public class AnimationViewer extends JPanel implements ActionListener {
 		// Populate the list of Shapes.
 		if (numShapes == 42) {
 
-			_shapes.add(new DynamicRectangleShape(0, 0, -5, -3, 300, 150,
-					Color.green, "Easter egg!!"));
+			_shapes.add(new DynamicRectangleShape(0, 0, -5, -3, 300, 150, Color.green, "Easter egg!!"));
 			_shapes.add(new OvalShape(10, 10, 5, 7, 50, 70));
-			_shapes.add(new DynamicRectangleShape(0, 500, 10, 25, 40, 60,
-					Color.blue));
+			_shapes.add(new DynamicRectangleShape(0, 500, 10, 25, 40, 60, Color.blue));
 			_shapes.add(new FractalShape(500, 500, -10, 0, 60, 70, 4));
 			_shapes.add(new AggregateShape(250, 100, -10, 1, 120, 70, 5));
 
-			
 		} else {
 			for (int i = 1; i <= numShapes; i++) {
-				int randomX = 5+(int) (Math.random() * (maxX  + 1));
-				int randomY = 5+(int) (Math.random() * (maxY  + 1));
-				int randomDX = minDXY
-						+ (int) (Math.random() * ((maxDXY - minDXY) + 1));
-				int randomDY = minDXY
-						+ (int) (Math.random() * ((maxDXY - minDXY) + 1));
-				_shapes.add(new Bouncemania(randomX, randomY, randomDX,
-						randomDY, 320, 240, i, numShapes));
+				int randomX = 5 + (int) (Math.random() * (maxX + 1));
+				int randomY = 5 + (int) (Math.random() * (maxY + 1));
+				int randomDX = minDXY + (int) (Math.random() * ((maxDXY - minDXY) + 1));
+				int randomDY = minDXY + (int) (Math.random() * ((maxDXY - minDXY) + 1));
+				_shapes.add(new Bouncemania(randomX, randomY, randomDX, randomDY, 320, 240, i, numShapes));
 			}
 
-			setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED,
-					Color.BLACK, Color.DARK_GRAY));
+			setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED, Color.BLACK, Color.DARK_GRAY));
 			// Populate the list of Shapes.
 
 			// Start the animation.

@@ -42,8 +42,7 @@ public class AudioTask extends SwingWorker<Void, Void> {
 	private FileChecker fc;
 
 	// Replace and Overlay constructor
-	public AudioTask(String inputFile, String outputFile, String replaceFile,
-			String cmd) {
+	public AudioTask(String inputFile, String outputFile, String replaceFile, String cmd) {
 		_inputFile = inputFile;
 		_outputFile = outputFile;
 		_replaceOrMergeFile = replaceFile;
@@ -71,8 +70,7 @@ public class AudioTask extends SwingWorker<Void, Void> {
 		errorState = false;
 		switch (_cmd) {
 		case "STRIP-audio":
-			builder = new ProcessBuilder("/bin/bash", "-c", "avconv -i "
-					+ _inputFile + " -vn " + _outputFile);
+			builder = new ProcessBuilder("/bin/bash", "-c", "avconv -i " + _inputFile + " -vn " + _outputFile);
 			fc = new FileChecker(_inputFile);
 			if (!fc.checkAVFile("Audio")) {
 				firePropertyChange("failure", null, _noAudioWarning);
@@ -81,8 +79,8 @@ public class AudioTask extends SwingWorker<Void, Void> {
 			}
 			break;
 		case "STRIP-video":
-			builder = new ProcessBuilder("/bin/bash", "-c", "avconv -i "
-					+ _inputFile + " -c copy -map 0:v " + _outputFile);
+			builder = new ProcessBuilder("/bin/bash", "-c", "avconv -i " + _inputFile + " -c copy -map 0:v "
+					+ _outputFile);
 			fc = new FileChecker(_inputFile);
 			if (!fc.checkAVFile("Audio")) {
 				firePropertyChange("failure", null, _noAudioWarning);
@@ -91,15 +89,14 @@ public class AudioTask extends SwingWorker<Void, Void> {
 			}
 			break;
 		case "MERGE":
-			builder = new ProcessBuilder("/bin/bash", "-c", "avconv -i "
-					+ _inputFile + " -i " + _replaceOrMergeFile
-					+  " -filter_complex amix=duration=longest -vcodec copy -shortest -y -strict experimental " + _outputFile);
+			builder = new ProcessBuilder("/bin/bash", "-c", "avconv -i " + _inputFile + " -i " + _replaceOrMergeFile
+					+ " -filter_complex amix=duration=longest -vcodec copy -shortest -y -strict experimental "
+					+ _outputFile);
 			break;
 		case "REPLACE":
-			String outNoExtensions=_outputFile.substring(0,_outputFile.lastIndexOf('.'));
-			builder = new ProcessBuilder("/bin/bash", "-c", "avconv -i "
-					+ _inputFile + " -i " + _replaceOrMergeFile
-					+ " -c copy -map 0:v -map 1:a " + outNoExtensions+".mp4");
+			String outNoExtensions = _outputFile.substring(0, _outputFile.lastIndexOf('.'));
+			builder = new ProcessBuilder("/bin/bash", "-c", "avconv -i " + _inputFile + " -i " + _replaceOrMergeFile
+					+ " -c copy -map 0:v -map 1:a " + outNoExtensions + ".mp4");
 			break;
 		}
 		startProcess(builder);
@@ -116,7 +113,7 @@ public class AudioTask extends SwingWorker<Void, Void> {
 			}
 		} catch (CancellationException e) {
 			firePropertyChange("cancelled", null, "The audio task was stopped!");
-			File toDelete= new File(_outputFile);
+			File toDelete = new File(_outputFile);
 			toDelete.delete();
 			Library.getInstance().refreshTree();
 			return;
@@ -137,8 +134,7 @@ public class AudioTask extends SwingWorker<Void, Void> {
 			e1.printStackTrace();
 		}
 		InputStream stdout = process.getInputStream();
-		BufferedReader stdoutBuffered = new BufferedReader(
-				new InputStreamReader(stdout));
+		BufferedReader stdoutBuffered = new BufferedReader(new InputStreamReader(stdout));
 		String line = null;
 		String last = null;
 		try {

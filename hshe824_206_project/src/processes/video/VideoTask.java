@@ -25,14 +25,14 @@ import ui.filesystem.Library;
  * credits and then the concatenation of the input video with this generated
  * title video.
  * 
- *  NB: Taken from assignment 3.
- *  
+ * NB: Taken from assignment 3.
+ * 
  * @author Greggory & Harry
  *
  */
 public class VideoTask extends SwingWorker<Void, Void> {
-	final public static String tempDir = System.getProperty("user.home")
-			+ File.separator + "vamix" + File.separator + "temp";
+	final public static String tempDir = System.getProperty("user.home") + File.separator + "vamix" + File.separator
+			+ "temp";
 
 	private String _inputFile;
 	private String _previewFile = null;
@@ -54,8 +54,7 @@ public class VideoTask extends SwingWorker<Void, Void> {
 
 	private String outString;
 
-	public VideoTask(String inputFile, JTextArea textArea, int min, int sec,
-			Boolean isTitle, Boolean isPreview) {
+	public VideoTask(String inputFile, JTextArea textArea, int min, int sec, Boolean isTitle, Boolean isPreview) {
 		_inputFile = inputFile;
 		_duration = sec + min * 60;
 		_isTitle = isTitle;
@@ -63,11 +62,8 @@ public class VideoTask extends SwingWorker<Void, Void> {
 		_txt = textArea.getText();
 		_font = textArea.getFont();
 		_size = textArea.getFont().getSize();
-		_color = String
-				.format("%02x%02x%02x%02x", textArea.getForeground().getRed(),
-						textArea.getForeground().getGreen(), textArea
-								.getForeground().getBlue(), textArea
-								.getForeground().getAlpha());
+		_color = String.format("%02x%02x%02x%02x", textArea.getForeground().getRed(), textArea.getForeground()
+				.getGreen(), textArea.getForeground().getBlue(), textArea.getForeground().getAlpha());
 		getDimensions();
 		_textArea = textArea;
 		getCentred();
@@ -81,18 +77,12 @@ public class VideoTask extends SwingWorker<Void, Void> {
 	 * folder. The final output will be saved in the output library folder
 	 */
 	private void setUpFileLocation() {
-		String basename = _inputFile.substring(_inputFile
-				.lastIndexOf(File.separator) + 1);
-		String filenameNoExtension = basename.substring(0,
-				basename.lastIndexOf("."));
-		String videoExtension = basename.substring(basename.lastIndexOf("."),
-				basename.length());
-		_tempLocation = tempDir + File.separator + filenameNoExtension
-				+ "[Temp]" + videoExtension;
-		_editedLocation = Library.outputDir + File.separator
-				+ filenameNoExtension + "[TEXTEDITED-VAMIX].mpg";
-		_previewFile = tempDir + File.separator + filenameNoExtension
-				+ "[Preview]" + videoExtension;
+		String basename = _inputFile.substring(_inputFile.lastIndexOf(File.separator) + 1);
+		String filenameNoExtension = basename.substring(0, basename.lastIndexOf("."));
+		String videoExtension = basename.substring(basename.lastIndexOf("."), basename.length());
+		_tempLocation = tempDir + File.separator + filenameNoExtension + "[Temp]" + videoExtension;
+		_editedLocation = Library.outputDir + File.separator + filenameNoExtension + "[TEXTEDITED-VAMIX].mpg";
+		_previewFile = tempDir + File.separator + filenameNoExtension + "[Preview]" + videoExtension;
 	}
 
 	@Override
@@ -109,22 +99,16 @@ public class VideoTask extends SwingWorker<Void, Void> {
 			temp.delete();
 		}
 
-		builder = new ProcessBuilder("/bin/bash", "-c",
-				"avconv -filter_complex \"color=0x000000ff:"
-						+ (int) _videoSize.getWidth() + "x"
-						+ (int) _videoSize.getHeight()
-						+ " [in]; [in] drawtext=fontfile='" + fontLocation
-						+ "'" + ":text=" + _txt.toString() + ":fontsize="
-						+ _size + ":fontcolor=" + _color + ":x=" + _positionX
-						+ ":y=" + _positionY + "\" -t " + _duration + " "
-						+ _tempLocation);
+		builder = new ProcessBuilder("/bin/bash", "-c", "avconv -filter_complex \"color=0x000000ff:"
+				+ (int) _videoSize.getWidth() + "x" + (int) _videoSize.getHeight() + " [in]; [in] drawtext=fontfile='"
+				+ fontLocation + "'" + ":text=" + _txt.toString() + ":fontsize=" + _size + ":fontcolor=" + _color
+				+ ":x=" + _positionX + ":y=" + _positionY + "\" -t " + _duration + " " + _tempLocation);
 		startProcess(builder);
 
 		// Saving Task
 		if (!_isPreview) {
-			ProcessBuilder pb1 = new ProcessBuilder("/bin/bash", "-c",
-					"avconv -i " + _tempLocation + " -y " + tempDir
-							+ File.separator + "text.mpg");
+			ProcessBuilder pb1 = new ProcessBuilder("/bin/bash", "-c", "avconv -i " + _tempLocation + " -y " + tempDir
+					+ File.separator + "text.mpg");
 			pb1.redirectErrorStream(true);
 			Process p1 = pb1.start();
 			p1.waitFor();
@@ -141,8 +125,8 @@ public class VideoTask extends SwingWorker<Void, Void> {
 	 * @throws InterruptedException
 	 */
 	private void mpgCreate() throws InterruptedException {
-		ProcessBuilder pb2 = new ProcessBuilder("/bin/bash", "-c", "avconv -i "
-				+ _inputFile + " -y " + tempDir + File.separator + "input.mpg");
+		ProcessBuilder pb2 = new ProcessBuilder("/bin/bash", "-c", "avconv -i " + _inputFile + " -y " + tempDir
+				+ File.separator + "input.mpg");
 		pb2.redirectErrorStream(true);
 		Process p2 = null;
 		try {
@@ -159,9 +143,8 @@ public class VideoTask extends SwingWorker<Void, Void> {
 	 */
 	private void catMPG() {
 		if (_isTitle) {
-			ProcessBuilder pb3 = new ProcessBuilder("/bin/bash", "-c", "cat "
-					+ tempDir + File.separator + "text.mpg" + " " + tempDir
-					+ File.separator + "input.mpg" + " > " + _editedLocation);
+			ProcessBuilder pb3 = new ProcessBuilder("/bin/bash", "-c", "cat " + tempDir + File.separator + "text.mpg"
+					+ " " + tempDir + File.separator + "input.mpg" + " > " + _editedLocation);
 			pb3.redirectErrorStream(true);
 			Process p3 = null;
 			try {
@@ -176,10 +159,8 @@ public class VideoTask extends SwingWorker<Void, Void> {
 			}
 
 		} else {
-			ProcessBuilder pb3 = new ProcessBuilder("/bin/bash", "-c",
-					"avconv -i concat:" + tempDir + File.separator
-							+ "input.mpg" + "\\|" + tempDir + File.separator
-							+ "text.mpg" + " -c copy -y " + _editedLocation);
+			ProcessBuilder pb3 = new ProcessBuilder("/bin/bash", "-c", "avconv -i concat:" + tempDir + File.separator
+					+ "input.mpg" + "\\|" + tempDir + File.separator + "text.mpg" + " -c copy -y " + _editedLocation);
 			pb3.redirectErrorStream(true);
 			startProcess(pb3);
 
@@ -198,8 +179,7 @@ public class VideoTask extends SwingWorker<Void, Void> {
 				firePropertyChange("success", null, "success");
 			}
 		} catch (CancellationException e) {
-			firePropertyChange("cancelled", null,
-					"The text editing task was stopped!");
+			firePropertyChange("cancelled", null, "The text editing task was stopped!");
 			File toDelete = new File(_editedLocation);
 			toDelete.delete();
 			Library.getInstance().refreshTree();
@@ -228,8 +208,7 @@ public class VideoTask extends SwingWorker<Void, Void> {
 			e1.printStackTrace();
 		}
 		InputStream stdout = process.getInputStream();
-		BufferedReader stdoutBuffered = new BufferedReader(
-				new InputStreamReader(stdout));
+		BufferedReader stdoutBuffered = new BufferedReader(new InputStreamReader(stdout));
 		String line = null;
 		String last = null;
 		try {
@@ -305,8 +284,8 @@ public class VideoTask extends SwingWorker<Void, Void> {
 	 * @return Dimension of the video file
 	 */
 	private Dimension getDimensions() {
-		ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c",
-				"avprobe " + _inputFile + " 2>&1 | grep -i video");
+		ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c", "avprobe " + _inputFile
+				+ " 2>&1 | grep -i video");
 		builder.redirectErrorStream(true);
 
 		Pattern progressValue = Pattern.compile("(\\d*)x(\\d*)");
@@ -314,8 +293,7 @@ public class VideoTask extends SwingWorker<Void, Void> {
 		try {
 			Process process = builder.start();
 			InputStream stdout = process.getInputStream();
-			BufferedReader stdoutBuffered = new BufferedReader(
-					new InputStreamReader(stdout));
+			BufferedReader stdoutBuffered = new BufferedReader(new InputStreamReader(stdout));
 			String line;
 			while ((line = stdoutBuffered.readLine()) != null) { // Maybe not
 																	// needed
@@ -324,8 +302,7 @@ public class VideoTask extends SwingWorker<Void, Void> {
 			}
 			Matcher matcher = progressValue.matcher(output);
 			matcher.find();
-			_videoSize = new Dimension(Integer.parseInt(matcher.group(1)),
-					Integer.parseInt(matcher.group(2)));
+			_videoSize = new Dimension(Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2)));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
