@@ -47,6 +47,7 @@ public class SubtitleEditor extends Pane {
 
 	private Playback _playback;
 	private String _inputFile;
+	private String _srtOutput;
 	private File _srtFile;
 	private JTable _table;
 	private SubtitleModel _model;
@@ -175,10 +176,11 @@ public class SubtitleEditor extends Pane {
 		btnSaveSubtitleFile.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (_srtFile.exists()) {
-					_srtFile.delete();
+				File outputFile = new File(_srtOutput);
+				if (outputFile.exists()) {
+					outputFile.delete();
 				}
-				try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(_srtFile, true)))) {
+				try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(outputFile, true)))) {
 					List<Subtitle> subs = _model.getSubtitleList();
 					sortSubtitles(subs);
 					for (int i = 0; i < subs.size(); i++) {
@@ -186,8 +188,7 @@ public class SubtitleEditor extends Pane {
 						out.println((i + 1) + "\n" + s.getStartTime() + ",000" + " --> " + s.getEndTime() + ",000"
 								+ "\n" + s.getSubtitle() + "\n");
 					}
-					JOptionPane.showMessageDialog(null, "Saving of .srt file: " + _srtFile
-							+ " to the Input Library was successful!", "Save Successful",
+					JOptionPane.showMessageDialog(null, "Saving of .srt file: " + outputFile +" to the Input Library was successful!", "Save Successful",
 							JOptionPane.INFORMATION_MESSAGE);
 					_playback.stopPlayer();
 					_playback._mediaPlayer.play();
@@ -246,10 +247,10 @@ public class SubtitleEditor extends Pane {
 	public void setUpSubtitles() {
 		String basename = _inputFile.substring(_inputFile.lastIndexOf(File.separator) + 1);
 		String filenameNoExtension = basename.substring(0, basename.lastIndexOf("."));
-		String output = Library.inputDir + File.separator + filenameNoExtension + ".srt";
-		_srtFile = new File(output);
+		_srtOutput = Library.inputDir + File.separator + filenameNoExtension + ".srt";
+		_srtFile = new File(_srtOutput);
 		if (!_srtFile.exists()) {
-			_srtFile = new File(output);
+			_srtFile = new File(_srtOutput);
 			try (PrintWriter out = new PrintWriter(_srtFile)) {
 				out.println("1");
 				out.println("00:00:00,000 --> 00:00:10,000");
