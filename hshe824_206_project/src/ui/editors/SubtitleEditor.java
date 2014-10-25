@@ -47,6 +47,7 @@ public class SubtitleEditor extends Pane {
 
 	private Playback _playback;
 	private String _inputFile;
+	private String _outDirectory;
 	private String _srtOutput;
 	private File _srtFile;
 	private JTable _table;
@@ -247,7 +248,7 @@ public class SubtitleEditor extends Pane {
 	public void setUpSubtitles() {
 		String basename = _inputFile.substring(_inputFile.lastIndexOf(File.separator) + 1);
 		String filenameNoExtension = basename.substring(0, basename.lastIndexOf("."));
-		_srtOutput = Library.inputDir + File.separator + filenameNoExtension + ".srt";
+		_srtOutput =_outDirectory + filenameNoExtension + ".srt";
 		_srtFile = new File(_srtOutput);
 		if (!_srtFile.exists()) {
 			_srtFile = new File(_srtOutput);
@@ -277,6 +278,12 @@ public class SubtitleEditor extends Pane {
 
 	public void setInputFile(String inputFile) {
 		_inputFile = inputFile;
+		if (_inputFile.contains("InputLibrary")) {
+			_outDirectory=Library.inputDir+File.separator;
+		}else {
+			_outDirectory=Library.outputDir+File.separator;
+
+		}
 		_playback.startPlayer(inputFile);
 		setUpSubtitles();
 	}
