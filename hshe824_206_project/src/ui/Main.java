@@ -39,13 +39,16 @@ import ui.special.Filters;
 import model.LookAndFeelListener;
 
 /**
+ * VAMIX is a video/audio mixer application that performs a number of
+ * video/audio manipulation tasks. this includes basic features characteristic
+ * of standard video/audio applications such as playing videos and audio, but
+ * also more advanced editing capabilities such as stripping, overlaying and
+ * replacing audio, adding titles, subtitles, credits, adding filters to video
+ * and also a special bounce previewer mode.
+ * 
  * This the main class of the VAMIX Application. It is responsible for setting
  * the look and feel of the GUI, creating and showing the GUI and also is
  * responsible for the creation of new tabs.
- * 
- * The main entry point of the GUI is the library pane, which consists of a
- * number of features including displaying file details as well as having a
- * right click menu for file operations.
  * 
  * @author Harry She
  * 
