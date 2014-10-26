@@ -189,7 +189,8 @@ public class SubtitleEditor extends Pane {
 						out.println((i + 1) + "\n" + s.getStartTime() + ",000" + " --> " + s.getEndTime() + ",000"
 								+ "\n" + s.getSubtitle() + "\n");
 					}
-					JOptionPane.showMessageDialog(null, "Saving of .srt file: " + outputFile +" to the Input Library was successful!", "Save Successful",
+					JOptionPane.showMessageDialog(null, "Saving of .srt file: " + outputFile
+							+ " to the Input Library was successful!", "Save Successful",
 							JOptionPane.INFORMATION_MESSAGE);
 					_playback.stopPlayer();
 					_playback._mediaPlayer.play();
@@ -248,7 +249,7 @@ public class SubtitleEditor extends Pane {
 	public void setUpSubtitles() {
 		String basename = _inputFile.substring(_inputFile.lastIndexOf(File.separator) + 1);
 		String filenameNoExtension = basename.substring(0, basename.lastIndexOf("."));
-		_srtOutput =_outDirectory + filenameNoExtension + ".srt";
+		_srtOutput = _outDirectory + filenameNoExtension + ".srt";
 		_srtFile = new File(_srtOutput);
 		if (!_srtFile.exists()) {
 			_srtFile = new File(_srtOutput);
@@ -279,9 +280,9 @@ public class SubtitleEditor extends Pane {
 	public void setInputFile(String inputFile) {
 		_inputFile = inputFile;
 		if (_inputFile.contains("InputLibrary")) {
-			_outDirectory=Library.inputDir+File.separator;
-		}else {
-			_outDirectory=Library.outputDir+File.separator;
+			_outDirectory = Library.inputDir + File.separator;
+		} else {
+			_outDirectory = Library.outputDir + File.separator;
 
 		}
 		_playback.startPlayer(inputFile);

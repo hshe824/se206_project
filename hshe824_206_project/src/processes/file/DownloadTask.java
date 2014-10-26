@@ -48,8 +48,8 @@ public class DownloadTask extends SwingWorker<Void, String> {
 		String _basename = _URL.substring(_URL.lastIndexOf(File.separator), _URL.length());
 		inputDir += _basename;
 		errorState = false;
-		ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c", "wget -A --progress=dot --continue " + "\""+_URL+ "\""
-				+ " -O " + "\""+ inputDir + "\""+" 2>&1");
+		ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c", "wget -A --progress=dot --continue " + "\""
+				+ _URL + "\"" + " -O " + "\"" + inputDir + "\"" + " 2>&1");
 		Process process = null;
 		builder.redirectErrorStream(true);
 		try {

@@ -675,6 +675,7 @@ public class Library extends Pane {
 		return theInstance;
 	}
 
+	// Enable all av buttons
 	private void bothAV() {
 		Main.play.setEnabled(true);
 		Main.addText.setEnabled(true);
@@ -690,6 +691,7 @@ public class Library extends Pane {
 		filters.setEnabled(true);
 	}
 
+	// Enable audio buttons only
 	private void audioNoVideo() {
 		Main.play.setEnabled(true);
 		Main.addText.setEnabled(false);
@@ -705,6 +707,7 @@ public class Library extends Pane {
 		filters.setEnabled(false);
 	}
 
+	// Enable video buttons only
 	private void videoNoAudio() {
 		Main.play.setEnabled(true);
 		Main.addText.setEnabled(true);
@@ -720,6 +723,7 @@ public class Library extends Pane {
 		filters.setEnabled(true);
 	}
 
+	// Disable all av buttons
 	private void noMedia() {
 		Main.play.setEnabled(false);
 		Main.addText.setEnabled(false);

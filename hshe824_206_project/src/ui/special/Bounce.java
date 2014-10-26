@@ -32,7 +32,8 @@ import bounce.AnimationViewer;
  * generated from an input video. They can be made to bounce off the walls and
  * change state.
  * 
- * This can be used by the user for a preview of several parts of a video concurrently.
+ * This can be used by the user for a preview of several parts of a video
+ * concurrently.
  * 
  * @author Harry She
  *

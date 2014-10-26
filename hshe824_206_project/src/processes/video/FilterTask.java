@@ -17,7 +17,10 @@ import javax.swing.SwingWorker;
 import ui.filesystem.Library;
 
 /**
- * Class responsible for adding filters to videos and also previewing them
+ * Class responsible for adding filters to videos such as blur, mirroring the
+ * video, negating the colours of the video, fading into the start of the video,
+ * or adding a colour tint to the video. These can be simply previewed by the
+ * user or saved to the output library for further use by the user.
  * 
  * @author Harry She
  *
@@ -84,6 +87,10 @@ public class FilterTask extends SwingWorker<Void, Void> {
 		return null;
 	}
 
+	/**
+	 * Send appropriate messages to the EDT to update when completed
+	 * successfully or ungracefully.
+	 */
 	@Override
 	protected void done() {
 		try {
@@ -105,6 +112,10 @@ public class FilterTask extends SwingWorker<Void, Void> {
 		}
 	}
 
+	/**
+	 * Start the process required and also keep track of the output in case
+	 * errors occur in which case these can be reflected back to the user.
+	 */
 	private void startProcess(ProcessBuilder builder) {
 		Process process = null;
 		builder.redirectErrorStream(true);
@@ -156,8 +167,7 @@ public class FilterTask extends SwingWorker<Void, Void> {
 			InputStream stdout = process.getInputStream();
 			BufferedReader stdoutBuffered = new BufferedReader(new InputStreamReader(stdout));
 			String line;
-			while ((line = stdoutBuffered.readLine()) != null) { // Maybe not
-																	// needed
+			while ((line = stdoutBuffered.readLine()) != null) {
 				output.append(line);
 				output.append(" ");
 			}

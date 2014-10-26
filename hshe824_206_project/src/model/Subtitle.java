@@ -46,11 +46,6 @@ public class Subtitle implements Comparable<Subtitle> {
 		this.startTime = startTime;
 	}
 
-//	@Override
-//	public String toString() {
-//		return this.startTime + " " + this.endTime + " " + this.subtitle;
-//	}
-
 	@Override
 	public int compareTo(Subtitle o) {
 		return startTime.compareTo(o.getStartTime());

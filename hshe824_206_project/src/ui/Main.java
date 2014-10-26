@@ -43,8 +43,9 @@ import model.LookAndFeelListener;
  * the look and feel of the GUI, creating and showing the GUI and also is
  * responsible for the creation of new tabs.
  * 
- * The library pane consists of a number of features including displaying file
- * details as well as having a right click menu for file operations.
+ * The main entry point of the GUI is the library pane, which consists of a
+ * number of features including displaying file details as well as having a
+ * right click menu for file operations.
  * 
  * @author Harry She
  * 
@@ -153,7 +154,7 @@ public class Main extends JFrame {
 		deleteDirOnExit(new File(VideoTask.tempDir));
 	}
 
-	/*
+	/**
 	 * Sets up listeners for changing the look and feel dynamically.
 	 */
 	private void setupDynamicLookAndFeel() {
@@ -369,7 +370,8 @@ public class Main extends JFrame {
 	}
 
 	/**
-	 * Method used to delete temporary directory.
+	 * Method used to delete temporary directory after the user exits the
+	 * application.
 	 * 
 	 * Boilerplate code from
 	 * http://www.coderanch.com/t/278832/java-io/java/delete-directory-VM-exits;

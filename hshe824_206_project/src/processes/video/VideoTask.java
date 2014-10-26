@@ -25,7 +25,7 @@ import ui.filesystem.Library;
  * credits and then the concatenation of the input video with this generated
  * title video.
  * 
- * NB: Taken from assignment 3.
+ * NB: Taken and adapted from assignment 3.
  * 
  * @author Greggory & Harry
  *
@@ -81,10 +81,16 @@ public class VideoTask extends SwingWorker<Void, Void> {
 		String filenameNoExtension = basename.substring(0, basename.lastIndexOf("."));
 		String videoExtension = basename.substring(basename.lastIndexOf("."), basename.length());
 		_tempLocation = tempDir + File.separator + filenameNoExtension + "[Temp]" + videoExtension;
-		_editedLocation = Library.outputDir + File.separator + filenameNoExtension + "[TEXTEDITED-VAMIX].mpg";
+		_editedLocation = Library.outputDir + File.separator + filenameNoExtension + "[TEXT_EDITED-VAMIX].mpg";
 		_previewFile = tempDir + File.separator + filenameNoExtension + "[Preview]" + videoExtension;
 	}
 
+	/**
+	 * This is the main section where the video for the title or credits scene
+	 * is generated and saved (if save and not preview is selected) to be
+	 * subsequently concatenated to either the start or end of the video
+	 * depending if it is a title scene or credits scene.
+	 */
 	@Override
 	protected Void doInBackground() throws Exception {
 		ProcessBuilder builder = null;
@@ -167,6 +173,10 @@ public class VideoTask extends SwingWorker<Void, Void> {
 		}
 	}
 
+	/**
+	 * Send appropriate messages to the EDT to update when completed
+	 * successfully or ungracefully.
+	 */
 	@Override
 	protected void done() {
 		try {
@@ -194,9 +204,8 @@ public class VideoTask extends SwingWorker<Void, Void> {
 	}
 
 	/**
-	 * From AudioTask (line 127)
-	 * 
-	 * @param builder
+	 * Start the process required and also keep track of the output in case
+	 * errors occur in which case these can be reflected back to the user.
 	 */
 	private void startProcess(ProcessBuilder builder) {
 		Process process = null;
@@ -295,8 +304,7 @@ public class VideoTask extends SwingWorker<Void, Void> {
 			InputStream stdout = process.getInputStream();
 			BufferedReader stdoutBuffered = new BufferedReader(new InputStreamReader(stdout));
 			String line;
-			while ((line = stdoutBuffered.readLine()) != null) { // Maybe not
-																	// needed
+			while ((line = stdoutBuffered.readLine()) != null) {
 				output.append(line);
 				output.append(" ");
 			}

@@ -103,6 +103,10 @@ public class AudioTask extends SwingWorker<Void, Void> {
 		return null;
 	}
 
+	/**
+	 * Send appropriate messages to the EDT to update when completed
+	 * successfully or ungracefully.
+	 */
 	@Override
 	protected void done() {
 		try {
@@ -124,6 +128,10 @@ public class AudioTask extends SwingWorker<Void, Void> {
 		}
 	}
 
+	/**
+	 * Start the process required and also keep track of the output in case
+	 * errors occur in which case these can be reflected back to the user.
+	 */
 	private void startProcess(ProcessBuilder builder) {
 		Process process = null;
 		builder.redirectErrorStream(true);

@@ -31,8 +31,11 @@ import ui.editors.Playback;
 import ui.filesystem.Library;
 
 /**
- * Class that deals with adding of a title page or credits to videos. Ie. The
- * creation of title and credits.
+ * Class that is the panel that deals with adding and hard-coding in filters
+ * into video files. This includes features such as blur, mirroring the video,
+ * negating the colours of the video, fading into the start of the video, or
+ * adding a colour tint to the video. These can be simply previewed by the user
+ * or saved to the output library for further use by the user.
  *
  * @author Harry She and Greggory Tan
  *
@@ -159,6 +162,7 @@ public class Filters extends Pane {
 
 	}
 
+	// Listener to detect button presses of filter radio buttons
 	class FilterListener implements ActionListener {
 
 		@Override

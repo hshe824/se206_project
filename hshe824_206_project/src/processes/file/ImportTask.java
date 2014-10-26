@@ -45,6 +45,10 @@ public class ImportTask extends SwingWorker<Void, Void> {
 		return null;
 	}
 
+	/**
+	 * Send appropriate messages to the EDT to update when completed
+	 * successfully or ungracefully.
+	 */
 	@Override
 	protected void done() {
 		Library.getInstance().refreshTree();

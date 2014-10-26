@@ -72,6 +72,7 @@ public class SubtitleModel extends AbstractTableModel {
 		return columnIndex == 2 ? true : false;
 	}
 
+	// Edit the value of the table
 	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
 		try {
@@ -87,6 +88,7 @@ public class SubtitleModel extends AbstractTableModel {
 		}
 	}
 
+	// Adds a default subtitle every time a new row is added by the user
 	public void addRow() {
 		subtitleList.add(new Subtitle("00:00:00", "00:00:10", "Please enter subtitle here"));
 	}
@@ -97,12 +99,12 @@ public class SubtitleModel extends AbstractTableModel {
 
 	public List<Subtitle> getSubtitleList() {
 		return subtitleList;
-		
+
 	}
-	
+
 	public void setSubtitleList(List<Subtitle> subtitles) {
-		this.subtitleList=subtitles;
-		
+		this.subtitleList = subtitles;
+
 	}
-	
+
 }

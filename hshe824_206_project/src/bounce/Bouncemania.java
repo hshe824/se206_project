@@ -7,7 +7,9 @@ import javax.swing.ImageIcon;
 import processes.video.VideoTask;
 
 /**
- * Class that displays an animated GIF image of the video passed.
+ * Class that displays an animated GIF image of the video passed. This shape
+ * doesn't change state when it bounces on the wall for clarity when multiple
+ * instances of shapes are bouncing.
  * 
  * @author: Harry She
  * 

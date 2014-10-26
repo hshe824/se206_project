@@ -64,23 +64,14 @@ public class AudioEditor extends Pane {
 	private String _outputLocationReplacedAudioVideo;
 
 	private JPanel panel_1;
-
 	private JPanel panel_2;
-
 	private JComponent panel_3;
-
 	private JPanel panel_5;
-
 	private JPanel panel_6;
-
 	private JPanel panel_7;
-
 	private JPanel panel;
-
 	private JLabel overlayLabel;
-
 	private JPanel panel_4;
-
 	private JLabel rep;
 
 	/**
@@ -339,7 +330,6 @@ public class AudioEditor extends Pane {
 		 * Replace button to create audio task to replace existed audio track
 		 * with another track all in the background
 		 */
-
 		final JProgressBar replaceProgressBar = new JProgressBar();
 		panel_4.add(replaceProgressBar, "cell 1 2 2 1,grow");
 		JButton btnReplace = new JButton("Replace");
@@ -406,6 +396,9 @@ public class AudioEditor extends Pane {
 		});
 	}
 
+	/**
+	 * Sets up the layout using miglayout of the panel
+	 */
 	private void setupLayout() {
 		panel = new JPanel();
 		panel.setBorder(new TitledBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null),

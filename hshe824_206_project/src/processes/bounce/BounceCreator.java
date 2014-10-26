@@ -10,8 +10,11 @@ import processes.video.VideoTask;
 import bounce.AnimationViewer;
 
 /**
- * Class responsible for generating GIF images that are to be used in the bounce
- * animation
+ * Class responsible for generating GIF images from the current video file that
+ * are to be used in the bounce animation. The bounce animation will contain
+ * different scenes from the video file that are randomly generated from
+ * different times.
+ * 
  * 
  * @author Harry She
  *
@@ -63,6 +66,10 @@ public class BounceCreator extends SwingWorker<Void, Void> {
 
 	}
 
+	/**
+	 * Send appropriate messages to the EDT to update when completed
+	 * successfully or ungracefully.
+	 */
 	@Override
 	protected void done() {
 		try {
